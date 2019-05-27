@@ -11,9 +11,9 @@ namespace WebApp.Persistence
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        DbSet<ProductType> ProductTypes { get; set; }
-        DbSet<Pricelist> Pricelists { get; set; }
-        DbSet<PriceHistory> PriceHistories { get; set; }
+        public DbSet<ProductType> ProductTypes { get; set; }
+        public DbSet<Pricelist> Pricelists { get; set; }
+        public DbSet<PriceHistory> PriceHistories { get; set; }
 
 
         public ApplicationDbContext()
@@ -25,5 +25,7 @@ namespace WebApp.Persistence
         {
             return new ApplicationDbContext();
         }
+
+
     }
 }
