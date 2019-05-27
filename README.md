@@ -1,1 +1,3 @@
-# web_2
+# web_2 projekat
+## Predrag Babic
+## Stevan Vulic
