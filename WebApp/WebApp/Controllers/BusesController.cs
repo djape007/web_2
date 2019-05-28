@@ -16,10 +16,8 @@ namespace WebApp.Controllers
 {
     public class BusesController : ApiController
     {
-        //private ApplicationDbContext db = new ApplicationDbContext();
         private IUnitOfWork unitOfWork;
-
-        public BusesController(IUnitOfWork unitOfWork)
+        protected BusesController(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
         }
@@ -34,7 +32,7 @@ namespace WebApp.Controllers
         [ResponseType(typeof(Bus))]
         public IHttpActionResult GetBus(string id)
         {
-            Bus bus = unitOfWork.Buses.Find(x => x.Id == id).FirstOrDefault();
+            Bus bus = unitOfWork.Buses.Get(id);
             if (bus == null)
             {
                 return NotFound();
@@ -42,7 +40,6 @@ namespace WebApp.Controllers
 
             return Ok(bus);
         }
-
         // PUT: api/Buses/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutBus(string id, Bus bus)
@@ -57,12 +54,10 @@ namespace WebApp.Controllers
                 return BadRequest();
             }
 
-            //db.Entry(bus).State = EntityState.Modified;
-            
             try
             {
-                //db.SaveChanges();
                 unitOfWork.Buses.Update(bus);
+                unitOfWork.Complete();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -88,12 +83,10 @@ namespace WebApp.Controllers
                 return BadRequest(ModelState);
             }
 
-            //db.Buses.Add(bus);
-            unitOfWork.Buses.Add(bus);
-
             try
             {
-                //db.SaveChanges();
+                unitOfWork.Buses.Add(bus);
+                unitOfWork.Complete();
             }
             catch (DbUpdateException)
             {
@@ -114,31 +107,30 @@ namespace WebApp.Controllers
         [ResponseType(typeof(Bus))]
         public IHttpActionResult DeleteBus(string id)
         {
-            //Bus bus = db.Buses.Find(id);
-            //if (bus == null)
-            //{
-            //    return NotFound();
-            //}
+            Bus bus = unitOfWork.Buses.Get(id);
+            if (bus == null)
+            {
+                return NotFound();
+            }
 
-            //db.Buses.Remove(bus);
-            //db.SaveChanges();
+            unitOfWork.Buses.Remove(bus);
+            unitOfWork.Complete();
 
-            return Ok();
+            return Ok(bus);
         }
 
         protected override void Dispose(bool disposing)
         {
-            //if (disposing)
-            //{
-            //    db.Dispose();
-            //}
-            //base.Dispose(disposing);
+            if (disposing)
+            {
+                unitOfWork.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
         private bool BusExists(string id)
         {
-            //return db.Buses.Count(e => e.Id == id) > 0;
-            return true;
+            return unitOfWork.Buses.Find(e => e.Id == id).Count() > 0;
         }
     }
 }

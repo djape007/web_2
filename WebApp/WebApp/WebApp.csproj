@@ -260,9 +260,9 @@
     <Compile Include="Migrations\201905222056072_InitialMigration.Designer.cs">
       <DependentUpon>201905222056072_InitialMigration.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201905281023508_FullModelss.cs" />
-    <Compile Include="Migrations\201905281023508_FullModelss.Designer.cs">
-      <DependentUpon>201905281023508_FullModelss.cs</DependentUpon>
+    <Compile Include="Migrations\201905281058566_AllModelsCreated.cs" />
+    <Compile Include="Migrations\201905281058566_AllModelsCreated.Designer.cs">
+      <DependentUpon>201905281058566_AllModelsCreated.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
@@ -398,8 +398,8 @@
     <EmbeddedResource Include="Migrations\201905222056072_InitialMigration.resx">
       <DependentUpon>201905222056072_InitialMigration.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201905281023508_FullModelss.resx">
-      <DependentUpon>201905281023508_FullModelss.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201905281058566_AllModelsCreated.resx">
+      <DependentUpon>201905281058566_AllModelsCreated.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

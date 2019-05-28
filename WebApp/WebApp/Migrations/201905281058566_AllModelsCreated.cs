@@ -3,7 +3,7 @@ namespace WebApp.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class FullModelss : DbMigration
+    public partial class AllModelsCreated : DbMigration
     {
         public override void Up()
         {
@@ -67,10 +67,11 @@ namespace WebApp.Migrations
                 "dbo.BusStopsOnLines",
                 c => new
                     {
+                        Id = c.Guid(nullable: false),
                         BusStopId = c.Guid(nullable: false),
                         LineId = c.Guid(nullable: false),
                     })
-                .PrimaryKey(t => new { t.BusStopId, t.LineId })
+                .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.BusStops", t => t.BusStopId, cascadeDelete: true)
                 .ForeignKey("dbo.Lines", t => t.LineId, cascadeDelete: true)
                 .Index(t => t.BusStopId)

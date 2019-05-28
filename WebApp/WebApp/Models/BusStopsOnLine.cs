@@ -9,10 +9,10 @@ namespace WebApp.Models
 {
     public class BusStopsOnLine
     {
-        [Key, Column(Order =0)]
+        [Key]
+        public Guid Id { get; set; }
         public Guid BusStopId { get; set; }
         public BusStop BusStop { get; set; }
-        [Key, Column(Order = 1)]
         public Guid LineId { get; set; }
         public Line Line { get; set; }
     }
