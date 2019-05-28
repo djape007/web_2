@@ -250,6 +250,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BusesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -259,9 +260,9 @@
     <Compile Include="Migrations\201905222056072_InitialMigration.Designer.cs">
       <DependentUpon>201905222056072_InitialMigration.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201905280837098_Test3.cs" />
-    <Compile Include="Migrations\201905280837098_Test3.Designer.cs">
-      <DependentUpon>201905280837098_Test3.cs</DependentUpon>
+    <Compile Include="Migrations\201905281023508_FullModelss.cs" />
+    <Compile Include="Migrations\201905281023508_FullModelss.Designer.cs">
+      <DependentUpon>201905281023508_FullModelss.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
@@ -270,16 +271,30 @@
     <Compile Include="Models\Bus.cs" />
     <Compile Include="Models\BusStop.cs" />
     <Compile Include="Models\BusStopsOnLine.cs" />
+    <Compile Include="Models\Coefficient.cs" />
     <Compile Include="Models\Line.cs" />
     <Compile Include="Models\PointPathLine.cs" />
     <Compile Include="Models\PriceHistory.cs" />
     <Compile Include="Models\Pricelist.cs" />
     <Compile Include="Models\ProductType.cs" />
+    <Compile Include="Models\SoldTicket.cs" />
     <Compile Include="Models\TimeTable.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Persistence\ApplicationDbContext.cs" />
+    <Compile Include="Persistence\Repository\BusRepository.cs" />
+    <Compile Include="Persistence\Repository\IBusRepository.cs" />
+    <Compile Include="Persistence\Repository\ILineRepository.cs" />
+    <Compile Include="Persistence\Repository\IPriceHistoryRepository.cs" />
+    <Compile Include="Persistence\Repository\IPricelistRepository.cs" />
+    <Compile Include="Persistence\Repository\IProductTypeRepository.cs" />
     <Compile Include="Persistence\Repository\IRepository.cs" />
+    <Compile Include="Persistence\Repository\ITimeTableRepository.cs" />
+    <Compile Include="Persistence\Repository\LineRepository.cs" />
+    <Compile Include="Persistence\Repository\PriceHistoryRepository.cs" />
+    <Compile Include="Persistence\Repository\PricelistRepository.cs" />
+    <Compile Include="Persistence\Repository\ProductTypeRepository.cs" />
     <Compile Include="Persistence\Repository\Repository.cs" />
+    <Compile Include="Persistence\Repository\TimeTableRepository.cs" />
     <Compile Include="Persistence\UnitOfWork\DemoUnitOfWork.cs" />
     <Compile Include="Persistence\UnitOfWork\IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -383,8 +398,8 @@
     <EmbeddedResource Include="Migrations\201905222056072_InitialMigration.resx">
       <DependentUpon>201905222056072_InitialMigration.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201905280837098_Test3.resx">
-      <DependentUpon>201905280837098_Test3.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201905281023508_FullModelss.resx">
+      <DependentUpon>201905281023508_FullModelss.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

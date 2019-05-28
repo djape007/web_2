@@ -114,30 +114,31 @@ namespace WebApp.Controllers
         [ResponseType(typeof(Bus))]
         public IHttpActionResult DeleteBus(string id)
         {
-            Bus bus = db.Buses.Find(id);
-            if (bus == null)
-            {
-                return NotFound();
-            }
+            //Bus bus = db.Buses.Find(id);
+            //if (bus == null)
+            //{
+            //    return NotFound();
+            //}
 
-            db.Buses.Remove(bus);
-            db.SaveChanges();
+            //db.Buses.Remove(bus);
+            //db.SaveChanges();
 
-            return Ok(bus);
+            return Ok();
         }
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
+            //if (disposing)
+            //{
+            //    db.Dispose();
+            //}
+            //base.Dispose(disposing);
         }
 
         private bool BusExists(string id)
         {
-            return db.Buses.Count(e => e.Id == id) > 0;
+            //return db.Buses.Count(e => e.Id == id) > 0;
+            return true;
         }
     }
 }
