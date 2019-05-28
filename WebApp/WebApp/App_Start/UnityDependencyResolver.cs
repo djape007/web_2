@@ -76,6 +76,12 @@ namespace WebApp.App_Start
             container.RegisterType<IPricelistRepository, PricelistRepository>();
             container.RegisterType<IProductTypeRepository, ProductTypeRepository>();
             container.RegisterType<ITimeTableRepository, TimeTableRepository>();
+            container.RegisterType<IBusStopRepository, BusStopRepository>();
+            container.RegisterType<IBusStopsOnLineRepository, BusStopsOnLineRepository>();
+            container.RegisterType<ICoefficientRepository, CoefficientRepository>();
+            container.RegisterType<IPointPathLineRepository, PointPathLineRepository>();
+            container.RegisterType<ISoldTicketRepository, SoldTicketRepository>();
+            container.RegisterType<IUserRepository, UserRepository>();
 
             //container.RegisterType<IServiceRepository, ServiceRepository>();
         }
