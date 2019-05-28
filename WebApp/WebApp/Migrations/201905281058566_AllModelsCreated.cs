@@ -169,22 +169,10 @@ namespace WebApp.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Lines", t => t.Line_Id)
                 .Index(t => t.Line_Id);
-            
-            DropTable("dbo.Products");
         }
         
         public override void Down()
         {
-            CreateTable(
-                "dbo.Products",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
-                        Price = c.Decimal(nullable: false, precision: 18, scale: 2),
-                    })
-                .PrimaryKey(t => t.Id);
-            
             DropForeignKey("dbo.Timetables", "Line_Id", "dbo.Lines");
             DropForeignKey("dbo.SoldTickets", "UserId", "dbo.Users");
             DropForeignKey("dbo.PriceHistories", "ProductTypeId", "dbo.ProductTypes");
