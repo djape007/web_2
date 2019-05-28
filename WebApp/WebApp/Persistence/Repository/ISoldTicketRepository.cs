@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebApp.Persistence.Repository
 {
-    interface ISoldTicketRepository : IRepository<Models.SoldTicket, Guid>
+    public interface ISoldTicketRepository : IRepository<Models.SoldTicket, Guid>
     {
     }
 }

@@ -29,6 +29,18 @@ namespace WebApp.Persistence.UnitOfWork
         public IProductTypeRepository ProductTypes { get; set; }
         [Dependency]
         public ITimeTableRepository TimeTables { get; set; }
+        [Dependency]
+        public IBusStopRepository BusStops { get; set; }
+        [Dependency]
+        public IBusStopsOnLineRepository BusStopsOnLines { get; set; }
+        [Dependency]
+        public ICoefficientRepository Coefficients { get; set; }
+        [Dependency]
+        public IPointPathLineRepository PointPathLines { get; set; }
+        [Dependency]
+        public ISoldTicketRepository SoldTickets { get; set; }
+        [Dependency]
+        public IUserRepository Users { get; set; }
 
         public int Complete()
         {

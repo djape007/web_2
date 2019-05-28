@@ -15,6 +15,13 @@ namespace WebApp.Persistence.UnitOfWork
         IPricelistRepository Pricelists { get; set; }
         IProductTypeRepository ProductTypes { get; set; }
         ITimeTableRepository TimeTables { get; set; }
+        IBusStopRepository BusStops { get; set; }
+        IBusStopsOnLineRepository BusStopsOnLines { get; set; }
+        ICoefficientRepository Coefficients { get; set; }
+        IPointPathLineRepository PointPathLines { get; set; }
+        ISoldTicketRepository SoldTickets { get; set; }
+        IUserRepository Users { get; set; }
+
         int Complete();
     }
 }

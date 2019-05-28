@@ -14,11 +14,10 @@ using WebApp.Persistence.UnitOfWork;
 
 namespace WebApp.Controllers
 {
-    public class BusesController : ApiController
-    {
+    public class BusesController : ApiController {
         private IUnitOfWork unitOfWork;
-        protected BusesController(IUnitOfWork unitOfWork)
-        {
+
+        public BusesController(IUnitOfWork unitOfWork) {
             this.unitOfWork = unitOfWork;
         }
 
