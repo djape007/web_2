@@ -259,17 +259,20 @@
     <Compile Include="Migrations\201905222056072_InitialMigration.Designer.cs">
       <DependentUpon>201905222056072_InitialMigration.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201905271644252_AddPriceHistory.cs" />
-    <Compile Include="Migrations\201905271644252_AddPriceHistory.Designer.cs">
-      <DependentUpon>201905271644252_AddPriceHistory.cs</DependentUpon>
+    <Compile Include="Migrations\201905280814467_Test2.cs" />
+    <Compile Include="Migrations\201905280814467_Test2.Designer.cs">
+      <DependentUpon>201905280814467_Test2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
+    <Compile Include="Models\Bus.cs" />
+    <Compile Include="Models\Line.cs" />
     <Compile Include="Models\PriceHistory.cs" />
     <Compile Include="Models\Pricelist.cs" />
     <Compile Include="Models\ProductType.cs" />
+    <Compile Include="Models\TimeTable.cs" />
     <Compile Include="Persistence\ApplicationDbContext.cs" />
     <Compile Include="Persistence\Repository\IRepository.cs" />
     <Compile Include="Persistence\Repository\Repository.cs" />
@@ -376,8 +379,8 @@
     <EmbeddedResource Include="Migrations\201905222056072_InitialMigration.resx">
       <DependentUpon>201905222056072_InitialMigration.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201905271644252_AddPriceHistory.resx">
-      <DependentUpon>201905271644252_AddPriceHistory.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201905280814467_Test2.resx">
+      <DependentUpon>201905280814467_Test2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

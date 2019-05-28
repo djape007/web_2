@@ -14,6 +14,9 @@ namespace WebApp.Persistence
         public DbSet<ProductType> ProductTypes { get; set; }
         public DbSet<Pricelist> Pricelists { get; set; }
         public DbSet<PriceHistory> PriceHistories { get; set; }
+        public DbSet<Bus> Buses { get; set; }
+        public DbSet<Line> Lines { get; set; }
+        public DbSet<Timetable> Timetables { get; set; }
 
 
         public ApplicationDbContext()
