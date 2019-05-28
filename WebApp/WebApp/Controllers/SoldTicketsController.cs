@@ -32,7 +32,7 @@ namespace WebApp.Controllers
         [ResponseType(typeof(SoldTicket))]
         public IHttpActionResult GetSoldTicket(Guid id)
         {
-            SoldTicket soldTicket = unitOfWork.SoldTickets.Find(x => x.Id == id).FirstOrDefault();
+            SoldTicket soldTicket = unitOfWork.SoldTickets.Get(id);
             if (soldTicket == null)
             {
                 return NotFound();
@@ -110,7 +110,7 @@ namespace WebApp.Controllers
         [ResponseType(typeof(SoldTicket))]
         public IHttpActionResult DeleteSoldTicket(Guid id)
         {
-            SoldTicket soldTicket = unitOfWork.SoldTickets.Find(x => x.Id == id).FirstOrDefault();
+            SoldTicket soldTicket = unitOfWork.SoldTickets.Get(id);
             if (soldTicket == null)
             {
                 return NotFound();

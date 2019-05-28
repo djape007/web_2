@@ -32,7 +32,7 @@ namespace WebApp.Controllers
         [ResponseType(typeof(Timetable))]
         public IHttpActionResult GetTimetable(Guid id)
         {
-            Timetable timetable = unitOfWork.TimeTables.Find(x => x.Id == id).FirstOrDefault();
+            Timetable timetable = unitOfWork.TimeTables.Get(id);
             if (timetable == null)
             {
                 return NotFound();
@@ -110,7 +110,7 @@ namespace WebApp.Controllers
         [ResponseType(typeof(Timetable))]
         public IHttpActionResult DeleteTimetable(Guid id)
         {
-            Timetable timetable = unitOfWork.TimeTables.Find(x => x.Id == id).FirstOrDefault();
+            Timetable timetable = unitOfWork.TimeTables.Get(id);
             if (timetable == null)
             {
                 return NotFound();

@@ -258,6 +258,11 @@
     <Compile Include="Controllers\LinesController.cs" />
     <Compile Include="Controllers\PointPathLinesController.cs" />
     <Compile Include="Controllers\PriceHistoriesController.cs" />
+    <Compile Include="Controllers\PricelistsController.cs" />
+    <Compile Include="Controllers\ProductTypesController.cs" />
+    <Compile Include="Controllers\SoldTicketsController.cs" />
+    <Compile Include="Controllers\TimetablesController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

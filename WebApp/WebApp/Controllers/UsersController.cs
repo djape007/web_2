@@ -32,7 +32,7 @@ namespace WebApp.Controllers
         [ResponseType(typeof(User))]
         public IHttpActionResult GetUser(Guid id)
         {
-            User user = unitOfWork.Users.Find(x => x.Id == id).FirstOrDefault();
+            User user = unitOfWork.Users.Get(id);
             if (user == null)
             {
                 return NotFound();
@@ -110,7 +110,7 @@ namespace WebApp.Controllers
         [ResponseType(typeof(User))]
         public IHttpActionResult DeleteUser(Guid id)
         {
-            User user = unitOfWork.Users.Find(x => x.Id == id).FirstOrDefault();
+            User user = unitOfWork.Users.Get(id);
             if (user == null)
             {
                 return NotFound();

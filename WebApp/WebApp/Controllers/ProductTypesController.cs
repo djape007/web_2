@@ -32,7 +32,7 @@ namespace WebApp.Controllers
         [ResponseType(typeof(ProductType))]
         public IHttpActionResult GetProductType(Guid id)
         {
-            ProductType productType = unitOfWork.ProductTypes.Find(x => x.Id == id).FirstOrDefault();
+            ProductType productType = unitOfWork.ProductTypes.Get(id);
             if (productType == null)
             {
                 return NotFound();
@@ -110,7 +110,7 @@ namespace WebApp.Controllers
         [ResponseType(typeof(ProductType))]
         public IHttpActionResult DeleteProductType(Guid id)
         {
-            ProductType productType = unitOfWork.ProductTypes.Find(x => x.Id == id).FirstOrDefault();
+            ProductType productType = unitOfWork.ProductTypes.Get(id);
             if (productType == null)
             {
                 return NotFound();

@@ -32,7 +32,7 @@ namespace WebApp.Controllers
         [ResponseType(typeof(Pricelist))]
         public IHttpActionResult GetPricelist(Guid id)
         {
-            Pricelist pricelist = unitOfWork.Pricelists.Find(x => x.Id == id).FirstOrDefault();
+            Pricelist pricelist = unitOfWork.Pricelists.Get(id);
             if (pricelist == null)
             {
                 return NotFound();
@@ -110,7 +110,7 @@ namespace WebApp.Controllers
         [ResponseType(typeof(Pricelist))]
         public IHttpActionResult DeletePricelist(Guid id)
         {
-            Pricelist pricelist = unitOfWork.Pricelists.Find(x => x.Id == id).FirstOrDefault();
+            Pricelist pricelist = unitOfWork.Pricelists.Get(id);
             if (pricelist == null)
             {
                 return NotFound();
