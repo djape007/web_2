@@ -17,6 +17,8 @@ namespace WebApp.Persistence
         public DbSet<Bus> Buses { get; set; }
         public DbSet<Line> Lines { get; set; }
         public DbSet<Timetable> Timetables { get; set; }
+        public DbSet<BusStop> BusStops { get; set; }
+        public DbSet<BusStopsOnLine> BusStopsOnLines { get; set; }
 
 
         public ApplicationDbContext()

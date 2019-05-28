@@ -3,7 +3,7 @@ namespace WebApp.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Test2 : DbMigration
+    public partial class Test3 : DbMigration
     {
         public override void Up()
         {
@@ -30,6 +30,37 @@ namespace WebApp.Migrations
                         DirectionB = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.BusStops",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        X = c.Double(nullable: false),
+                        Y = c.Double(nullable: false),
+                        Name = c.String(),
+                        Address = c.String(),
+                        BusStop_Id = c.Guid(),
+                        Line_Id = c.Guid(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.BusStops", t => t.BusStop_Id)
+                .ForeignKey("dbo.Lines", t => t.Line_Id)
+                .Index(t => t.BusStop_Id)
+                .Index(t => t.Line_Id);
+            
+            CreateTable(
+                "dbo.BusStopsOnLines",
+                c => new
+                    {
+                        BusStopId = c.Guid(nullable: false),
+                        LineId = c.Guid(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.BusStopId, t.LineId })
+                .ForeignKey("dbo.BusStops", t => t.BusStopId, cascadeDelete: true)
+                .ForeignKey("dbo.Lines", t => t.LineId, cascadeDelete: true)
+                .Index(t => t.BusStopId)
+                .Index(t => t.LineId);
             
             CreateTable(
                 "dbo.PriceHistories",
@@ -97,15 +128,25 @@ namespace WebApp.Migrations
             DropForeignKey("dbo.Timetables", "Line_Id", "dbo.Lines");
             DropForeignKey("dbo.PriceHistories", "ProductTypeId", "dbo.ProductTypes");
             DropForeignKey("dbo.PriceHistories", "PricelistId", "dbo.Pricelists");
+            DropForeignKey("dbo.BusStopsOnLines", "LineId", "dbo.Lines");
+            DropForeignKey("dbo.BusStopsOnLines", "BusStopId", "dbo.BusStops");
+            DropForeignKey("dbo.BusStops", "Line_Id", "dbo.Lines");
+            DropForeignKey("dbo.BusStops", "BusStop_Id", "dbo.BusStops");
             DropForeignKey("dbo.Buses", "Line_Id", "dbo.Lines");
             DropIndex("dbo.Timetables", new[] { "Line_Id" });
             DropIndex("dbo.PriceHistories", new[] { "ProductTypeId" });
             DropIndex("dbo.PriceHistories", new[] { "PricelistId" });
+            DropIndex("dbo.BusStopsOnLines", new[] { "LineId" });
+            DropIndex("dbo.BusStopsOnLines", new[] { "BusStopId" });
+            DropIndex("dbo.BusStops", new[] { "Line_Id" });
+            DropIndex("dbo.BusStops", new[] { "BusStop_Id" });
             DropIndex("dbo.Buses", new[] { "Line_Id" });
             DropTable("dbo.Timetables");
             DropTable("dbo.ProductTypes");
             DropTable("dbo.Pricelists");
             DropTable("dbo.PriceHistories");
+            DropTable("dbo.BusStopsOnLines");
+            DropTable("dbo.BusStops");
             DropTable("dbo.Lines");
             DropTable("dbo.Buses");
         }
