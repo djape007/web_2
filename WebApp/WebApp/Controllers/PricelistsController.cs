@@ -45,7 +45,7 @@ namespace WebApp.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult PutPricelist(Guid id, Pricelist pricelist)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || pricelist == null)
             {
                 return BadRequest(ModelState);
             }
@@ -80,7 +80,7 @@ namespace WebApp.Controllers
         [ResponseType(typeof(Pricelist))]
         public IHttpActionResult PostPricelist(Pricelist pricelist)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || pricelist == null)
             {
                 return BadRequest(ModelState);
             }

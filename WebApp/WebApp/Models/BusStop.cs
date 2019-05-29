@@ -10,7 +10,9 @@ namespace WebApp.Models
     {
         [Key]
         public Guid Id { get; set; }
+        [Required]
         public double X { get; set; }
+        [Required]
         public double Y { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }

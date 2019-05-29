@@ -11,8 +11,10 @@ namespace WebApp.Models
     {
         [Key]
         public Guid Id { get; set; }
+        [Required]
         public Guid BusStopId { get; set; }
         public BusStop BusStop { get; set; }
+        [Required]
         public Guid LineId { get; set; }
         public Line Line { get; set; }
     }

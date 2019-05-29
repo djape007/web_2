@@ -45,7 +45,7 @@ namespace WebApp.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult PutSoldTicket(Guid id, SoldTicket soldTicket)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || soldTicket == null)
             {
                 return BadRequest(ModelState);
             }
@@ -80,7 +80,7 @@ namespace WebApp.Controllers
         [ResponseType(typeof(SoldTicket))]
         public IHttpActionResult PostSoldTicket(SoldTicket soldTicket)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || soldTicket == null)
             {
                 return BadRequest(ModelState);
             }

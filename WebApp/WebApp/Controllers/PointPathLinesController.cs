@@ -46,7 +46,7 @@ namespace WebApp.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult PutPointPathLine(Guid id, PointPathLine pointPathLine)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || pointPathLine == null)
             {
                 return BadRequest(ModelState);
             }
@@ -80,7 +80,7 @@ namespace WebApp.Controllers
         [ResponseType(typeof(PointPathLine))]
         public IHttpActionResult PostPointPathLine(PointPathLine pointPathLine)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || pointPathLine == null)
             {
                 return BadRequest(ModelState);
             }

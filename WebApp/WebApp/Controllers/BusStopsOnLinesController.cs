@@ -45,7 +45,7 @@ namespace WebApp.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult PutBusStopsOnLine(Guid id, BusStopsOnLine busStopsOnLine)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || busStopsOnLine == null)
             {
                 return BadRequest(ModelState);
             }
@@ -79,7 +79,7 @@ namespace WebApp.Controllers
         [ResponseType(typeof(BusStopsOnLine))]
         public IHttpActionResult PostBusStopsOnLine(BusStopsOnLine busStopsOnLine)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || busStopsOnLine == null)
             {
                 return BadRequest(ModelState);
             }

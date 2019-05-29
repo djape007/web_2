@@ -45,7 +45,7 @@ namespace WebApp.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult PutTimetable(Guid id, Timetable timetable)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || timetable == null)
             {
                 return BadRequest(ModelState);
             }
@@ -80,7 +80,7 @@ namespace WebApp.Controllers
         [ResponseType(typeof(Timetable))]
         public IHttpActionResult PostTimetable(Timetable timetable)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || timetable == null)
             {
                 return BadRequest(ModelState);
             }

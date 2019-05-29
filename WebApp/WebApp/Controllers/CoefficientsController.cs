@@ -45,7 +45,7 @@ namespace WebApp.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult PutCoefficient(Guid id, Coefficient coefficient)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || coefficient == null)
             {
                 return BadRequest(ModelState);
             }
@@ -79,7 +79,7 @@ namespace WebApp.Controllers
         [ResponseType(typeof(Coefficient))]
         public IHttpActionResult PostCoefficient(Coefficient coefficient)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || coefficient == null)
             {
                 return BadRequest(ModelState);
             }

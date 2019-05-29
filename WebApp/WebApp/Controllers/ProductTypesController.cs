@@ -45,7 +45,7 @@ namespace WebApp.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult PutProductType(Guid id, ProductType productType)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || productType == null)
             {
                 return BadRequest(ModelState);
             }
@@ -80,7 +80,7 @@ namespace WebApp.Controllers
         [ResponseType(typeof(ProductType))]
         public IHttpActionResult PostProductType(ProductType productType)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || productType == null)
             {
                 return BadRequest(ModelState);
             }

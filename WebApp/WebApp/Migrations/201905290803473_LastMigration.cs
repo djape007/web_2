@@ -3,7 +3,7 @@ namespace WebApp.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class AllModelsCreated : DbMigration
+    public partial class LastMigration : DbMigration
     {
         public override void Up()
         {
@@ -117,7 +117,7 @@ namespace WebApp.Migrations
                 c => new
                     {
                         Id = c.Guid(nullable: false),
-                        Name = c.String(),
+                        Name = c.String(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -126,7 +126,7 @@ namespace WebApp.Migrations
                 c => new
                     {
                         Id = c.Guid(nullable: false),
-                        Type = c.String(),
+                        Type = c.String(nullable: false),
                         UserId = c.Guid(nullable: false),
                         Expires = c.DateTime(nullable: false),
                         Usages = c.Int(nullable: false),
@@ -169,10 +169,22 @@ namespace WebApp.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Lines", t => t.Line_Id)
                 .Index(t => t.Line_Id);
+            
+            DropTable("dbo.Products");
         }
         
         public override void Down()
         {
+            CreateTable(
+                "dbo.Products",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                        Price = c.Decimal(nullable: false, precision: 18, scale: 2),
+                    })
+                .PrimaryKey(t => t.Id);
+            
             DropForeignKey("dbo.Timetables", "Line_Id", "dbo.Lines");
             DropForeignKey("dbo.SoldTickets", "UserId", "dbo.Users");
             DropForeignKey("dbo.PriceHistories", "ProductTypeId", "dbo.ProductTypes");

@@ -46,7 +46,7 @@ namespace WebApp.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult PutPriceHistory(Guid id, PriceHistory priceHistory)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || priceHistory == null)
             {
                 return BadRequest(ModelState);
             }
@@ -80,7 +80,7 @@ namespace WebApp.Controllers
         [ResponseType(typeof(PriceHistory))]
         public IHttpActionResult PostPriceHistory(PriceHistory priceHistory)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || priceHistory == null)
             {
                 return BadRequest(ModelState);
             }

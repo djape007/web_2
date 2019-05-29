@@ -45,7 +45,7 @@ namespace WebApp.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult PutLine(Guid id, Line line)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || line == null)
             {
                 return BadRequest(ModelState);
             }
@@ -79,7 +79,7 @@ namespace WebApp.Controllers
         [ResponseType(typeof(Line))]
         public IHttpActionResult PostLine(Line line)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || line == null)
             {
                 return BadRequest(ModelState);
             }

@@ -43,7 +43,7 @@ namespace WebApp.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult PutBus(string id, Bus bus)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || bus == null)
             {
                 return BadRequest(ModelState);
             }
