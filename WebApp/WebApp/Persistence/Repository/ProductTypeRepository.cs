@@ -13,5 +13,15 @@ namespace WebApp.Persistence.Repository
         public ProductTypeRepository(DbContext context) : base(context)
         {
         }
+
+        new public IEnumerable<ProductType> GetAll()
+        {
+            return context.Set<ProductType>().Include("PriceHistories").ToList();
+        }
+
+        new public ProductType Get(Guid id)
+        {
+            return context.Set<ProductType>().Include("PriceHistories").FirstOrDefault(x => x.Id == id);
+        }
     }
 }

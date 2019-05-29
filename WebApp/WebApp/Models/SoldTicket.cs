@@ -20,6 +20,5 @@ namespace WebApp.Models
         public Double Price { get; set; }
         [Required]
         public DateTime DateOfPurchase { get; set; }
-
     }
 }

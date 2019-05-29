@@ -13,5 +13,15 @@ namespace WebApp.Persistence.Repository
         public TimeTableRepository(DbContext context) : base(context)
         {
         }
+
+        new public IEnumerable<Timetable> GetAll()
+        {
+            return context.Set<Timetable>().Include("Line").ToList();
+        }
+
+        new public Timetable Get(Guid id)
+        {
+            return context.Set<Timetable>().Include("Line").FirstOrDefault(x => x.Id == id);
+        }
     }
 }

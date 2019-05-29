@@ -13,6 +13,7 @@ namespace WebApp.Models
         public string TimesDirectionA { get; set; }
         public string TimesDirectionB { get; set; }
         public DateTime ValidFrom { get; set; }
+        public Guid LineId { get; set; }
         public Line Line { get; set; }
 
     }

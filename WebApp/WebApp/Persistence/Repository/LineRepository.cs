@@ -13,5 +13,15 @@ namespace WebApp.Persistence.Repository
         public LineRepository(DbContext context) : base(context)
         {
         }
+
+        new public IEnumerable<Line> GetAll()
+        {
+            return context.Set<Line>().Include("Buses").Include("BusStopsOnLines").Include("PointLinePaths").ToList();
+        }
+
+        new public Line Get(Guid id)
+        {
+            return context.Set<Line>().Include("Buses").Include("BusStopsOnLines").Include("PointLinePaths").FirstOrDefault(x => x.Id == id);
+        }
     }
 }

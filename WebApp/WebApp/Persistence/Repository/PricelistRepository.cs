@@ -13,5 +13,15 @@ namespace WebApp.Persistence.Repository
         public PricelistRepository(DbContext context) : base(context)
         {
         }
+
+        new public IEnumerable<Pricelist> GetAll()
+        {
+            return context.Set<Pricelist>().Include("PriceHistories").ToList();
+        }
+
+        new public Pricelist Get(Guid id)
+        {
+            return context.Set<Pricelist>().Include("PriceHistories").FirstOrDefault(x => x.Id == id);
+        }
     }
 }

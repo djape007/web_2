@@ -14,7 +14,7 @@ namespace WebApp.Models
         public string DirectionA { get; set; }
         public string DirectionB { get; set; }
         public ICollection<Bus> Buses { get; set; }
-        public ICollection<BusStop> BusStops { get; set; }
+        public ICollection<BusStopsOnLine> BusStopsOnLines { get; set; }
         public ICollection<PointPathLine> PointLinePaths { get; set; }
     }
 }

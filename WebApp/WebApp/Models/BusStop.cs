@@ -16,7 +16,7 @@ namespace WebApp.Models
         public double Y { get; set; }
         public string Name { get; set; }
         public string Address { get; set; }
-        public ICollection<BusStop> BusStops { get; set; }
+        public ICollection<BusStopsOnLine> BusStopsOnLines { get; set; }
 
 
     }

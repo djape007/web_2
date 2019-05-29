@@ -13,6 +13,5 @@ namespace WebApp.Models
         public DateTime From { get; set; }
         public DateTime To { get; set; }
         public ICollection<PriceHistory> PriceHistories { get; set; }
-
     }
 }

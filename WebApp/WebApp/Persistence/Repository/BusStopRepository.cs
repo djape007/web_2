@@ -13,5 +13,15 @@ namespace WebApp.Persistence.Repository
         public BusStopRepository(DbContext context) : base(context)
         {
         }
+
+        new public IEnumerable<BusStop> GetAll()
+        {
+            return context.Set<BusStop>().Include("BusStopsOnLines").ToList();
+        }
+
+        new public BusStop Get(Guid id)
+        {
+            return context.Set<BusStop>().Include("BusStopsOnLines").FirstOrDefault(x => x.Id == id);
+        }
     }
 }

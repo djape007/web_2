@@ -15,6 +15,7 @@ namespace WebApp.Models
         public double X { get; set; }
         [Required]
         public double Y { get; set; }
+        public Guid LineId { get; set; }
         public Line Line { get; set; }
     }
 }

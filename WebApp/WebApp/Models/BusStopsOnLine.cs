@@ -17,5 +17,6 @@ namespace WebApp.Models
         [Required]
         public Guid LineId { get; set; }
         public Line Line { get; set; }
+
     }
 }

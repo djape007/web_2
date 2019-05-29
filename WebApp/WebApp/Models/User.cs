@@ -22,6 +22,5 @@ namespace WebApp.Models
         public bool HasDocument { get; set; }
         public string Files { get; set; }
         public ICollection<SoldTicket> SoldTickets { get; set; }
-
     }
 }
