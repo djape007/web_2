@@ -9,15 +9,15 @@ import { Bus } from 'src/models/bus';
 })
 export class AppComponent {
 
-  constructor(private _service: MainService) { }
+  //constructor(private _service: MainService) { }
 
-  public funkcija(){
-    this._service.getAllBuses()
-      .subscribe(data => {
-        var buses = new Array<Bus>();
-        buses = data;
-        console.log(buses);
-      })
-  }
+  // public funkcija(){
+  //   this._service.getAllBuses()
+  //     .subscribe(data => {
+  //       var buses = new Array<Bus>();
+  //       buses = data;
+  //       console.log(buses);
+  //     })
+  // }
 
 }
