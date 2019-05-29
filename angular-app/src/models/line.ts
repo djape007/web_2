@@ -6,8 +6,7 @@ import { PointPathLine } from './point-path-line';
 export class Line {
     public Id: Guid;
     public LineCode: string;
-    public DirectionA: string;
-    public DirectionB: string;
+    public Direction: string;
     public Buses: Array<Bus> = new Array();
     public BusStopsOnLines: Array<BusStopsOnLine> = new Array();
     public BointLinePaths: Array<PointPathLine> = new Array();

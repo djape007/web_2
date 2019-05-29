@@ -10,8 +10,7 @@ namespace WebApp.Models
     {
         [Key]
         public Guid Id { get; set; }
-        public string TimesDirectionA { get; set; }
-        public string TimesDirectionB { get; set; }
+        public string Times { get; set; }
         public DateTime ValidFrom { get; set; }
         public Guid LineId { get; set; }
         public Line Line { get; set; }

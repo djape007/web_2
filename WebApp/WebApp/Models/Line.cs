@@ -11,8 +11,7 @@ namespace WebApp.Models
         [Key]
         public Guid Id { get; set; }
         public string LineCode { get; set; }
-        public string DirectionA { get; set; }
-        public string DirectionB { get; set; }
+        public string Direction { get; set; }
         public ICollection<Bus> Buses { get; set; }
         public ICollection<BusStopsOnLine> BusStopsOnLines { get; set; }
         public ICollection<PointPathLine> PointLinePaths { get; set; }
