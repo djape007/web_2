@@ -4,11 +4,11 @@ import { BusStopsOnLine } from './bus-stops-on-line';
 import { PointPathLine } from './point-path-line';
 
 export class Line {
-    public id: Guid;
-    public lineCode: string;
-    public directionA: string;
-    public directionB: string;
-    public buses: Array<Bus> = new Array();
-    public busStopsOnLines: Array<BusStopsOnLine> = new Array();
-    public pointLinePaths: Array<PointPathLine> = new Array();
+    public Id: Guid;
+    public LineCode: string;
+    public DirectionA: string;
+    public DirectionB: string;
+    public Buses: Array<Bus> = new Array();
+    public BusStopsOnLines: Array<BusStopsOnLine> = new Array();
+    public BointLinePaths: Array<PointPathLine> = new Array();
 }

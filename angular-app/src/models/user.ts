@@ -2,17 +2,17 @@ import { Guid } from "guid-typescript";
 import { SoldTicket } from './sold-ticket';
 
 export class User {
-    public id: Guid;
-    public role: string;
-    public status: string;
-    public type: string;
-    public password: string;
-    public email: string;
-    public name: string;
-    public surname: string;
-    public dateOfBirth: Date;
-    public hasDocument: boolean;
-    public address: string;
-    public files: string;
-    public soldTickets: Array<SoldTicket> = new Array();
+    public Id: Guid;
+    public Role: string;
+    public Status: string;
+    public Type: string;
+    public Password: string;
+    public Email: string;
+    public Name: string;
+    public Surname: string;
+    public DateOfBirth: Date;
+    public HasDocument: boolean;
+    public Address: string;
+    public Files: string;
+    public SoldTickets: Array<SoldTicket> = new Array();
 }

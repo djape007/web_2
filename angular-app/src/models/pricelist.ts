@@ -2,8 +2,8 @@ import { Guid } from "guid-typescript";
 import { PriceHistory } from './price-history';
 
 export class Pricelist {
-    public id: Guid;
-    public from: Date;
-    public to: Date;
-    public priceHistories: Array<PriceHistory> = new Array();
+    public Id: Guid;
+    public From: Date;
+    public To: Date;
+    public PriceHistories: Array<PriceHistory> = new Array();
 }
