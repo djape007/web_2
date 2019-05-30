@@ -351,3 +351,4 @@ MigrationBackup/
 # djplc custom
 WebApp/.vs/WebApp/v15/.suo
 WebApp/.vs/WebApp/v15/Server/sqlite3/storage.ide
+WebApp/ApiKey.txt
