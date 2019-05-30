@@ -19,7 +19,8 @@ export class AppComponent implements OnInit {
     const mapProperties = {
          center: new google.maps.LatLng(45.248636, 19.833549),
          zoom: 14,
-         mapTypeId: google.maps.MapTypeId.ROADMAP
+         mapTypeId: google.maps.MapTypeId.ROADMAP,
+         disableDefaultUI: true
     };
     this.map = new google.maps.Map(this.mapElement.nativeElement, mapProperties);
  }
