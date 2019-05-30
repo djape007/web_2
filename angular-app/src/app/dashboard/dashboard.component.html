@@ -10,7 +10,9 @@
         <div class="form-group">
             <input type="password" placeholder="Password" #password class="form-control" id="password" required>
         </div>         
-        <button type="submit" (click)="login(username.value, password.value)" class="btn btn-success">LogIn</button>
+        
     </form>
+
+    <button (click)="login(username.value, password.value)" class="btn btn-success">LogIn</button>
 </div>
 

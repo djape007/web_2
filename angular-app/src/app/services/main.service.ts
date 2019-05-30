@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UserLogin } from 'src/models/user-login';
 
@@ -20,7 +20,7 @@ export class MainService {
   }
 
   public login(userLogin: UserLogin): Observable<any>{
-    return this.http.post(`${this.api_route}/oauth/token`,userLogin);
+    return this.http.post(`${this.api_route}/oauth/token`,`username=${userLogin.username}&password=${userLogin.password}&grant_type=password`, { "headers" : {'Content-type' : 'application/x-www-form-urlencoded'}});
   }
 
 }
