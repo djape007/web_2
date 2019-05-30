@@ -54,8 +54,8 @@ namespace WebApp.Controllers
         }
         
         // PUT: api/Users/5
-        /*[ResponseType(typeof(void))]
-        public IHttpActionResult PutUser(string id, ApplicationUser user)
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> PutUser(string id, ApplicationUser user)
         {
             if (!ModelState.IsValid || user == null)
             {
@@ -64,88 +64,53 @@ namespace WebApp.Controllers
 
             if (id != user.Id)
             {
-                return BadRequest();
+                return BadRequest("Id se ne slaze|" + id + "||" + user.Id);
             }
 
-            ApplicationUser oldUser = UserManager.Users.Where(x => x.Id == id).FirstOrDefault();
+            ApplicationUser userInDB = UserManager.Users.Where(x => x.Id == id).FirstOrDefault();
 
-            if (oldUser == null)
+            if (userInDB == null)
             {
-                return BadRequest();
+                return BadRequest("Korisnik ne postoji");
             }
-
-            oldUser.
-
-            try
-            {
-                unitOfWork.Complete();
+            
+            userInDB.Address = user.Address;
+            userInDB.DateOfBirth = user.DateOfBirth;
+            userInDB.EmailConfirmed = user.EmailConfirmed;
+            userInDB.Type = user.Type;
+            userInDB.Name = user.Name;
+            userInDB.Surname = user.Surname;
+            
+            IdentityResult result = await UserManager.UpdateAsync(userInDB);
+            
+            if (!result.Succeeded) {
+                return BadRequest("nisam azurirao");
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            
             return StatusCode(HttpStatusCode.NoContent);
-        }
-        /*
-        // POST: api/Users
-        [ResponseType(typeof(ApplicationUser))]
-        public IHttpActionResult PostUser(ApplicationUser user)
-        {
-            if (!ModelState.IsValid || user == null)
-            {
-                return BadRequest(ModelState);
-            }
-
-            unitOfWork.Users.Add(user);
-
-            try
-            {
-                unitOfWork.Complete();
-            }
-            catch (DbUpdateException)
-            {
-                if (UserExists(user.Id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
         }
 
         // DELETE: api/Users/5
         [ResponseType(typeof(ApplicationUser))]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult DeleteUser(string id)
         {
-            ApplicationUser user = unitOfWork.Users.Get(id);
+            ApplicationUser user = UserManager.Users.FirstOrDefault(x => x.Id == id);
             if (user == null)
             {
                 return NotFound();
             }
 
-            unitOfWork.Users.Remove(user);
-            unitOfWork.Complete();
+            UserManager.Delete(user);
 
             return Ok(user);
         }
-        
 
-        private bool UserExists(string id)
+        [AllowAnonymous]
+        public bool UserExists(string email)
         {
-            return unitOfWork.Users.Find(x => x.Id == id).Count() > 0;
-        }*/
+            return UserManager.Users.FirstOrDefault(x => x.Email == email) != null;
+        }
 
         public UsersController()
         {
@@ -443,20 +408,32 @@ namespace WebApp.Controllers
         // POST api/Account/Register
         [AllowAnonymous]
         [Route("Register")]
-        public async Task<IHttpActionResult> Register(RegisterBindingModel model)
+        public async Task<IHttpActionResult> Register(ApplicationUser newUser)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || newUser == null || newUser.Password.Trim().Length == 0 || newUser.Email.Trim().Length == 0)
             {
-                return BadRequest(ModelState);
+                return BadRequest("https://youtu.be/v6tuOipj5mk?t=68");
             }
 
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+            var user = new ApplicationUser() {
+                UserName = newUser.Email,
+                Email = newUser.Email,
+                DateOfBirth = newUser.DateOfBirth,
+                Address = newUser.Address,
+                Name = newUser.Name,
+                Surname = newUser.Surname,
+                Status = "not verified",
+                Type = newUser.Type,
+                Files = ""
+            };
 
-            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+            IdentityResult result = await UserManager.CreateAsync(user, newUser.Password);
 
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
+            } else {
+                UserManager.AddToRole(user.Id, "AppUser");
             }
 
             return Ok();
