@@ -39,8 +39,6 @@ namespace WebApp.Persistence.UnitOfWork
         public IPointPathLineRepository PointPathLines { get; set; }
         [Dependency]
         public ISoldTicketRepository SoldTickets { get; set; }
-        [Dependency]
-        public IUserRepository Users { get; set; }
 
         public int Complete()
         {

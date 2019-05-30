@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebApp.Persistence.Repository
 {
-    public interface IUserRepository : IRepository<Models.User, Guid>
+    public interface IUserRepository : IRepository<Models.ApplicationUser, string>
     {
     }
 }

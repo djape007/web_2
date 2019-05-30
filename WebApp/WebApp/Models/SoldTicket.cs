@@ -14,7 +14,7 @@ namespace WebApp.Models
         public string Type { set; get; }
         [Required]
         public Guid UserId { get; set; }
-        public User User { get; set; }
+        public ApplicationUser User { get; set; }
         public DateTime Expires { get; set; }
         public int Usages { get; set; } = 0;
         public Double Price { get; set; }

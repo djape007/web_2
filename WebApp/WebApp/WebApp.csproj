@@ -249,7 +249,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\BusesController.cs" />
     <Compile Include="Controllers\BusStopsController.cs" />
     <Compile Include="Controllers\BusStopsOnLinesController.cs" />
@@ -262,7 +262,6 @@
     <Compile Include="Controllers\ProductTypesController.cs" />
     <Compile Include="Controllers\SoldTicketsController.cs" />
     <Compile Include="Controllers\TimetablesController.cs" />
-    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -271,9 +270,9 @@
     <Compile Include="Migrations\201905222056072_InitialMigration.Designer.cs">
       <DependentUpon>201905222056072_InitialMigration.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201905300708261_ModelMigration.cs" />
-    <Compile Include="Migrations\201905300708261_ModelMigration.Designer.cs">
-      <DependentUpon>201905300708261_ModelMigration.cs</DependentUpon>
+    <Compile Include="Migrations\201905300944156_Poslednja.cs" />
+    <Compile Include="Migrations\201905300944156_Poslednja.Designer.cs">
+      <DependentUpon>201905300944156_Poslednja.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
@@ -290,7 +289,6 @@
     <Compile Include="Models\ProductType.cs" />
     <Compile Include="Models\SoldTicket.cs" />
     <Compile Include="Models\TimeTable.cs" />
-    <Compile Include="Models\User.cs" />
     <Compile Include="Persistence\ApplicationDbContext.cs" />
     <Compile Include="Persistence\Repository\BusRepository.cs" />
     <Compile Include="Persistence\Repository\BusStopRepository.cs" />
@@ -421,8 +419,8 @@
     <EmbeddedResource Include="Migrations\201905222056072_InitialMigration.resx">
       <DependentUpon>201905222056072_InitialMigration.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201905300708261_ModelMigration.resx">
-      <DependentUpon>201905300708261_ModelMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201905300944156_Poslednja.resx">
+      <DependentUpon>201905300944156_Poslednja.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -20,9 +20,9 @@ namespace WebApp.Persistence
         public DbSet<BusStop> BusStops { get; set; }
         public DbSet<BusStopsOnLine> BusStopsOnLines { get; set; }
         public DbSet<Coefficient> Coefficients { get; set; }
-        public DbSet<User> Userss { get; set; }
         public DbSet<SoldTicket> SoldTickets { get; set; }
         public DbSet<PointPathLine> PointPathLines { get; set; }
+        //public DbSet<ApplicationUser> Userss { get; set; }
 
 
         public ApplicationDbContext()

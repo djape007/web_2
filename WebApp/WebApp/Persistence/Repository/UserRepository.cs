@@ -3,24 +3,23 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
-using WebApp.Models;
 
 namespace WebApp.Persistence.Repository
 {
-    public class UserRepository : Repository<Models.User, Guid>, IUserRepository
+    public class UserRepository : Repository<Models.ApplicationUser, string>, IUserRepository
     {
         public UserRepository(DbContext context) : base(context)
         {
         }
 
-        new public IEnumerable<User> GetAll()
+        new public IEnumerable<Models.ApplicationUser> GetAll()
         {
-            return context.Set<User>().Include("SoldTickets").ToList();
+            return context.Set<Models.ApplicationUser>().ToList();
         }
 
-        new public User Get(Guid id)
+        new public Models.ApplicationUser Get(string id)
         {
-            return context.Set<User>().Include("SoldTickets").FirstOrDefault(x => x.Id == id);
+            return context.Set<Models.ApplicationUser>().FirstOrDefault(x => x.Id == id);
         }
     }
 }
