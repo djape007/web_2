@@ -64,7 +64,7 @@ namespace WebApp.Controllers
 
             if (id != user.Id)
             {
-                return BadRequest("Id se ne slaze|" + id + "||" + user.Id);
+                return BadRequest();
             }
 
             ApplicationUser userInDB = UserManager.Users.Where(x => x.Id == id).FirstOrDefault();
@@ -84,7 +84,7 @@ namespace WebApp.Controllers
             IdentityResult result = await UserManager.UpdateAsync(userInDB);
             
             if (!result.Succeeded) {
-                return BadRequest("nisam azurirao");
+                return BadRequest();
             }
             
             return StatusCode(HttpStatusCode.NoContent);
@@ -407,6 +407,7 @@ namespace WebApp.Controllers
 
         // POST api/Account/Register
         [AllowAnonymous]
+        [ResponseType(typeof(ApplicationUser))]
         [Route("Register")]
         public async Task<IHttpActionResult> Register(ApplicationUser newUser)
         {
@@ -436,7 +437,7 @@ namespace WebApp.Controllers
                 UserManager.AddToRole(user.Id, "AppUser");
             }
 
-            return Ok();
+            return Ok(user);
         }
 
         // POST api/Account/RegisterExternal
