@@ -57,7 +57,7 @@ for tip in rvGradskiPrigradski:
 
                 redVoznjeSveLinije[-1]['redVoznje'][dan + "_" + smerKod] = polasci
 
-        print("Gotova linija " + redVoznjeSveLinije[-1]['naziv'])
+        print("Gotova linija " + redVoznjeSveLinije[-1]['broj'])
 
 with open('jgspns.json', 'wb') as fajl:
     jsonDump = json.dumps(redVoznjeSveLinije, ensure_ascii=False, sort_keys=True)
