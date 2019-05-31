@@ -25,17 +25,17 @@ export class AppComponent implements OnInit {
     this.map = new google.maps.Map(this.mapElement.nativeElement, mapProperties);
  }
 
-  public funkcija(){
-    this._service.getAllBuses()
-      .subscribe(
-        data => {
-          var buses = new Array<Bus>();
-          buses = data;
-          console.log(buses);
-        },
-        err => {
-          console.log(err);
-        }
-      )
-  }
+  // public funkcija(){
+  //   this._service.getAllBuses()
+  //     .subscribe(
+  //       data => {
+  //         var buses = new Array<Bus>();
+  //         buses = data;
+  //         console.log(buses);
+  //       },
+  //       err => {
+  //         console.log(err);
+  //       }
+  //     )
+  // }
 }

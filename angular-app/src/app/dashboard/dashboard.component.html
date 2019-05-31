@@ -28,13 +28,15 @@
     <form [formGroup]="myForm" novalidate (ngSubmit)="save()">
         <div class="form-group">
             <select class="form-control" id="line" formControlName="line">
-                <option *ngFor="let line of lines" [value]="line.LineCode">{{line.LineCode}}</option>
+                <option *ngFor="let ttable of ttModel" [value]="ttable.Line.LineCode">{{ttable.Line.DisplayName}}</option>
             </select>
             <input type="text" id="day" formControlName="day" hidden>
             <input type="text" id="type" formControlName="type" hidden>
         </div>
         <button type="submit" class="btn-primary">Prikazi</button>
     </form>
-
+    <div>
+        <p *ngFor="let time of ttJson">{{time}}</p>
+    </div>
 </div>
 

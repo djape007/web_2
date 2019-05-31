@@ -1,7 +1,7 @@
 import { Guid } from "guid-typescript";
 import { Line } from './line';
 
-export class Bus {
+export class Timetable {
     public Id: Guid;
     public Times: string;
     public ValidFrom: Date;
