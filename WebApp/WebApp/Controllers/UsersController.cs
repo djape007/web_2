@@ -218,6 +218,17 @@ namespace WebApp.Controllers
                 return GetErrorResult(result);
             }
 
+            string userId = User.Identity.GetUserId();
+
+            var user = UserManager.Users.FirstOrDefault(x => x.Id == userId);
+            user.SecurityStamp = Guid.NewGuid().ToString();
+            result =  await UserManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                return GetErrorResult(result);
+            }
+
             return Ok();
         }
 
