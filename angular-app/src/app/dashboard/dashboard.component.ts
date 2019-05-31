@@ -1,138 +1,42 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { MainService } from '../services/main.service';
-import { UserLogin } from 'src/models/user-login';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { Line } from 'src/models/line';
-import { Timetable } from 'src/models/timetable';
-import { forEach } from '@angular/router/src/utils/collection';
+import { Bus } from 'src/models/bus';
+import {} from 'googlemaps';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
+
 export class DashboardComponent implements OnInit {
 
-  picked_day: string;
-  picked_type: string;
-  
-  timetables = new Array<Timetable>();
-  ttModel = new Array<Timetable>();
+  @ViewChild('map') mapElement: any;
+  map: google.maps.Map;
 
-  ttJson: any;
+  constructor(private _service: MainService) { }
 
-  myForm = this._fb.group({
-    type:'',
-    line:'',
-    day:''
-  });
+  ngOnInit(): void {
+    const mapProperties = {
+         center: new google.maps.LatLng(45.248636, 19.833549),
+         zoom: 14,
+         mapTypeId: google.maps.MapTypeId.ROADMAP,
+         disableDefaultUI: true
+    };
+    this.map = new google.maps.Map(this.mapElement.nativeElement, mapProperties);
+ }
 
-  constructor(private _fb: FormBuilder, private _sevice: MainService) { }
-
-  ngOnInit() {
-    this.btnDayClick('radni');
-    this.btnTypeClick('gradski');
-    this._sevice.getAllTimetables()
-      .subscribe(
-        data => {
-          this.timetables = data;
-          this.timetables.forEach(x=> x.Line.DisplayName = `${x.Line.LineCode} ${x.Line.Direction}`)
-          this.ttModel = this.getGradski();
-        },
-        err => {
-          console.log(err);
-        }
-      )
-  }
-  
-  save() {
-    this.myForm.setValue({  
-      day: this.picked_day,
-      type: this.picked_type,  
-      line: this.myForm.get('line').value
-    });
-
-    var selectedLineCode = this.myForm.get('line').value;
-    var helpJson = JSON.parse(this.timetables.find(x => x.Line.LineCode == selectedLineCode).Times);
-    if(this.picked_day == "Radni_dan")
-      this.ttJson = helpJson['Radni_dan'];
-    else if(this.picked_day == "Subota")
-      this.ttJson = helpJson['Subota'];
-    else if(this.picked_day == "Nedelja")
-      this.ttJson = helpJson['Nedelja'];
-
-    console.log(this.ttJson);
-    //console.log(this.myForm.value);
-  }
-  
-  getPrigradski(): Array<Timetable>{
-    return this.timetables
-    .filter(
-      x => (Number)(x.Line.LineCode.replace('A','').replace('B','')) > 20
-    ).sort(
-      (x,y) => (Number)(x.Line.LineCode.replace('A','').replace('B','')) - (Number)(y.Line.LineCode.replace('A','').replace('B',''))
-    );
-  }
-
-  getGradski(): Array<Timetable>{
-    return this.timetables
-    .filter(
-      x => (Number)(x.Line.LineCode.replace('A','').replace('B','')) < 20
-    ).sort(
-      (x,y) => (Number)(x.Line.LineCode.replace('A','').replace('B','')) - (Number)(y.Line.LineCode.replace('A','').replace('B',''))
-    );
-  }
-
-  public btnDayClick(day: string){
-    let radni = document.getElementById('radni');
-    radni.className = 'square_btn';
-    let sub = document.getElementById('subota');
-    sub.className = 'square_btn';
-    let ned = document.getElementById('nedelja');
-    ned.className = 'square_btn';
-    
-    if(day == 'radni'){
-      radni.className = 'square_btn_active';
-      this.picked_day = 'Radni_dan';
-    }
-    else if(day == 'subota'){
-      sub.className = 'square_btn_active';
-      this.picked_day = 'Subota';     
-    }
-    else if(day == 'nedelja'){
-      ned.className = 'square_btn_active'; 
-      this.picked_day = 'Nedelja';
-    }
-  }
-
-  public btnTypeClick(type: string){
-    let gradski = document.getElementById('gradski');
-    gradski.className = 'square_btn';
-    let prigradski = document.getElementById('prigradski');
-    prigradski.className = 'square_btn';
-    
-    if(type == 'gradski'){
-      gradski.className = 'square_btn_active';
-      this.picked_type = 'gradski';
-      this.ttModel = this.getGradski();
-    }
-    else if(type == 'prigradski'){
-      prigradski.className = 'square_btn_active';
-      this.picked_type = 'prigradski';
-      this.ttModel = this.getPrigradski();
-    }
-  }
-  // public login(usrname: string, pass: string){
-  //   var user = new UserLogin(usrname, pass);
-  //   this._service.login(user)
-  //   .subscribe(
-  //     data => {
-  //       console.log(data);
-  //     },
-  //     err => {
-  //       console.log(err);
-  //     }
-  //   )
+  // public funkcija(){
+  //   this._service.getAllBuses()
+  //     .subscribe(
+  //       data => {
+  //         var buses = new Array<Bus>();
+  //         buses = data;
+  //         console.log(buses);
+  //       },
+  //       err => {
+  //         console.log(err);
+  //       }
+  //     )
   // }
-
 }

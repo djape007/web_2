@@ -1,0 +1,43 @@
+<div class="w-75 container ">
+  <!-- <form>
+      <select>
+          <option value="gradski">Gradski</option>
+          <option value="prigradski">Prigradski</option>
+      </select>
+      <div class="form-group">
+          <input type="text" placeholder="Username" #username class="form-control" id="name" required>
+      </div>          
+      <div class="form-group">
+          <input type="password" placeholder="Password" #password class="form-control" id="password" required>
+      </div>               
+  </form>
+  <button (click)="login(username.value, password.value)" class="btn btn-success">LogIn</button> -->
+
+  <h2>RED VOZNJE</h2>
+  <div class="d-flex justify-content-between">
+      <button (click)='btnDayClick("radni")' id='radni' class="square_btn">Radni dan</button>
+      <button (click)='btnDayClick("subota")' id='subota' class="square_btn">Subota</button>
+      <button (click)='btnDayClick("nedelja")' id='nedelja' class="square_btn_active">Nedelja</button>
+  </div>
+  <br>
+  <div class="d-flex justify-content-between pl-5 pr-5">
+      <button (click)='btnTypeClick("gradski")' id='gradski' class="square_btn">Gradski</button>
+      <button (click)='btnTypeClick("prigradski")' id='prigradski' class="square_btn">Prigradski</button>
+  </div>
+  <br>
+  <form [formGroup]="myForm" novalidate (ngSubmit)="save()">
+      <div class="form-group">
+          <select class="form-control" id="line" formControlName="line">
+              <option *ngFor="let ttable of ttModel" [value]="ttable.Line.LineCode">{{ttable.Line.DisplayName}}</option>
+          </select>
+          <input type="text" id="day" formControlName="day" hidden>
+          <input type="text" id="type" formControlName="type" hidden>
+      </div>
+      <button type="submit" class="btn-primary">Prikazi</button>
+  </form>
+  <div>
+      <p *ngFor="let time of ttJson">{{time}}</p>
+  </div>
+</div>
+
+
