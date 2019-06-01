@@ -1,0 +1,15 @@
+:host {
+    color: white;
+    position: absolute;
+    top: 10%;
+    width: 30%;
+    left: 35%;
+    border: 2px solid #77a7f5;
+    text-align: center;
+    border-radius: 12px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.67);
+    z-index: 500;
+    box-shadow: 0px 0px 20px 6px rgba(0,0,0,0.61);
+    height: 25%;
+  }

@@ -26,6 +26,6 @@ export class DashboardComponent implements OnInit{
 
  public removeOverlay(){
   let el = document.getElementsByClassName('map-overlay')[0];
-  el.className = "map-no-overlay";
+  el.className += "map-no-overlay";
  }
 }
