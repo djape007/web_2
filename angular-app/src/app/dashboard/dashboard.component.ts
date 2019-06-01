@@ -1,6 +1,4 @@
-import { Component, ViewChild, OnInit, AfterViewInit } from '@angular/core';
-import { MainService } from '../services/main.service';
-import { Bus } from 'src/models/bus';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import {} from 'googlemaps';
 
 @Component({
@@ -9,12 +7,12 @@ import {} from 'googlemaps';
   styleUrls: ['./dashboard.component.css']
 })
 
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit{
 
   @ViewChild('map') mapElement: any;
   map: google.maps.Map;
 
-  constructor(private _service: MainService) { }
+  constructor() { }
 
   ngOnInit(): void {
     const mapProperties = {
@@ -26,17 +24,8 @@ export class DashboardComponent implements OnInit {
     this.map = new google.maps.Map(this.mapElement.nativeElement, mapProperties);
  }
 
-  // public funkcija(){
-  //   this._service.getAllBuses()
-  //     .subscribe(
-  //       data => {
-  //         var buses = new Array<Bus>();
-  //         buses = data;
-  //         console.log(buses);
-  //       },
-  //       err => {
-  //         console.log(err);
-  //       }
-  //     )
-  // }
+ public removeOverlay(){
+  let el = document.getElementsByClassName('map-overlay')[0];
+  el.className = "map-no-overlay";
+ }
 }

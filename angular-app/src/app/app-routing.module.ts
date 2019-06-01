@@ -5,7 +5,12 @@ import { TimetableComponent } from './timetable/timetable.component';
 
 const routes: Routes = [
   {
-    path: 'dashboard',
+    path: '',
+    redirectTo: 'home/timetable',
+    pathMatch: 'full'
+  },
+  {
+    path: 'home',
     component: DashboardComponent,
     children: [
       { 

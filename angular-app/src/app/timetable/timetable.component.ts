@@ -1,10 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, forwardRef } from '@angular/core';
 import { MainService } from '../services/main.service';
-import { UserLogin } from 'src/models/user-login';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { Line } from 'src/models/line';
+import { FormBuilder } from '@angular/forms';
 import { Timetable } from 'src/models/timetable';
-import { forEach } from '@angular/router/src/utils/collection';
+import { DashboardComponent } from '../dashboard/dashboard.component';
 
 @Component({
   selector: 'app-timetable',
@@ -15,19 +13,16 @@ export class TimetableComponent implements OnInit {
 
   picked_day: string;
   picked_type: string;
-  
   timetables = new Array<Timetable>();
-  ttModel = new Array<Timetable>();
-
-  ttJson: Array<string> = Array<string>();
-
+  timetabletModel = new Array<Timetable>();
+  timetableJson = Array<string>();
   myForm = this._fb.group({
     type:'',
     line:'',
     day:''
   });
 
-  constructor(private _fb: FormBuilder, private _sevice: MainService) { }
+  constructor(@Inject(forwardRef(() => DashboardComponent)) private _parent: DashboardComponent, private _fb: FormBuilder, private _sevice: MainService) { }
 
   ngOnInit() {
     this.btnDayClick('radni');
@@ -37,7 +32,7 @@ export class TimetableComponent implements OnInit {
         data => {
           this.timetables = data;
           this.timetables.forEach(x=> x.Line.DisplayName = `${x.Line.LineCode} ${x.Line.Direction}`)
-          this.ttModel = this.getGradski();
+          this.timetabletModel = this.getGradski();
         },
         err => {
           console.log(err);
@@ -53,33 +48,31 @@ export class TimetableComponent implements OnInit {
     });
 
     var selectedLineCode = this.myForm.get('line').value;
-    var helpJson = JSON.parse(this.timetables.find(x => x.Line.LineCode == selectedLineCode).Times);
-    var help = new Array<string>();
+    var timesJson = JSON.parse(this.timetables.find(x => x.Line.LineCode == selectedLineCode).Times);
+    var selectedDayTimesJson = new Array<string>();
     if(this.picked_day == "Radni_dan")
-      help = helpJson['Radni_dan'];
+      selectedDayTimesJson = timesJson['Radni_dan'];
     else if(this.picked_day == "Subota")
-      help = helpJson['Subota'];
+      selectedDayTimesJson = timesJson['Subota'];
     else if(this.picked_day == "Nedelja")
-      help = helpJson['Nedelja'];
+      selectedDayTimesJson = timesJson['Nedelja'];
 
-    this.ttJson = new Array<string>();
-    var startTime = help[0].split(':')[0];
+    this.timetableJson = new Array<string>();
+    var startTime = selectedDayTimesJson[0].split(':')[0];
     var str = '';
-    for (let time of help) {
+    for (let time of selectedDayTimesJson) {
       if(time.split(':')[0] == startTime){
         str = str.concat(`${time}\t`);
       }
       else{
         startTime = time.split(':')[0];
-        this.ttJson.push(str);
+        this.timetableJson.push(str);
         str = '';
         str = str.concat(`${time}\t`);
       }
     }
-    this.ttJson.push(str);
-
-    //console.log(this.ttJson);
-    //console.log(this.myForm.value);
+    this.timetableJson.push(str);
+    this._parent.removeOverlay();
   }
   
   getPrigradski(): Array<Timetable>{
@@ -102,6 +95,7 @@ export class TimetableComponent implements OnInit {
 
   public btnDayClick(day: string){
     let radni = document.getElementById('radni');
+
     radni.className = 'square_btn';
     let sub = document.getElementById('subota');
     sub.className = 'square_btn';
@@ -131,25 +125,12 @@ export class TimetableComponent implements OnInit {
     if(type == 'gradski'){
       gradski.className = 'square_btn_active';
       this.picked_type = 'gradski';
-      this.ttModel = this.getGradski();
+      this.timetabletModel = this.getGradski();
     }
     else if(type == 'prigradski'){
       prigradski.className = 'square_btn_active';
       this.picked_type = 'prigradski';
-      this.ttModel = this.getPrigradski();
+      this.timetabletModel = this.getPrigradski();
     }
   }
-  // public login(usrname: string, pass: string){
-  //   var user = new UserLogin(usrname, pass);
-  //   this._service.login(user)
-  //   .subscribe(
-  //     data => {
-  //       console.log(data);
-  //     },
-  //     err => {
-  //       console.log(err);
-  //     }
-  //   )
-  // }
-
 }

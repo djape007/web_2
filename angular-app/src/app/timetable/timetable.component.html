@@ -1,18 +1,4 @@
 <div class="w-75 container ">
-  <!-- <form>
-      <select>
-          <option value="gradski">Gradski</option>
-          <option value="prigradski">Prigradski</option>
-      </select>
-      <div class="form-group">
-          <input type="text" placeholder="Username" #username class="form-control" id="name" required>
-      </div>          
-      <div class="form-group">
-          <input type="password" placeholder="Password" #password class="form-control" id="password" required>
-      </div>               
-  </form>
-  <button (click)="login(username.value, password.value)" class="btn btn-success">LogIn</button> -->
-
   <h2>RED VOZNJE</h2>
   <div class="d-flex justify-content-between">
       <button (click)='btnDayClick("radni")' id='radni' class="square_btn">Radni dan</button>
@@ -28,7 +14,7 @@
   <form [formGroup]="myForm" novalidate (ngSubmit)="save()">
       <div class="form-group">
           <select class="form-control" id="line" formControlName="line">
-              <option *ngFor="let ttable of ttModel" [value]="ttable.Line.LineCode">{{ttable.Line.DisplayName}}</option>
+              <option *ngFor="let timetable of timetabletModel" [value]="timetable.Line.LineCode">{{timetable.Line.DisplayName}}</option>
           </select>
           <input type="text" id="day" formControlName="day" hidden>
           <input type="text" id="type" formControlName="type" hidden>
@@ -37,7 +23,7 @@
   </form>
   <br>
   <div class="text-left times">
-      <p *ngFor="let time of ttJson">{{time}}</p>
+      <p *ngFor="let time of timetableJson">{{time}}</p>
   </div>
 </div>
 
