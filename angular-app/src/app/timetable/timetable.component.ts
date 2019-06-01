@@ -19,7 +19,7 @@ export class TimetableComponent implements OnInit {
   timetables = new Array<Timetable>();
   ttModel = new Array<Timetable>();
 
-  ttJson: any;
+  ttJson: Array<string> = Array<string>();
 
   myForm = this._fb.group({
     type:'',
@@ -54,14 +54,31 @@ export class TimetableComponent implements OnInit {
 
     var selectedLineCode = this.myForm.get('line').value;
     var helpJson = JSON.parse(this.timetables.find(x => x.Line.LineCode == selectedLineCode).Times);
+    var help = new Array<string>();
     if(this.picked_day == "Radni_dan")
-      this.ttJson = helpJson['Radni_dan'];
+      help = helpJson['Radni_dan'];
     else if(this.picked_day == "Subota")
-      this.ttJson = helpJson['Subota'];
+      help = helpJson['Subota'];
     else if(this.picked_day == "Nedelja")
-      this.ttJson = helpJson['Nedelja'];
+      help = helpJson['Nedelja'];
 
-    console.log(this.ttJson);
+    this.ttJson = new Array<string>();
+    var startTime = help[0].split(':')[0];
+    var str = '';
+    for (let time of help) {
+      if(time.split(':')[0] == startTime){
+        str = str.concat(`${time}\t`);
+      }
+      else{
+        startTime = time.split(':')[0];
+        this.ttJson.push(str);
+        str = '';
+        str = str.concat(`${time}\t`);
+      }
+    }
+    this.ttJson.push(str);
+
+    //console.log(this.ttJson);
     //console.log(this.myForm.value);
   }
   
