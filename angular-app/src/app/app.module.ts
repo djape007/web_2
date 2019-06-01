@@ -8,12 +8,17 @@ import { HttpClientModule } from '@angular/common/http';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TimetableComponent } from './timetable/timetable.component';
+import { LoginComponent } from './login/login.component';
+
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './token.interceptor';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
-    TimetableComponent
+    TimetableComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -21,7 +26,13 @@ import { TimetableComponent } from './timetable/timetable.component';
     HttpClientModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

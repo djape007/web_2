@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, forwardRef } from '@angular/core';
 import { MainService } from '../services/main.service';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Timetable } from 'src/models/timetable';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 
@@ -16,15 +16,19 @@ export class TimetableComponent implements OnInit {
   timetables = new Array<Timetable>();
   timetabletModel = new Array<Timetable>();
   timetableJson = Array<string>();
-  myForm = this._fb.group({
-    type:'',
-    line:'',
-    day:''
-  });
+  myForm: FormGroup;
+  message: string;
 
-  constructor(@Inject(forwardRef(() => DashboardComponent)) private _parent: DashboardComponent, private _fb: FormBuilder, private _sevice: MainService) { }
+  constructor(@Inject(forwardRef(() => DashboardComponent)) private _parent: DashboardComponent,
+     private _sevice: MainService, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
+    this.myForm = this.formBuilder.group({
+      day: ['', Validators.required],
+      type: ['', Validators.required],
+      line: ['', Validators.required]
+    });
+
     this.btnDayClick('radni');
     this.btnTypeClick('gradski');
     this._sevice.getAllTimetables()
@@ -39,15 +43,24 @@ export class TimetableComponent implements OnInit {
         }
       )
   }
+
+  get f() { return this.myForm.controls; }
   
   save() {
+
     this.myForm.setValue({  
       day: this.picked_day,
       type: this.picked_type,  
       line: this.myForm.get('line').value
     });
 
-    var selectedLineCode = this.myForm.get('line').value;
+    if (this.myForm.invalid) {
+      this.message = "Izaberite zeljenu liniju!";
+      this.timetableJson = new Array<string>();
+      return;
+    }
+
+    var selectedLineCode = this.f.line.value;
     var timesJson = JSON.parse(this.timetables.find(x => x.Line.LineCode == selectedLineCode).Times);
     var selectedDayTimesJson = new Array<string>();
     if(this.picked_day == "Radni_dan")
@@ -126,11 +139,13 @@ export class TimetableComponent implements OnInit {
       gradski.className = 'square_btn_active';
       this.picked_type = 'gradski';
       this.timetabletModel = this.getGradski();
+      this.myForm.reset();
     }
     else if(type == 'prigradski'){
       prigradski.className = 'square_btn_active';
       this.picked_type = 'prigradski';
       this.timetabletModel = this.getPrigradski();
+      this.myForm.reset();
     }
   }
 }

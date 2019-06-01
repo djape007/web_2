@@ -21,7 +21,7 @@
       </div>
       <button type="submit" class="btn-primary">Prikazi</button>
   </form>
-  <br>
+  <label class="text-danger" for="password">{{message}}</label>
   <div class="text-left times">
       <p *ngFor="let time of timetableJson">{{time}}</p>
   </div>

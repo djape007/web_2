@@ -1,0 +1,20 @@
+<div class="text-center d-flex justify-content-center">
+  <form [formGroup]="loginForm" (ngSubmit)="login()">     
+    <table class="mt-3">
+      <tr>
+        <td><label for="userid">Email:</label></td>
+        <td><input type="text" class="ml-3" formControlName="userid"/></td>
+      </tr>
+      <tr>
+        <td><label for="password">Sifra:</label></td>
+        <td><input type="password" class="ml-3" formControlName="password"/></td>
+      </tr>
+      <tr>
+        <td colspan="2"><label class="text-danger" for="password">{{message}}</label></td>
+      </tr>
+      <tr>
+        <td colspan="2"><button class="btn btn-dark" type="submit">Login</button></td>
+      </tr>
+    </table>
+  </form>
+</div>
