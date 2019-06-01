@@ -1,4 +1,11 @@
 <!-- <button (click)='funkcija()'>Get all buses</button> -->
-<router-outlet></router-outlet>
-<div id='mapOverlay' class='map-overlay'></div>
-<div #map style="width:100%; height:100%"></div>
+<!-- <router-outlet></router-outlet> -->
+<app-left-menu id='leftPanel'></app-left-menu>
+<div id='map-holder' style="width:100%; height:100%">
+    <div id='mapOverlay' class='map-overlay'></div>
+    <div #map style="width:100%; height:100%"></div>
+    <button (click)='prikaziLeviMeni()' style='z-index: 5000; position: absolute; left: 500px; top: 20px;'>Levi meni</button>
+    <button (click)='prikaziDesniMeni()'style='z-index: 5000; position: absolute; left: 500px; top: 80px;'>Desni meni</button>
+    <button (click)='prikaziMapu()'style='z-index: 5000; position: absolute; left: 500px; top: 150px;'>Prikazi mapu</button>
+</div>
+<app-right-menu id='rightPanel'></app-right-menu>

@@ -1,5 +1,6 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, Input } from '@angular/core';
 import {} from 'googlemaps';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,9 +9,12 @@ import {} from 'googlemaps';
 })
 
 export class DashboardComponent implements OnInit{
-
   @ViewChild('map') mapElement: any;
+  @ViewChild('leftPanel') leftPanelComponent: any;
+  @ViewChild('rightPanel') rightPanelComponent: any;
   map: google.maps.Map;
+
+  public displayedPanel: string = 'none';
 
   constructor() { }
 
@@ -26,6 +30,50 @@ export class DashboardComponent implements OnInit{
 
  public removeOverlay(){
   let el = document.getElementsByClassName('map-overlay')[0];
-  el.className += "map-no-overlay";
+  el.className = "map-no-overlay";
+ }
+
+ public displayOverlay() {
+  let el = document.getElementsByClassName('map-no-overlay')[0];
+  el.className = "map-overlay";
+ }
+
+ public prikaziLeviMeni() {
+  let levi = document.getElementById('leftPanel');
+  let desni = document.getElementById('rightPanel');
+  levi.style.webkitTransform = "translate3d(0,0,0)";
+  levi.style.zIndex = "30000";
+  desni.style.webkitTransform = "translate3d(400px,0,0)";
+  desni.style.zIndex = "1";
+
+  let mapHolder = document.getElementById('map-holder');
+  mapHolder.style.webkitTransform = "translate3d(400px,0,0)";
+  this.displayOverlay();
+ }
+
+ public prikaziDesniMeni() {
+  let levi = document.getElementById('leftPanel');
+  let desni = document.getElementById('rightPanel');
+  levi.style.webkitTransform = "translate3d(-400px,0,0)";
+  levi.style.zIndex = "1";
+  desni.style.zIndex = "30000";
+  desni.style.webkitTransform = "translate3d(0,0,0)";
+  
+  let mapHolder = document.getElementById('map-holder');
+  mapHolder.style.webkitTransform = "translate3d(-400px,0,0)";
+  this.displayOverlay();
+ }
+
+ public prikaziMapu() {
+  let levi = document.getElementById('leftPanel');
+  let desni = document.getElementById('rightPanel');
+  levi.style.webkitTransform = "translate3d(-400px,0,0)";
+  levi.style.zIndex = "1";
+  desni.style.zIndex = "1";
+  desni.style.webkitTransform = "translate3d(400px,0,0)";
+  
+  let mapHolder = document.getElementById('map-holder');
+  mapHolder.style.webkitTransform = "translate3d(0,0,0)";
+  this.removeOverlay();
  }
 }

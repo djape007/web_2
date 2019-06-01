@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { HttpClientModule } from '@angular/common/http';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -13,6 +14,8 @@ import { LoginComponent } from './login/login.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './token.interceptor';
 import { RegisterComponent } from './register/register.component';
+import { LeftMenuComponent } from './left-menu/left-menu.component';
+import { RightMenuComponent } from './right-menu/right-menu.component';
 
 @NgModule({
   declarations: [
@@ -20,13 +23,16 @@ import { RegisterComponent } from './register/register.component';
     DashboardComponent,
     TimetableComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    LeftMenuComponent,
+    RightMenuComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
   ],
   providers: [
     {

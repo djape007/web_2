@@ -1,0 +1,13 @@
+:host {
+    display: inline-block;
+    background-color: red;
+    position: absolute;
+    transform: translate3d(-400px,0,0);
+    height: 100%;
+    top: 0;
+}
+
+.leftMenuHolder {
+    display: inline-block;
+    width: 400px;
+}
