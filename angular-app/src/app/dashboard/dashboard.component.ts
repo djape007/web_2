@@ -1,6 +1,7 @@
 import { Component, ViewChild, OnInit, Input } from '@angular/core';
 import {} from 'googlemaps';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Router, RoutesRecognized } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,9 +17,17 @@ export class DashboardComponent implements OnInit{
 
   public displayedPanel: string = 'none';
 
-  constructor() { }
+  constructor(private _router: Router) { }
 
   ngOnInit(): void {
+    this._router.events.subscribe(event => {
+      if (event instanceof RoutesRecognized) {
+        if(event.url.includes('leftRouter'))
+          this.prikaziLeviMeni();
+        else if(event.url.includes('home'))
+        this.prikaziMapu();
+      }
+    });
     const mapProperties = {
          center: new google.maps.LatLng(45.248636, 19.833549),
          zoom: 14,
@@ -48,7 +57,7 @@ export class DashboardComponent implements OnInit{
 
   let mapHolder = document.getElementById('map-holder');
   mapHolder.style.webkitTransform = "translate3d(400px,0,0)";
-  this.displayOverlay();
+  //this.displayOverlay();
  }
 
  public prikaziDesniMeni() {
@@ -61,7 +70,7 @@ export class DashboardComponent implements OnInit{
   
   let mapHolder = document.getElementById('map-holder');
   mapHolder.style.webkitTransform = "translate3d(-400px,0,0)";
-  this.displayOverlay();
+  //this.displayOverlay();
  }
 
  public prikaziMapu() {
@@ -74,6 +83,6 @@ export class DashboardComponent implements OnInit{
   
   let mapHolder = document.getElementById('map-holder');
   mapHolder.style.webkitTransform = "translate3d(0,0,0)";
-  this.removeOverlay();
+  //this.removeOverlay();
  }
 }

@@ -1,26 +1,27 @@
-<div class="w-75 container ">
+<div class="container pt-2 text-center">
   <h2>RED VOZNJE</h2>
-  <div class="d-flex justify-content-between">
+  <div class="d-flex justify-content-between pl-1 pr-1">
       <button (click)='btnDayClick("radni")' id='radni' class="square_btn">Radni dan</button>
       <button (click)='btnDayClick("subota")' id='subota' class="square_btn">Subota</button>
-      <button (click)='btnDayClick("nedelja")' id='nedelja' class="square_btn_active">Nedelja</button>
+      <button (click)='btnDayClick("nedelja")' id='nedelja' class="square_btn">Nedelja</button>
   </div>
   <br>
   <div class="d-flex justify-content-between pl-5 pr-5">
-      <button (click)='btnTypeClick("gradski")' id='gradski' class="square_btn">Gradski</button>
-      <button (click)='btnTypeClick("prigradski")' id='prigradski' class="square_btn">Prigradski</button>
+    <button (click)='btnTypeClick("gradski")' id='gradski' class="square_btn">Gradski</button>
+    <button (click)='btnTypeClick("prigradski")' id='prigradski' class="square_btn">Prigradski</button>
   </div>
   <br>
   <form [formGroup]="myForm" novalidate (ngSubmit)="save()">
       <div class="form-group">
-          <select class="form-control" id="line" formControlName="line">
+          <select id="line" formControlName="line">
               <option *ngFor="let timetable of timetabletModel" [value]="timetable.Line.LineCode">{{timetable.Line.DisplayName}}</option>
           </select>
           <input type="text" id="day" formControlName="day" hidden>
           <input type="text" id="type" formControlName="type" hidden>
       </div>
-      <button type="submit" class="btn-primary">Prikazi</button>
+    <button type="submit" class="btn-primary">Prikazi</button>
   </form>
+  <br>
   <label class="text-danger" for="password">{{message}}</label>
   <div class="text-left times">
       <p *ngFor="let time of timetableJson">{{time}}</p>

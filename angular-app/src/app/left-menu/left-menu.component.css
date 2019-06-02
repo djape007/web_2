@@ -1,6 +1,6 @@
 :host {
     display: inline-block;
-    background-color: red;
+    background-color: rgb(8, 1, 1);
     position: absolute;
     transform: translate3d(-400px,0,0);
     height: 100%;
@@ -10,4 +10,5 @@
 .leftMenuHolder {
     display: inline-block;
     width: 400px;
+    max-width: 400px;
 }

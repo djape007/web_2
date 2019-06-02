@@ -8,16 +8,17 @@ import { RegisterComponent } from './register/register.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home/timetable',
-    pathMatch: 'full'
+    redirectTo: 'home',
+    pathMatch: 'full',
   },
   {
     path: 'home',
     component: DashboardComponent,
     children: [
-      { 
+      {
         path: 'timetable',
-        component: TimetableComponent
+        component: TimetableComponent,
+        outlet: 'leftRouter'
       },
       { 
         path: 'login',

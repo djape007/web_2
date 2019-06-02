@@ -20,23 +20,23 @@ export class TimetableComponent implements OnInit {
   message: string;
 
   constructor(@Inject(forwardRef(() => DashboardComponent)) private _parent: DashboardComponent,
-     private _sevice: MainService, private formBuilder: FormBuilder) { }
+     private _sevice: MainService, private _formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    this.myForm = this.formBuilder.group({
+    this.myForm = this._formBuilder.group({
       day: ['', Validators.required],
       type: ['', Validators.required],
       line: ['', Validators.required]
     });
 
-    this.btnDayClick('radni');
-    this.btnTypeClick('gradski');
     this._sevice.getAllTimetables()
       .subscribe(
         data => {
           this.timetables = data;
           this.timetables.forEach(x=> x.Line.DisplayName = `${x.Line.LineCode} ${x.Line.Direction}`)
           this.timetabletModel = this.getGradski();
+          this.btnDayClick('radni');
+          this.btnTypeClick('gradski');
         },
         err => {
           console.log(err);
@@ -53,6 +53,8 @@ export class TimetableComponent implements OnInit {
       type: this.picked_type,  
       line: this.myForm.get('line').value
     });
+
+    this.message = '';
 
     if (this.myForm.invalid) {
       this.message = "Izaberite zeljenu liniju!";
@@ -85,13 +87,15 @@ export class TimetableComponent implements OnInit {
       }
     }
     this.timetableJson.push(str);
-    this._parent.removeOverlay();
+    //this._parent.removeOverlay();
   }
   
   getPrigradski(): Array<Timetable>{
     return this.timetables
     .filter(
       x => (Number)(x.Line.LineCode.replace('A','').replace('B','')) > 20
+    ).filter(
+      x => x.Times.includes(this.picked_day)
     ).sort(
       (x,y) => (Number)(x.Line.LineCode.replace('A','').replace('B','')) - (Number)(y.Line.LineCode.replace('A','').replace('B',''))
     );
@@ -101,7 +105,10 @@ export class TimetableComponent implements OnInit {
     return this.timetables
     .filter(
       x => (Number)(x.Line.LineCode.replace('A','').replace('B','')) < 20
-    ).sort(
+    ).filter(
+      x => x.Times.includes(this.picked_day)
+    )
+    .sort(
       (x,y) => (Number)(x.Line.LineCode.replace('A','').replace('B','')) - (Number)(y.Line.LineCode.replace('A','').replace('B',''))
     );
   }
@@ -118,14 +125,17 @@ export class TimetableComponent implements OnInit {
     if(day == 'radni'){
       radni.className = 'square_btn_active';
       this.picked_day = 'Radni_dan';
+      this.myForm.reset();
     }
     else if(day == 'subota'){
       sub.className = 'square_btn_active';
-      this.picked_day = 'Subota';     
+      this.picked_day = 'Subota';   
+      this.myForm.reset();  
     }
     else if(day == 'nedelja'){
       ned.className = 'square_btn_active'; 
       this.picked_day = 'Nedelja';
+      this.myForm.reset();
     }
   }
 
