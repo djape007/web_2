@@ -3,6 +3,7 @@ import { MainService } from '../services/main.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Timetable } from 'src/models/timetable';
 import { DashboardComponent } from '../dashboard/dashboard.component';
+import { Router, RoutesRecognized } from '@angular/router';
 
 @Component({
   selector: 'app-timetable',
@@ -20,9 +21,11 @@ export class TimetableComponent implements OnInit {
   message: string;
 
   constructor(@Inject(forwardRef(() => DashboardComponent)) private _parent: DashboardComponent,
-     private _sevice: MainService, private _formBuilder: FormBuilder) { }
+     private _sevice: MainService, private _formBuilder: FormBuilder, private _router: Router) { }
 
   ngOnInit() {
+    //this._parent.prikaziLeviMeni();
+
     this.myForm = this._formBuilder.group({
       day: ['', Validators.required],
       type: ['', Validators.required],

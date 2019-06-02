@@ -4,6 +4,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { TimetableComponent } from './timetable/timetable.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { LeftMenuComponent } from './left-menu/left-menu.component';
 
 const routes: Routes = [
   {
@@ -20,14 +21,11 @@ const routes: Routes = [
         component: TimetableComponent,
         outlet: 'leftRouter'
       },
-      { 
+      {
         path: 'login',
-        component: LoginComponent
-      },
-      { 
-        path: 'register',
-        component: RegisterComponent
-      },
+        component: LoginComponent,
+        outlet: 'rightRouter'
+      }
     ]
   }
 ];

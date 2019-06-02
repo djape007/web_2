@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, forwardRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MainService } from '../services/main.service';
 import { UserLogin } from 'src/models/user-login';
 import { Router } from '@angular/router';
+import { DashboardComponent } from '../dashboard/dashboard.component';
 
 @Component({
   selector: 'app-login',
@@ -15,9 +16,12 @@ export class LoginComponent implements OnInit {
   message: string;
   returnUrl: string;
 
-  constructor(private formBuilder: FormBuilder, private _service: MainService, private router: Router) { }
+  constructor(@Inject(forwardRef(() => DashboardComponent)) private _parent: DashboardComponent,
+    private formBuilder: FormBuilder, private _service: MainService, private router: Router) { }
 
   ngOnInit() {
+    //this._parent.prikaziDesniMeni();
+    
     this.loginForm = this.formBuilder.group({
       userid: ['', Validators.required],
       password: ['', Validators.required]
