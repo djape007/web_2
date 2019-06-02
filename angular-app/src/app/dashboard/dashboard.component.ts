@@ -56,7 +56,7 @@ export class DashboardComponent implements OnInit{
 
   let mapHolder = document.getElementById('map-holder');
   mapHolder.style.webkitTransform = "translate3d(400px,0,0)";
-  //this.displayOverlay();
+  this.displayOverlay();
  }
 
  public prikaziDesniMeni() {
@@ -69,7 +69,7 @@ export class DashboardComponent implements OnInit{
   
   let mapHolder = document.getElementById('map-holder');
   mapHolder.style.webkitTransform = "translate3d(-400px,0,0)";
-  //this.displayOverlay();
+  this.displayOverlay();
  }
 
  public prikaziMapu() {
@@ -82,6 +82,6 @@ export class DashboardComponent implements OnInit{
   
   let mapHolder = document.getElementById('map-holder');
   mapHolder.style.webkitTransform = "translate3d(0,0,0)";
-  //this.removeOverlay();
+  this.removeOverlay();
  }
 }

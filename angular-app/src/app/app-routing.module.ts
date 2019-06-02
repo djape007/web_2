@@ -9,18 +9,18 @@ import { LeftMenuComponent } from './left-menu/left-menu.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'home/timetable',
     pathMatch: 'full',
   },
   {
     path: 'home',
     component: DashboardComponent,
     children: [
-      {
-        path: '',
-        component: TimetableComponent,
-        outlet: 'leftRouter'
-      },
+      // {
+      //   path: '',
+      //   component: TimetableComponent,
+      //   outlet: 'leftRouter'
+      // },
       {
         path: 'timetable',
         redirectTo: '/home/(leftRouter:tt)',
