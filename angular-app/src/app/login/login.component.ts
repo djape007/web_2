@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MainService } from '../services/main.service';
 import { UserLogin } from 'src/models/user-login';
 import { Router } from '@angular/router';
-import { DashboardComponent } from '../dashboard/dashboard.component';
+import { HomeComponent } from '../home/home.component';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
   message: string;
   returnUrl: string;
 
-  constructor(@Inject(forwardRef(() => DashboardComponent)) private _parent: DashboardComponent,
+  constructor(@Inject(forwardRef(() => HomeComponent)) private _parent: HomeComponent,
     private formBuilder: FormBuilder, private _service: MainService, private router: Router) { }
 
   ngOnInit() {

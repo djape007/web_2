@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { HomeComponent } from './home/home.component';
 import { TimetableComponent } from './timetable/timetable.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -14,13 +14,8 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    component: DashboardComponent,
+    component: HomeComponent,
     children: [
-      // {
-      //   path: '',
-      //   component: TimetableComponent,
-      //   outlet: 'leftRouter'
-      // },
       {
         path: 'timetable',
         redirectTo: '/home/(leftRouter:tt)',

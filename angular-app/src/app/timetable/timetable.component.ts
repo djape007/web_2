@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, forwardRef } from '@angular/core';
 import { MainService } from '../services/main.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Timetable } from 'src/models/timetable';
-import { DashboardComponent } from '../dashboard/dashboard.component';
+import { HomeComponent } from '../home/home.component';
 import { Router, RoutesRecognized } from '@angular/router';
 
 @Component({
@@ -20,7 +20,7 @@ export class TimetableComponent implements OnInit {
   myForm: FormGroup;
   message: string;
 
-  constructor(@Inject(forwardRef(() => DashboardComponent)) private _parent: DashboardComponent,
+  constructor(@Inject(forwardRef(() => HomeComponent)) private _parent: HomeComponent,
      private _sevice: MainService, private _formBuilder: FormBuilder, private _router: Router) { }
 
   ngOnInit() {
