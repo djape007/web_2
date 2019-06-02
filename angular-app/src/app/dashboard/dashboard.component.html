@@ -1,25 +1,9 @@
 <app-left-menu id='leftPanel' class='animationPanel'>
 </app-left-menu>
 <div id='map-holder' class='animationPanel' style="width:100%; height:100%">
-    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link text-primary" routerLink="/home" routerLinkActive="active">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-primary" [routerLink]='[{ outlets: { leftRouter: ["timetable"] } }]'>Timetable</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-primary" [routerLink]='[{ outlets: { rightRouter: ["login"] } }]'>Login</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+    <!-- <a class="nav-link text-primary" routerLink="/home" routerLinkActive="active">Home</a>
+    <a class="nav-link text-primary" [routerLink]='[{ outlets: { leftRouter: ["timetable"] } }]' routerLinkActive="active">Timetable</a>
+    <a class="nav-link text-primary" [routerLink]='[{ outlets: { rightRouter: ["login"] } }]' routerLinkActive="active">Login</a> -->
     <div id='mapOverlay' class='map-no-overlay'></div>
     <div #map style="width:100%; height:100%"></div>
 </div>

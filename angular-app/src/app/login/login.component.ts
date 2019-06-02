@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder, private _service: MainService, private router: Router) { }
 
   ngOnInit() {
-    //this._parent.prikaziDesniMeni();
+    this._parent.prikaziDesniMeni();
     
     this.loginForm = this.formBuilder.group({
       userid: ['', Validators.required],

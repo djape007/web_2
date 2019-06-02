@@ -22,16 +22,10 @@ export class DashboardComponent implements OnInit{
   ngOnInit(): void {
     this._router.events.subscribe(event => {
       if (event instanceof RoutesRecognized) {
-        var r = event.url.split('//')[0];
-        if(r.includes('leftRouter'))
-          this.prikaziLeviMeni();
-        else if(r.includes('rightRouter'))
-          this.prikaziDesniMeni();
-        else if(r.includes('home'))
+        if(event.url == '/home')
           this.prikaziMapu();
       }
     });
-    //this.prikaziMapu();
 
     const mapProperties = {
          center: new google.maps.LatLng(45.248636, 19.833549),

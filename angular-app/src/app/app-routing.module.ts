@@ -9,7 +9,7 @@ import { LeftMenuComponent } from './left-menu/left-menu.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'home/(leftRouter:timetable)',
     pathMatch: 'full',
   },
   {

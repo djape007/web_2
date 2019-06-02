@@ -24,7 +24,7 @@ export class TimetableComponent implements OnInit {
      private _sevice: MainService, private _formBuilder: FormBuilder, private _router: Router) { }
 
   ngOnInit() {
-    //this._parent.prikaziLeviMeni();
+    this._parent.prikaziLeviMeni();
 
     this.myForm = this._formBuilder.group({
       day: ['', Validators.required],
