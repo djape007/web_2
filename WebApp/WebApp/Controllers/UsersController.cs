@@ -200,6 +200,10 @@ namespace WebApp.Controllers
                 }
             }
 
+            if (listaNazivaUploadovanihFajlova.Count == 0) {
+                return BadRequest("Invalid file type");
+            }
+
             if (userInDb.Files.Length > 0) {
                 userInDb.Files += "," + String.Join(",", listaNazivaUploadovanihFajlova);
             } else {
