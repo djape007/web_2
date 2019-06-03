@@ -87,7 +87,7 @@ export class HomeComponent implements OnInit{
   private displayLeftPanel() {
     let levi = document.getElementById('leftPanel');
     levi.style.webkitTransform = "translate3d(0,0,0)";
-    levi.style.zIndex = "30000";
+    levi.style.zIndex = "100";
   }
 
   private hideLeftPanel() {
@@ -98,7 +98,7 @@ export class HomeComponent implements OnInit{
 
   private displayRightPanel() {
     let desni = document.getElementById('rightPanel');
-    desni.style.zIndex = "30000";
+    desni.style.zIndex = "100";
     desni.style.webkitTransform = "translate3d(0,0,0)";
   }
 

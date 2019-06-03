@@ -13,12 +13,16 @@
   <br>
   <form [formGroup]="myForm" novalidate (ngSubmit)="save()" style='text-align: center;'>
       <div class="form-group">
-          <select id="line" formControlName="line">
+          <!--<select id="line" formControlName="line">
               <option *ngFor="let timetable of timetabletModel" [value]="timetable.Line.LineCode">{{ (timetable.Line.DisplayName.length>36)? (timetable.Line.DisplayName | slice:0:36)+'..':(timetable.Line.DisplayName)}}</option>
-          </select>
+          </select>-->
           <input type="text" id="day" formControlName="day" hidden>
           <input type="text" id="type" formControlName="type" hidden>
       </div>
+          <mat-label>Izaberi liniju</mat-label>
+          <mat-select formControlName="line" required>
+            <mat-option *ngFor="let timetable of timetabletModel" [value]="timetable.Line.LineCode">{{ (timetable.Line.DisplayName.length>36)? (timetable.Line.DisplayName | slice:0:36)+'..':(timetable.Line.DisplayName)}}</mat-option>
+          </mat-select>
     <button mat-flat-button color="primary" type="submit" class="btnPrikaziRedVoznje">Prikaži</button>
   </form>
   <br>
