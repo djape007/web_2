@@ -14,7 +14,7 @@ namespace WebApp.Models
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
-        public string Status { get; set; } //verified, not verified, processing
+        public string Status { get; set; } //verified, not verified, processing, denied
         public string Type { get; set; } //penzioner, djak/student, obican
         public string Password { get; set; }
         public string Name { get; set; }

@@ -21,6 +21,7 @@ using WebApp.Persistence.UnitOfWork;
 using System.Web.Http.Description;
 using System.Data.Entity.Infrastructure;
 using System.Net;
+using System.IO;
 
 namespace WebApp.Controllers
 {
@@ -158,6 +159,56 @@ namespace WebApp.Controllers
         public IHttpActionResult Logout()
         {
             Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
+            return Ok();
+        }
+
+
+        [Route("UploadFiles")]
+        [HttpPost]
+        public IHttpActionResult MyFileUpload() {
+            var request = HttpContext.Current.Request;
+
+            var userId = User.Identity.GetUserId();
+
+            var userInDb = UserManager.Users.FirstOrDefault(x => x.Id == userId);
+            
+            if (userInDb == null) {
+                return BadRequest("User does not exist");
+            }
+
+            var mappedPath = System.Web.Hosting.HostingEnvironment.MapPath("~/imgs/users/" + userId);
+
+            if (!Directory.Exists(mappedPath)) {
+                Directory.CreateDirectory(mappedPath);
+            }
+
+            
+
+            if (request.Files.Count == 0) {
+                return BadRequest("No files selected");
+            }
+            
+            List<string> listaNazivaUploadovanihFajlova = new List<string>();
+            foreach (string file in request.Files) {
+                var postedFile = request.Files[file];
+
+                var fileExtension = postedFile.FileName.Split('.').Last();
+
+                if (fileExtension == "jpg" || fileExtension == "jpeg" || fileExtension == "png" || fileExtension == "bmp") {
+                    postedFile.SaveAs(mappedPath + "/" + postedFile.FileName);
+                    listaNazivaUploadovanihFajlova.Add(postedFile.FileName);
+                }
+            }
+
+            if (userInDb.Files.Length > 0) {
+                userInDb.Files += "," + String.Join(",", listaNazivaUploadovanihFajlova);
+            } else {
+                userInDb.Files = String.Join(",", listaNazivaUploadovanihFajlova);
+            }
+
+            userInDb.Status = "processing";
+            UserManager.Update(userInDb);
+
             return Ok();
         }
 
@@ -404,7 +455,7 @@ namespace WebApp.Controllers
 
             return logins;
         }
-
+        
         // POST api/Account/Register
         [AllowAnonymous]
         [ResponseType(typeof(ApplicationUser))]
