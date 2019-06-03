@@ -12,7 +12,9 @@ import { HomeComponent } from '../home/home.component';
 export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup;
-  message: string;
+  message: string = 'This field is required';
+
+  selectedValue: string;
 
   constructor(@Inject(forwardRef(() => HomeComponent)) private _parent: HomeComponent,
   private formBuilder: FormBuilder, private _service: MainService, private router: Router) { }
@@ -22,7 +24,8 @@ export class RegisterComponent implements OnInit {
 
     this.registerForm = this.formBuilder.group({
       email: ['', Validators.required, Validators.email],
-      password: ['', Validators.required, Validators.pattern(new RegExp('"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$"'))],
+      //password: ['', Validators.required, Validators.pattern(new RegExp('"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$"'))],
+      password: ['', Validators.required],
       birthday: ['', Validators.required],
       address: ['', Validators.required, Validators.minLength(2)],
       name: ['', Validators.required, Validators.minLength(2)],
@@ -31,4 +34,13 @@ export class RegisterComponent implements OnInit {
     });
   }
 
+  get f() { return this.registerForm.controls; }
+
+  selectChange(){
+    this.selectedValue = this.registerForm.get('type').value
+  }
+
+  register(){
+
+  }
 }

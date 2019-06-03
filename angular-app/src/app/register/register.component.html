@@ -1,36 +1,32 @@
+<h1>Registracija</h1>
 <div class="text-center">
-  <form [formGroup]="registerForm" (ngSubmit)="register()">     
-    <table class=" mt-3">
-      <tr>
-        <td><label for="email">Email:</label></td>
-        <td><input type="text" class="ml-3" formControlName="email"/></td>
-      </tr>
-      <tr>
-        <td><label for="password">Sifra:</label></td>
-        <td><input type="password" class="ml-3" formControlName="password"/></td>
-      </tr>
-      <tr>
-        <td><label for="name">Ime:</label></td>
-        <td><input type="text" class="ml-3" formControlName="name"/></td>
-      </tr>
-      <tr>
-        <td><label for="surname">Prezime:</label></td>
-        <td><input type="text" class="ml-3" formControlName="surname"/></td>
-      </tr>
-      <tr>
-        <td><label for="address">Adresa:</label></td>
-        <td><input type="text" class="ml-3" formControlName="address"/></td>
-      </tr>
-      <tr>
-        <td><label for="birthday">Adresa:</label></td>
-        <td><input type="date" class="ml-3" formControlName="birthday"/></td>
-      </tr>
-      <tr>
-        <td colspan="2"><label class="text-danger" for="password">{{message}}</label></td>
-      </tr>
-      <tr>
-        <td colspan="2"><button class="btn btn-dark" type="submit">Login</button></td>
-      </tr>
-    </table>
+  <form [formGroup]="registerForm" novalidate (ngSubmit)="register()">     
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="text" class="ml-3" formControlName="email"/>
+      <label for="password">Sifra:</label>
+      <input type="password" class="ml-3" formControlName="password"/>
+      <label for="name">Ime:</label>
+      <input type="text" class="ml-3" formControlName="name"/>
+      <label for="surname">Prezime:</label>
+      <input type="text" class="ml-3" formControlName="surname"/>
+      <label for="address">Adresa:</label>
+      <input type="text" class="ml-3" formControlName="address"/>
+      <label for="birthday">Datum Rodjenja:</label>
+      <input type="date" class="ml-3" formControlName="birthday"/>
+      <label for="type">Tip:</label>
+      <select (change)='selectChange()' id="type" formControlName="type">
+        <option value="Obican" selected>Obican</option>
+        <option value="Student">Student - Djak</option>
+        <option value="Penzioner">Penzos</option>
+      </select>
+    </div>
+    <button type="submit">Potvrdi</button>
   </form>
+  <br>
+  <label>{{message}}</label>
+  <br>
+  <div *ngIf="selectedValue == 'Student' || selectedValue=='Penzioner'">
+    <label>AA</label>
+  </div>
 </div>
