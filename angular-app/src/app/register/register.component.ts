@@ -25,6 +25,7 @@ export class RegisterComponent implements OnInit {
       email: ['', Validators.compose([Validators.required, Validators.email])],
       name: ['', Validators.compose([Validators.required, Validators.minLength(2)])],
       password: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
+      repeat_password: ['', Validators.required],
       address: ['', Validators.compose([Validators.required, Validators.minLength(2)])],
       surname: ['', Validators.compose([Validators.required, Validators.minLength(2)])],
       type: ['', Validators.required],
@@ -33,6 +34,11 @@ export class RegisterComponent implements OnInit {
   }
 
   get f() { return this.registerForm.controls; }
+
+  isSameAsPassword(){
+    if (this.f.password.value != this.f.repeat_password.value)
+      this.f.repeat_password.setErrors({'notsame': true});
+  }
 
   selectChange(){
     this.selectedValue = this.registerForm.get('type').value

@@ -13,6 +13,11 @@
         <mat-error *ngIf="registerForm.controls['password'].errors && registerForm.controls['password'].errors['minlength']">Mora biti duza od 6 karaktera</mat-error>
       </mat-form-field>
       <mat-form-field class="example-full-width">
+          <input (focusout)='isSameAsPassword()' type="password" formControlName='repeat_password' matInput placeholder="Ponovite lozinku" matNativeControl required>
+          <mat-error *ngIf="registerForm.controls['repeat_password'].errors && registerForm.controls['repeat_password'].errors['required']">Obavezno polje</mat-error>
+          <mat-error *ngIf="registerForm.controls['repeat_password'].errors && registerForm.controls['repeat_password'].errors['notsame']">Lozinke nisu iste</mat-error>
+        </mat-form-field>
+      <mat-form-field class="example-full-width">
         <input formControlName='name' matInput placeholder="Ime" matNativeControl required>
         <mat-error *ngIf="registerForm.controls['name'].errors && registerForm.controls['name'].errors['required']">Obavezno polje</mat-error>
         <mat-error *ngIf="registerForm.controls['name'].errors && registerForm.controls['name'].errors['minlength']">Mora biti duze od 2 karaktera</mat-error>
