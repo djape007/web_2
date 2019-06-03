@@ -18,6 +18,9 @@ import { LeftMenuComponent } from './left-menu/left-menu.component';
 import { RightMenuComponent } from './right-menu/right-menu.component';
 import { TicketComponent } from './ticket/ticket.component';
 
+import { MatInputModule, MatButtonModule, MatSelectModule, MatIconModule } from '@angular/material';
+import { FormsModule } from '@angular/forms';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,6 +38,11 @@ import { TicketComponent } from './ticket/ticket.component';
     HttpClientModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    FormsModule,    
+    MatInputModule, 
+    MatButtonModule,
+    MatSelectModule,
+    MatIconModule
   ],
   providers: [
     {
