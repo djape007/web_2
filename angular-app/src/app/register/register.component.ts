@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MainService } from '../services/main.service';
 import { Router } from '@angular/router';
 import { HomeComponent } from '../home/home.component';
-import { UseExistingWebDriver } from 'protractor/built/driverProviders';
 import { User } from 'src/models/user';
 
 @Component({
@@ -14,8 +13,6 @@ import { User } from 'src/models/user';
 export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup;
-  message: string = '';
-
   selectedValue: string;
 
   constructor(@Inject(forwardRef(() => HomeComponent)) private _parent: HomeComponent,
@@ -25,14 +22,13 @@ export class RegisterComponent implements OnInit {
     this._parent.prikaziDesniMeni();
 
     this.registerForm = this.formBuilder.group({
-      email: ['', Validators.required, Validators.email],
-      //password: ['', Validators.required, Validators.pattern(new RegExp('"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$"'))],
-      password: ['', Validators.required],
+      email: ['', Validators.compose([Validators.required, Validators.email])],
+      name: ['', Validators.compose([Validators.required, Validators.minLength(2)])],
+      password: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
+      address: ['', Validators.compose([Validators.required, Validators.minLength(2)])],
+      surname: ['', Validators.compose([Validators.required, Validators.minLength(2)])],
+      type: ['', Validators.required],
       birthday: ['', Validators.required],
-      address: ['', Validators.required, Validators.minLength(2)],
-      name: ['', Validators.required, Validators.minLength(2)],
-      surname: ['', Validators.required, Validators.minLength(2)],
-      type: ['', Validators.required]
     });
   }
 
@@ -44,7 +40,6 @@ export class RegisterComponent implements OnInit {
 
   register(){
     if (this.registerForm.invalid) {
-      this.message = "Svi podaci su obavezni!";
       return;
     }
 

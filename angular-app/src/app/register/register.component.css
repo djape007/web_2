@@ -2,12 +2,32 @@
     color: white;
   }
 
-  .example-form {
-    min-width: 150px;
-    max-width: 500px;
-    width: 100%;
+  .example-full-width {
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
   }
   
-  .example-full-width {
-    width: 100%;
+  .example-left-half-width {
+    width: 38%;
+    margin-left: 10%;
+    margin-right: 2%;
+  }
+    
+  .example-right-half-width {
+    width: 38%;
+    margin-right: 10%;
+    margin-left: 2%;
+  }
+
+  .text-red{
+    color: red;
+  }
+
+  mat-error {
+    float: right;
+  }
+
+  select option{
+    
   }
