@@ -3,23 +3,23 @@
   <form [formGroup]="registerForm" novalidate (ngSubmit)="register()">     
     <div class="form-group">
       <label for="email">Email:</label>
-      <input type="text" class="ml-3" formControlName="email"/>
+      <input type="text" class="ml-3" formControlName="email"/><br>
       <label for="password">Sifra:</label>
-      <input type="password" class="ml-3" formControlName="password"/>
+      <input type="password" class="ml-3" formControlName="password"/><br>
       <label for="name">Ime:</label>
-      <input type="text" class="ml-3" formControlName="name"/>
+      <input type="text" class="ml-3" formControlName="name"/><br>
       <label for="surname">Prezime:</label>
-      <input type="text" class="ml-3" formControlName="surname"/>
+      <input type="text" class="ml-3" formControlName="surname"/><br>
       <label for="address">Adresa:</label>
-      <input type="text" class="ml-3" formControlName="address"/>
+      <input type="text" class="ml-3" formControlName="address"/><br>
       <label for="birthday">Datum Rodjenja:</label>
-      <input type="date" class="ml-3" formControlName="birthday"/>
+      <input type="date" class="ml-3" formControlName="birthday"/><br>
       <label for="type">Tip:</label>
       <select (change)='selectChange()' id="type" formControlName="type">
         <option value="Obican" selected>Obican</option>
         <option value="Student">Student - Djak</option>
         <option value="Penzioner">Penzos</option>
-      </select>
+      </select><br>
     </div>
     <button type="submit">Potvrdi</button>
   </form>

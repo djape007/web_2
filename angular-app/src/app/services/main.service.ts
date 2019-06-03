@@ -6,6 +6,7 @@ import { Timetable } from 'src/models/timetable';
 import { map } from 'rxjs/operators';
 import { forEach } from '@angular/router/src/utils/collection';
 import { Time } from '@angular/common';
+import { User } from 'src/models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -29,5 +30,9 @@ export class MainService {
 
   public getAllTimetables(): Observable<any>{
     return this.http.get(`${this.api_route}/api/timetables`);
+  }
+
+  public register(user: User): Observable<any>{
+    return this.http.post(`${this.api_route}/api/users/register`, `email=${user.Email}&Password=${user.Password}&DateOfBirth=2001-10-10&Address=${user.Address}&Name=${user.Name}&Surame=${user.Surname}&Type=${user.Type}`,  { "headers" : {'Content-type' : 'application/x-www-form-urlencoded'}} )
   }
 }

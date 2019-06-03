@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MainService } from '../services/main.service';
 import { Router } from '@angular/router';
 import { HomeComponent } from '../home/home.component';
+import { UseExistingWebDriver } from 'protractor/built/driverProviders';
+import { User } from 'src/models/user';
 
 @Component({
   selector: 'app-register',
@@ -12,7 +14,7 @@ import { HomeComponent } from '../home/home.component';
 export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup;
-  message: string = 'This field is required';
+  message: string = '';
 
   selectedValue: string;
 
@@ -41,6 +43,28 @@ export class RegisterComponent implements OnInit {
   }
 
   register(){
+    if (this.registerForm.invalid) {
+      this.message = "Svi podaci su obavezni!";
+      return;
+    }
 
+    var user = new User();
+    user.Email = this.f.email.value;
+    user.DateOfBirth = this.f.birthday.value;
+    user.Name = this.f.name.value;
+    user.Surname = this.f.surname.value;
+    user.Address = this.f.address.value;
+    user.Password = this.f.password.value;
+    user.Type = this.f.type.value;
+
+    this._service.register(user)
+      .subscribe(
+        data => {
+          var a = data;
+        },
+        err =>{
+
+        }
+      )
   }
 }
