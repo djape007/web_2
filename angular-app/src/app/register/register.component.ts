@@ -11,10 +11,24 @@ import { HomeComponent } from '../home/home.component';
 })
 export class RegisterComponent implements OnInit {
 
-  constructor(@Inject(forwardRef(() => HomeComponent)) private _parent: HomeComponent,private formBuilder: FormBuilder, private _service: MainService, private router: Router) { }
+  registerForm: FormGroup;
+  message: string;
+
+  constructor(@Inject(forwardRef(() => HomeComponent)) private _parent: HomeComponent,
+  private formBuilder: FormBuilder, private _service: MainService, private router: Router) { }
 
   ngOnInit() {
     this._parent.prikaziDesniMeni();
+
+    this.registerForm = this.formBuilder.group({
+      email: ['', Validators.required, Validators.email],
+      password: ['', Validators.required, Validators.pattern(new RegExp('"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$"'))],
+      birthday: ['', Validators.required],
+      address: ['', Validators.required, Validators.minLength(2)],
+      name: ['', Validators.required, Validators.minLength(2)],
+      surname: ['', Validators.required, Validators.minLength(2)],
+      type: ['', Validators.required]
+    });
   }
 
 }

@@ -1,3 +1,36 @@
 <div class="text-center">
-  <p>OVDE IDE REGISTRACIJA</p>
+  <form [formGroup]="registerForm" (ngSubmit)="register()">     
+    <table class=" mt-3">
+      <tr>
+        <td><label for="email">Email:</label></td>
+        <td><input type="text" class="ml-3" formControlName="email"/></td>
+      </tr>
+      <tr>
+        <td><label for="password">Sifra:</label></td>
+        <td><input type="password" class="ml-3" formControlName="password"/></td>
+      </tr>
+      <tr>
+        <td><label for="name">Ime:</label></td>
+        <td><input type="text" class="ml-3" formControlName="name"/></td>
+      </tr>
+      <tr>
+        <td><label for="surname">Prezime:</label></td>
+        <td><input type="text" class="ml-3" formControlName="surname"/></td>
+      </tr>
+      <tr>
+        <td><label for="address">Adresa:</label></td>
+        <td><input type="text" class="ml-3" formControlName="address"/></td>
+      </tr>
+      <tr>
+        <td><label for="birthday">Adresa:</label></td>
+        <td><input type="date" class="ml-3" formControlName="birthday"/></td>
+      </tr>
+      <tr>
+        <td colspan="2"><label class="text-danger" for="password">{{message}}</label></td>
+      </tr>
+      <tr>
+        <td colspan="2"><button class="btn btn-dark" type="submit">Login</button></td>
+      </tr>
+    </table>
+  </form>
 </div>
