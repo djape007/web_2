@@ -45,6 +45,10 @@
   margin: 0;
 }
 
+.navMenu a {
+  text-decoration: none;
+}
+
 .navMenu a:hover {
   text-decoration: none;
 }
