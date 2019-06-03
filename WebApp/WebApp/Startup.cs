@@ -13,10 +13,10 @@ namespace WebApp
     {
         public void Configuration(IAppBuilder app)
         {
+            app.UseStaticFiles("/imgs");
             app.UseCors(CorsOptions.AllowAll);
             ConfigureAuth(app);
             app.MapSignalR();
-            app.UseStaticFiles("/imgs");
         }
     }
 }

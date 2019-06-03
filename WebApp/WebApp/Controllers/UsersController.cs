@@ -162,10 +162,51 @@ namespace WebApp.Controllers
             return Ok();
         }
 
+        //PUT api/users/verify/ID
+        [Route("Verify/{id}")]
+        [Authorize(Roles = "Controller")]
+        [HttpPut]
+        public IHttpActionResult VerifyUserDocuments(string id) {
+            var userInDb = UserManager.Users.FirstOrDefault(x => x.Id == id);
+
+            if (userInDb == null) {
+                return BadRequest("User does not exist");
+            }
+
+            if (!UserManager.IsInRole(id, "AppUser")) {
+                return BadRequest();
+            }
+
+            userInDb.Status = "verified";
+            UserManager.Update(userInDb);
+
+            return Ok();
+        }
+
+        //PUT api/users/deny/ID
+        [Route("Deny/{id}")]
+        [Authorize(Roles = "Controller")]
+        [HttpPut]
+        public IHttpActionResult DenyUserDocuments(string id) {
+            var userInDb = UserManager.Users.FirstOrDefault(x => x.Id == id);
+
+            if (userInDb == null) {
+                return BadRequest("User does not exist");
+            }
+
+            if (!UserManager.IsInRole(id, "AppUser")) {
+                return BadRequest();
+            }
+
+            userInDb.Status = "denied";
+            UserManager.Update(userInDb);
+
+            return Ok();
+        }
 
         [Route("UploadFiles")]
         [HttpPost]
-        public IHttpActionResult MyFileUpload() {
+        public IHttpActionResult FileUpload() {
             var request = HttpContext.Current.Request;
 
             var userId = User.Identity.GetUserId();
