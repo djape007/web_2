@@ -1,17 +1,17 @@
 <div class="">
   <h2>RED VOŽNJE</h2>
-  <div class="">
+  <div class="daySelector-container">
       <button (click)='btnDayClick("radni")' id='radni' class="square_btn">Radni dan</button>
       <button (click)='btnDayClick("subota")' id='subota' class="square_btn">Subota</button>
       <button (click)='btnDayClick("nedelja")' id='nedelja' class="square_btn">Nedelja</button>
   </div>
   <br>
-  <div class="">
+  <div class="prigradskiSelector-container">
     <button (click)='btnTypeClick("gradski")' id='gradski' class="square_btn">Gradski</button>
     <button (click)='btnTypeClick("prigradski")' id='prigradski' class="square_btn">Prigradski</button>
   </div>
   <br>
-  <form [formGroup]="myForm" novalidate (ngSubmit)="save()">
+  <form [formGroup]="myForm" novalidate (ngSubmit)="save()" style='text-align: center;'>
       <div class="form-group">
           <select id="line" formControlName="line">
               <option *ngFor="let timetable of timetabletModel" [value]="timetable.Line.LineCode">{{ (timetable.Line.DisplayName.length>36)? (timetable.Line.DisplayName | slice:0:36)+'..':(timetable.Line.DisplayName)}}</option>
@@ -19,7 +19,7 @@
           <input type="text" id="day" formControlName="day" hidden>
           <input type="text" id="type" formControlName="type" hidden>
       </div>
-    <button type="submit" class="">Prikaži</button>
+    <button mat-flat-button color="primary" type="submit" class="btnPrikaziRedVoznje">Prikaži</button>
   </form>
   <br>
   <label class="" for="password">{{message}}</label>

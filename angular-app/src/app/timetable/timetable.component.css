@@ -17,3 +17,17 @@ select option {
   padding-top: 5px;
   color: white;
 }
+
+.daySelector-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.prigradskiSelector-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.btnPrikaziRedVoznje {
+  margin-top: 30px;
+}
