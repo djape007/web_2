@@ -11,7 +11,7 @@ namespace WebApp.Models
         [Key]
         public Guid Id { set; get; }
         [Required]
-        public string Type { set; get; }
+        public string Type { set; get; } //"vremenska", "godisnja".... name iz product typea
         [Required]
         public Guid UserId { get; set; }
         public ApplicationUser User { get; set; }

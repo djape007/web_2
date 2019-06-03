@@ -41,6 +41,23 @@ namespace WebApp.Controllers
             return Ok(soldTicket);
         }
 
+        // GET: api/SoldTickets/Valid/5
+        [Route("Valid/{id}")]
+        [HttpGet]
+        public IHttpActionResult IsSoldTicketValid(Guid id) {
+            SoldTicket soldTicket = unitOfWork.SoldTickets.Get(id);
+
+            if (soldTicket == null) {
+                return NotFound();
+            }
+
+            if (soldTicket.Expires <= DateTime.Now) {
+                return Ok("valid");
+            } else {
+                return Ok("expired");
+            }
+        }
+
         // PUT: api/SoldTickets/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutSoldTicket(Guid id, SoldTicket soldTicket)
