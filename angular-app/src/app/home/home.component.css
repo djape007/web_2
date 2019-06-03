@@ -86,3 +86,29 @@
 .navRight ul {
   text-align: right;
 }
+
+.logo-holder {
+  position: absolute;
+  z-index: 50;
+  margin-left: calc(50% - 75px);
+  width: 150px;
+  height: auto;
+}
+
+.logo-holder img {
+  width: 150px;
+  height: auto;
+}
+
+#companyNameBottom {
+  z-index: 50;
+  position: absolute;
+  margin-left: calc(50% - 100px);
+  width: 200px;
+  font-size: 1.1em;
+  text-align: center;
+  bottom: 0;
+  background-color: white;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
