@@ -38,50 +38,79 @@ export class HomeComponent implements OnInit{
 
  public removeOverlay(){
   let el = document.getElementsByClassName('map-overlay')[0];
-  el.className = "map-no-overlay";
+  if (el != null) {
+    el.className = "map-no-overlay";
+    this.mapElement.nativeElement.className = "";
+  }
  }
 
  public displayOverlay() {
   let el = document.getElementsByClassName('map-no-overlay')[0];
-  el.className = "map-overlay";
+  if (el != null) {
+    el.className = "map-overlay";
+    this.mapElement.nativeElement.className = "blurGrayscale";
+  }
  }
 
  public prikaziLeviMeni() {
-  let levi = document.getElementById('leftPanel');
-  let desni = document.getElementById('rightPanel');
-  levi.style.webkitTransform = "translate3d(0,0,0)";
-  levi.style.zIndex = "30000";
-  desni.style.webkitTransform = "translate3d(400px,0,0)";
-  desni.style.zIndex = "1";
+  this.hideRightPanel();
+  this.displayLeftPanel();
 
-  let mapHolder = document.getElementById('map-holder');
-  mapHolder.style.webkitTransform = "translate3d(400px,0,0)";
+  this.moveMapRight();
   this.displayOverlay();
  }
 
  public prikaziDesniMeni() {
-  let levi = document.getElementById('leftPanel');
-  let desni = document.getElementById('rightPanel');
-  levi.style.webkitTransform = "translate3d(-400px,0,0)";
-  levi.style.zIndex = "1";
-  desni.style.zIndex = "30000";
-  desni.style.webkitTransform = "translate3d(0,0,0)";
+  this.hideLeftPanel();
+  this.displayRightPanel();
   
-  let mapHolder = document.getElementById('map-holder');
-  mapHolder.style.webkitTransform = "translate3d(-400px,0,0)";
+  this.moveMapLeft();
   this.displayOverlay();
  }
 
  public prikaziMapu() {
-  let levi = document.getElementById('leftPanel');
-  let desni = document.getElementById('rightPanel');
-  levi.style.webkitTransform = "translate3d(-400px,0,0)";
-  levi.style.zIndex = "1";
-  desni.style.zIndex = "1";
-  desni.style.webkitTransform = "translate3d(400px,0,0)";
-  
-  let mapHolder = document.getElementById('map-holder');
-  mapHolder.style.webkitTransform = "translate3d(0,0,0)";
+  this.hideLeftPanel();
+  this.hideRightPanel();
+  this.centerMap();
   this.removeOverlay();
  }
+
+  private displayLeftPanel() {
+    let levi = document.getElementById('leftPanel');
+    levi.style.webkitTransform = "translate3d(0,0,0)";
+    levi.style.zIndex = "30000";
+  }
+
+  private hideLeftPanel() {
+    let levi = document.getElementById('leftPanel');
+    levi.style.webkitTransform = "translate3d(-400px,0,0)";
+    levi.style.zIndex = "1";
+  }
+
+  private displayRightPanel() {
+    let desni = document.getElementById('rightPanel');
+    desni.style.zIndex = "30000";
+    desni.style.webkitTransform = "translate3d(0,0,0)";
+  }
+
+  private hideRightPanel() {
+    let desni = document.getElementById('rightPanel');
+    desni.style.webkitTransform = "translate3d(400px,0,0)";
+    desni.style.zIndex = "1";
+  }
+
+  private moveMapRight() {
+    let mapHolder = document.getElementById('map-holder');
+    mapHolder.style.webkitTransform = "translate3d(400px,0,0)";
+  }
+
+  private moveMapLeft() {
+    let mapHolder = document.getElementById('map-holder');
+    mapHolder.style.webkitTransform = "translate3d(-400px,0,0)";
+  }
+
+  private centerMap() {
+    let mapHolder = document.getElementById('map-holder');
+    mapHolder.style.webkitTransform = "translate3d(0,0,0)";
+  }
 }

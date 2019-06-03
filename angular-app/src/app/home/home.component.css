@@ -1,23 +1,65 @@
 #mapOverlay {
-  transition-property: background-color;
-  transition-duration: 0.6s;
-}
-
-.map-overlay {
   position: absolute;
   z-index: 100;
   width: 100%;
   height: 100%;
+}
+
+.map-overlay {
   !background-color: rgba(1,1,1,0.77);
-  background: radial-gradient(ellipse at center, rgba(0,0,0,0) 0%,rgba(0,0,0,0) 27%,rgba(0,0,0,0.65) 70%,rgba(0,0,0,0.65) 100%);
+  !background: radial-gradient(ellipse at center, rgba(0,0,0,0) 0%,rgba(0,0,0,0) 28%,rgba(0,0,0,0.6) 72%,rgba(0,0,0,0.8) 100%);
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0) 0%,rgba(0,0,0,0) 50%,rgba(0,0,0,0.4) 82%,rgba(0,0,0,0.7) 100%);
 }
 
 .map-no-overlay {
   pointer-events: none;
-  background-color: rgba(1,1,1,0.01);
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0) 0%,rgba(0,0,0,0) 50%,rgba(0,0,0,0.4) 82%,rgba(0,0,0,0.7) 100%);
 }
 
 .animationPanel {
   transition-property: transform;
   transition-duration: 0.6s;
+}
+
+.blurGrayscale {
+  filter: blur(3px) grayscale(60%);
+}
+
+.navLeft {
+  left: 0;
+}
+
+.navRight {
+  right: 0;
+}
+
+.navMenu {
+  position: absolute;
+  z-index: 3000;
+  top: 36%;
+}
+
+.navMenu .nav-link {
+  font-size: 1.17em;
+  padding: 3px 25px;
+  padding-top: 5px;
+  margin-bottom: 25px;
+  background-color: rgba(255, 255, 255, 0.35);
+  color: black;
+  box-shadow: 0 0 10px 0;
+  transition: background-color 0.3s;
+}
+
+.navMenu .nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.85);
+}
+
+.navLeft .nav-link {
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 90px;
+}
+
+.navRight .nav-link {
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 90px;
 }

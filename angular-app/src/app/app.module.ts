@@ -16,6 +16,7 @@ import { TokenInterceptor } from './token.interceptor';
 import { RegisterComponent } from './register/register.component';
 import { LeftMenuComponent } from './left-menu/left-menu.component';
 import { RightMenuComponent } from './right-menu/right-menu.component';
+import { TicketComponent } from './ticket/ticket.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { RightMenuComponent } from './right-menu/right-menu.component';
     LoginComponent,
     RegisterComponent,
     LeftMenuComponent,
-    RightMenuComponent
+    RightMenuComponent,
+    TicketComponent
   ],
   imports: [
     BrowserModule,

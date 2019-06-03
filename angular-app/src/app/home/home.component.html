@@ -1,9 +1,14 @@
 <app-left-menu id='leftPanel' class='animationPanel'></app-left-menu>
 <div id='map-holder' class='animationPanel' style="width:100%; height:100%">
-    <!-- <a class="nav-link text-primary" routerLink="/home" routerLinkActive="active">Home</a>
-    <a class="nav-link text-primary" [routerLink]='[{ outlets: { leftRouter: ["timetable"] } }]' routerLinkActive="active">Timetable</a>
-    <a class="nav-link text-primary" [routerLink]='[{ outlets: { rightRouter: ["login"] } }]' routerLinkActive="active">Login</a> -->
+    <nav class='navMenu navLeft'>
+        <a class="nav-link" routerLink="/home/timetable" routerLinkActive="active">RED VOŽNJE</a>
+        <a class="nav-link" routerLink="/home/tickets" routerLinkActive="active">KARTE</a>
+    </nav>
+    <nav class='navMenu navRight'>
+        <a class="nav-link" routerLink="/home/login" routerLinkActive="active">PRIJAVA</a>
+        <a class="nav-link" routerLink="/home/register" routerLinkActive="active">REGISTRACIJA</a>
+    </nav>
     <div id='mapOverlay' class='map-no-overlay'></div>
-    <div #map style="width:100%; height:100%"></div>
+    <div #map style="width:100%; height:100%; transition-property: filter; transition-duration: 0.8s;"></div>
 </div>
 <app-right-menu id='rightPanel' class='animationPanel'></app-right-menu>

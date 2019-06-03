@@ -1,20 +1,20 @@
 import { Component, OnInit, Inject, forwardRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HomeComponent } from '../home/home.component';
+import { FormBuilder } from '@angular/forms';
 import { MainService } from '../services/main.service';
 import { Router } from '@angular/router';
-import { HomeComponent } from '../home/home.component';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  selector: 'app-ticket',
+  templateUrl: './ticket.component.html',
+  styleUrls: ['./ticket.component.css']
 })
-export class RegisterComponent implements OnInit {
+export class TicketComponent implements OnInit {
 
   constructor(@Inject(forwardRef(() => HomeComponent)) private _parent: HomeComponent,private formBuilder: FormBuilder, private _service: MainService, private router: Router) { }
 
   ngOnInit() {
-    this._parent.prikaziDesniMeni();
+    this._parent.prikaziLeviMeni();
   }
 
 }

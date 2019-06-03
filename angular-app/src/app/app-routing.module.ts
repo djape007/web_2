@@ -5,6 +5,7 @@ import { TimetableComponent } from './timetable/timetable.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { LeftMenuComponent } from './left-menu/left-menu.component';
+import { TicketComponent } from './ticket/ticket.component';
 
 const routes: Routes = [
   {
@@ -23,7 +24,17 @@ const routes: Routes = [
       },
       {
         path: 'login',
-        redirectTo: '/home/(rightRouter:lo)',
+        redirectTo: '/home/(rightRouter:log)',
+        pathMatch: 'prefix',
+      },
+      {
+        path: 'register',
+        redirectTo: '/home/(rightRouter:reg)',
+        pathMatch: 'prefix',
+      },
+      {
+        path: 'tickets',
+        redirectTo: '/home/(leftRouter:tic)',
         pathMatch: 'prefix',
       },
       {
@@ -32,7 +43,17 @@ const routes: Routes = [
         outlet: 'leftRouter'
       },
       {
-        path: 'lo',
+        path: 'reg',
+        component: RegisterComponent,
+        outlet: 'rightRouter'
+      },
+      {
+        path: 'tic',
+        component: TicketComponent,
+        outlet: 'leftRouter'
+      },
+      {
+        path: 'log',
         component: LoginComponent,
         outlet: 'rightRouter'
       }
