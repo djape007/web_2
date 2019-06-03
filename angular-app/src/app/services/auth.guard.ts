@@ -26,12 +26,6 @@ export class AuthGuard implements CanActivate {
         var token = localStorage.getItem("token");
         var isLoggedIn = localStorage.getItem('isLoggedIn');
 
-        //var currentDate = new Date(Date.now());
-        //var expDate = new Date(expDateStr);
-        // if(isLoggedIn == "true" && token && currentDate < expDate){
-        //   status = true;
-        // }
-        //treba porediti i da li je expired
         if(isLoggedIn && token)
             status = true;
 

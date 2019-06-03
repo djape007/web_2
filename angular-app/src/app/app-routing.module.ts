@@ -6,6 +6,8 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { LeftMenuComponent } from './left-menu/left-menu.component';
 import { TicketComponent } from './ticket/ticket.component';
+import { ProfileComponent } from './profile/profile.component';
+import { AuthGuard } from './services/auth.guard';
 
 const routes: Routes = [
   {
@@ -38,6 +40,11 @@ const routes: Routes = [
         pathMatch: 'prefix',
       },
       {
+        path: 'profile',
+        redirectTo: '/home/(rightRouter:prof)',
+        pathMatch: 'prefix',
+      },
+      {
         path: 'tt',
         component: TimetableComponent,
         outlet: 'leftRouter'
@@ -56,7 +63,13 @@ const routes: Routes = [
         path: 'log',
         component: LoginComponent,
         outlet: 'rightRouter'
-      }
+      },
+      {
+        path: 'prof',
+        component: ProfileComponent,
+        outlet: 'rightRouter',
+        canActivate: [AuthGuard]
+      },
     ]
   }
 ];

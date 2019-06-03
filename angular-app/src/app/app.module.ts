@@ -20,6 +20,7 @@ import { TicketComponent } from './ticket/ticket.component';
 
 import { MatInputModule, MatButtonModule, MatSelectModule, MatIconModule, MatNativeDateModule, MatDatepickerModule, MatTableModule, MatSortModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { FormsModule } from '@angular/forms';
     RegisterComponent,
     LeftMenuComponent,
     RightMenuComponent,
-    TicketComponent
+    TicketComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

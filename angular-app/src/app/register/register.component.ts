@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HomeComponent } from '../home/home.component';
 import { User } from 'src/models/user';
 import { ProfileService } from '../services/profile.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -15,7 +16,7 @@ export class RegisterComponent implements OnInit {
   selectedValue: string;
 
   constructor(@Inject(forwardRef(() => HomeComponent)) private _parent: HomeComponent,
-  private formBuilder: FormBuilder, private _service: ProfileService) { }
+  private formBuilder: FormBuilder, private _service: ProfileService, private _router: Router) { }
 
   ngOnInit() {
     this._parent.prikaziDesniMeni();
@@ -60,10 +61,10 @@ export class RegisterComponent implements OnInit {
     this._service.register(user)
       .subscribe(
         data => {
-          var a = data;
+          this._router.navigate(['/home/login']);
         },
         err =>{
-
+          console.log(err);
         }
       )
   }

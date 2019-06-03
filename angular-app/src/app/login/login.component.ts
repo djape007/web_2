@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HomeComponent } from '../home/home.component';
 import { ProfileService } from '../services/profile.service';
 import { User } from 'src/models/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -13,10 +14,9 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
   message: string;
-  returnUrl: string;
 
   constructor(@Inject(forwardRef(() => HomeComponent)) private _parent: HomeComponent,
-    private formBuilder: FormBuilder, private _service: ProfileService) { }
+    private formBuilder: FormBuilder, private _service: ProfileService, private _router: Router) { }
 
   ngOnInit() {
     this._parent.prikaziDesniMeni();
@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
             let token = data;
             localStorage.setItem('isLoggedIn', "true");
             localStorage.setItem('token', token);
-            //this.router.navigate([this.returnUrl]); //redirect to page if loggedIn
+            this._router.navigate(['/home/profile']); //redirect to page if loggedIn
           }
         },
         error => {
