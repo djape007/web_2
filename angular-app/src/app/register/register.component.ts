@@ -1,9 +1,8 @@
 import { Component, OnInit, Inject, forwardRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MainService } from '../services/main.service';
-import { Router } from '@angular/router';
 import { HomeComponent } from '../home/home.component';
 import { User } from 'src/models/user';
+import { ProfileService } from '../services/profile.service';
 
 @Component({
   selector: 'app-register',
@@ -16,7 +15,7 @@ export class RegisterComponent implements OnInit {
   selectedValue: string;
 
   constructor(@Inject(forwardRef(() => HomeComponent)) private _parent: HomeComponent,
-  private formBuilder: FormBuilder, private _service: MainService, private router: Router) { }
+  private formBuilder: FormBuilder, private _service: ProfileService) { }
 
   ngOnInit() {
     this._parent.prikaziDesniMeni();

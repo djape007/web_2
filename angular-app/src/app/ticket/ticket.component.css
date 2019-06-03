@@ -1,3 +1,25 @@
 :host {
     color: white;
 }
+
+h1{
+    color:white;
+    text-align: left;
+    margin-left: 35px;
+  }
+
+table {
+    width: 100%;
+}
+  
+th.mat-sort-header-sorted {
+    color: black;
+}
+
+.content {
+    height: 630px;
+    overflow-y: auto;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    color: white;
+  }

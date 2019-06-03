@@ -18,7 +18,7 @@ import { LeftMenuComponent } from './left-menu/left-menu.component';
 import { RightMenuComponent } from './right-menu/right-menu.component';
 import { TicketComponent } from './ticket/ticket.component';
 
-import { MatInputModule, MatButtonModule, MatSelectModule, MatIconModule, MatNativeDateModule, MatDatepickerModule } from '@angular/material';
+import { MatInputModule, MatButtonModule, MatSelectModule, MatIconModule, MatNativeDateModule, MatDatepickerModule, MatTableModule, MatSortModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
@@ -45,6 +45,8 @@ import { FormsModule } from '@angular/forms';
     MatIconModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatTableModule,
+    MatSortModule
   ],
   providers: [
     {

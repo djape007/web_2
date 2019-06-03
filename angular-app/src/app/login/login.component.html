@@ -3,12 +3,12 @@
   <form [formGroup]="loginForm" novalidate (ngSubmit)="login()" style='text-align: center;'>     
     <div class="form-group">
       <mat-form-field class="example-full-width">
-        <input formControlName='email' matInput placeholder="Email" required>
+        <input (focus)='clearMessage()' formControlName='email' matInput placeholder="Email" required>
         <mat-error *ngIf="loginForm.controls['email'].errors && loginForm.controls['email'].errors['required']">Obavezno polje</mat-error>
         <mat-error *ngIf="loginForm.controls['email'].errors && loginForm.controls['email'].errors['email']">Nije validna email adresa</mat-error>
       </mat-form-field>
       <mat-form-field class="example-full-width">
-        <input type="password" formControlName='password' matInput placeholder="Lozinka" matNativeControl required>
+        <input (focus)='clearMessage()' type="password" formControlName='password' matInput placeholder="Lozinka" matNativeControl required>
         <mat-error *ngIf="loginForm.controls['password'].errors && loginForm.controls['password'].errors['required']">Obavezno polje</mat-error>
       </mat-form-field>
     </div>

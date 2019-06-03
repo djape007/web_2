@@ -1,4 +1,38 @@
-<div class="text-center">
-  <p>OVDE IDU KARTE</p>
+<div *ngIf="dataSource">
+  <h1>Cenovnik</h1>
+  <!-- <table>
+    <tr>
+      <th>Tip karte</th>
+      <th>Vrsta putnika</th>
+      <th colspan="2">Cena</th>
+    </tr>
+    <tr *ngFor="let item of createPricelist()">
+      <td *ngFor="let childItem of item">{{childItem}}</td>
+    </tr>
+  </table> -->
+  <div class="content">
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+      <!-- Position Column -->
+      <ng-container matColumnDef="pricelist">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Tip karte </th>
+        <td mat-cell *matCellDef="let element"> {{element.pricelist}} </td>
+      </ng-container>
+    
+      <!-- Name Column -->
+      <ng-container matColumnDef="person">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Tip osobe </th>
+        <td mat-cell *matCellDef="let element"> {{element.person}} </td>
+      </ng-container>
+    
+      <!-- Weight Column -->
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Cena </th>
+        <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+      </ng-container>
+        
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
 </div>
   

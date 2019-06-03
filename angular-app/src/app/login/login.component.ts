@@ -1,9 +1,8 @@
 import { Component, OnInit, Inject, forwardRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MainService } from '../services/main.service';
-import { UserLogin } from 'src/models/user-login';
-import { Router } from '@angular/router';
 import { HomeComponent } from '../home/home.component';
+import { ProfileService } from '../services/profile.service';
+import { User } from 'src/models/user';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +16,7 @@ export class LoginComponent implements OnInit {
   returnUrl: string;
 
   constructor(@Inject(forwardRef(() => HomeComponent)) private _parent: HomeComponent,
-    private formBuilder: FormBuilder, private _service: MainService, private router: Router) { }
+    private formBuilder: FormBuilder, private _service: ProfileService) { }
 
   ngOnInit() {
     this._parent.prikaziDesniMeni();
@@ -30,13 +29,20 @@ export class LoginComponent implements OnInit {
 
   get f() { return this.loginForm.controls; }
 
-  public login(){
+  clearMessage(){
+    this.message = '';
+  }
+
+  login(){
     this.message = '';
     if (this.loginForm.invalid) {
         return;
     }
     else{
-      this._service.login(new UserLogin(this.f.email.value, this.f.password.value))
+      var user = new User();
+      user.Email = this.f.email.value;
+      user.Password = this.f.password.value;
+      this._service.login(user)
         .subscribe(data => {
           if(data){
             let token = data;
@@ -46,7 +52,7 @@ export class LoginComponent implements OnInit {
           }
         },
         error => {
-          this.message = "Email i lozinka ne odgovaraju";
+          this.message = "Email i lozinka nisu validni";
         });
     }   
   }
