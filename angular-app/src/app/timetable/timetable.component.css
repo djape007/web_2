@@ -4,6 +4,7 @@
   padding-bottom: 5px;
   padding-top: 5px;
   color: white;
+  margin-left: 10px;
 }
 
 .daySelector-container {
@@ -18,4 +19,14 @@
 
 .btnPrikaziRedVoznje {
   margin-top: 30px;
+}
+
+mat-error{
+  float: right;
+}
+
+h1{
+  color:white;
+  text-align: left;
+  margin-left: 35px;
 }

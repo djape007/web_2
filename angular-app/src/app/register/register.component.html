@@ -35,11 +35,11 @@
       </mat-form-field>
       <mat-form-field class="example-right-half-width">
         <mat-label>Tip korisnika</mat-label>
-        <select (change)='selectChange()' formControlName='type' matNativeControl required>
-          <option value="Obican">Obican</option>
-          <option value="Student">Student - Djak</option>
-          <option value="Penzioner">Penzos</option>
-        </select>
+        <mat-select disableOptionCentering panelClass='selectLinePanel' (change)='selectChange()' formControlName='type' matNativeControl required>
+          <mat-option value="Obican">Obican</mat-option>
+          <mat-option value="Student">Student - Djak</mat-option>
+          <mat-option value="Penzioner">Penzos</mat-option>
+        </mat-select>
         <mat-error *ngIf="registerForm.controls['type'].errors && registerForm.controls['type'].errors['required']">Obavezno polje</mat-error>
       </mat-form-field>
     </div>

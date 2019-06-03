@@ -18,7 +18,6 @@ export class TimetableComponent implements OnInit {
   timetabletModel = new Array<Timetable>();
   timetableJson = Array<string>();
   myForm: FormGroup;
-  message: string;
 
   constructor(@Inject(forwardRef(() => HomeComponent)) private _parent: HomeComponent,
      private _sevice: MainService, private _formBuilder: FormBuilder, private _router: Router) { }
@@ -51,16 +50,10 @@ export class TimetableComponent implements OnInit {
   
   save() {
 
-    this.myForm.setValue({  
-      day: this.picked_day,
-      type: this.picked_type,  
-      line: this.myForm.get('line').value
-    });
-
-    this.message = '';
+    this.f.day.setValue(this.picked_day);
+    this.f.type.setValue(this.picked_type);
 
     if (this.myForm.invalid) {
-      this.message = "Izaberite zeljenu liniju!";
       this.timetableJson = new Array<string>();
       return;
     }
