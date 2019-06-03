@@ -66,7 +66,7 @@
                 userManager.AddToRole(user.Id, "AppUser");
             }
 
-            context.Lines.Add(new Line() { Id = Guid.NewGuid(), Direction = "KLISA - CENTAR - LIMAN I", LineCode = "1A" });
+            /*context.Lines.Add(new Line() { Id = Guid.NewGuid(), Direction = "KLISA - CENTAR - LIMAN I", LineCode = "1A" });
             context.Lines.Add(new Line() { Id = Guid.NewGuid(), Direction = "LIMAN I - CENTAR - KLISA", LineCode = "1B" });
             context.Lines.Add(new Line() { Id = Guid.NewGuid(), Direction = "CENTAR - NOVO NASELJE", LineCode = "2A" });
             context.Lines.Add(new Line() { Id = Guid.NewGuid(), Direction = "NOVO NASELJE - CENTAR", LineCode = "2B" });
@@ -299,6 +299,42 @@
             context.Timetables.Add(new Timetable() { Id = Guid.NewGuid(), LineId = context.Lines.First(x => x.LineCode == "84A").Id, Times = "{\"Radni_dan\": [\"05:40\", \"09:55\", \"11:40\", \"12:50\", \"13:35\", \"14:40\", \"17:35\", \"19:50\", \"21:35\"], \"Subota\": [\"05:40\", \"11:40\", \"14:40\", \"17:35\", \"20:00\", \"21:40\"], \"Nedelja\": [\"11:40\", \"14:40\", \"17:35\", \"20:00\", \"21:40\"]}", ValidFrom = DatumVazenjaRedaVoznja });
             context.Timetables.Add(new Timetable() { Id = Guid.NewGuid(), LineId = context.Lines.First(x => x.LineCode == "84B").Id, Times = "{\"Radni_dan\": [\"05:00\", \"05:45\", \"07:15\", \"11:35\", \"12:55\", \"14:15\", \"15:00\", \"16:15\", \"19:00\", \"21:15\", \"22:50\"], \"Subota\": [\"05:00\", \"07:15\", \"12:55\", \"16:15\", \"19:00\", \"21:25\", \"22:50\"], \"Nedelja\": [\"05:00\", \"12:55\", \"16:15\", \"19:00\", \"21:25\", \"22:50\"]}", ValidFrom = DatumVazenjaRedaVoznja });
 
+            context.SaveChanges();*/
+
+            context.Coefficients.Add(new Coefficient() { Id = Guid.NewGuid(), Type = "penzioner", Value = 0.75 });
+            context.Coefficients.Add(new Coefficient() { Id = Guid.NewGuid(), Type = "student", Value = 0.85 });
+            context.Coefficients.Add(new Coefficient() { Id = Guid.NewGuid(), Type = "obican", Value = 1 });
+
+            context.SaveChanges();
+
+            var VremenskaProduct = new ProductType() { Id = Guid.NewGuid(), Name = "Vremenska (1h)" };
+            var DnevnaProduct = new ProductType() { Id = Guid.NewGuid(), Name = "Dnevna" };
+            var MesecnaProduct = new ProductType() { Id = Guid.NewGuid(), Name = "Mesecna" };
+            var SestomesecnaProduct = new ProductType() { Id = Guid.NewGuid(), Name = "Sestomesecna" };
+            var GodisnjaProduct = new ProductType() { Id = Guid.NewGuid(), Name = "Godisnja" };
+
+            context.ProductTypes.Add(VremenskaProduct);
+            context.ProductTypes.Add(DnevnaProduct);
+            context.ProductTypes.Add(MesecnaProduct);
+            context.ProductTypes.Add(SestomesecnaProduct);
+            context.ProductTypes.Add(GodisnjaProduct);
+            context.SaveChanges();
+
+            var Cenovnik1 = new Pricelist() { Id = Guid.NewGuid(), From = DateTime.Now, To = DateTime.Now.AddDays(50) };
+            context.Pricelists.Add(Cenovnik1);
+            context.SaveChanges();
+
+            var VremenskaCenovnik1Cena = new PriceHistory() { ProductTypeId = VremenskaProduct.Id, Price = 150, Id = Guid.NewGuid(), PricelistId = Cenovnik1.Id };
+            var DnevnaCenovnik1Cena = new PriceHistory() { ProductTypeId = DnevnaProduct.Id, Price = 320, Id = Guid.NewGuid(), PricelistId = Cenovnik1.Id };
+            var MesecnaCenovnik1Cena = new PriceHistory() { ProductTypeId = MesecnaProduct.Id, Price = 2600, Id = Guid.NewGuid(), PricelistId = Cenovnik1.Id };
+            var SestomesecnaCenovnik1Cena = new PriceHistory() { ProductTypeId = SestomesecnaProduct.Id,Price = 13000, Id = Guid.NewGuid(), PricelistId = Cenovnik1.Id };
+            var GodisnjaCenovnik1Cena = new PriceHistory() { ProductTypeId = GodisnjaProduct.Id , Price = 22000, Id = Guid.NewGuid(), PricelistId = Cenovnik1.Id};
+
+            context.PriceHistories.Add(VremenskaCenovnik1Cena);
+            context.PriceHistories.Add(DnevnaCenovnik1Cena);
+            context.PriceHistories.Add(MesecnaCenovnik1Cena);
+            context.PriceHistories.Add(SestomesecnaCenovnik1Cena);
+            context.PriceHistories.Add(GodisnjaCenovnik1Cena);
             context.SaveChanges();
         }
     }
