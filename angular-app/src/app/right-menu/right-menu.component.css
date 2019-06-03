@@ -1,11 +1,12 @@
 :host {
     display: inline-block;
-    background-color: rgb(218, 199, 149);
+    background: linear-gradient(135deg, rgba(216,200,158,1) 1%,rgba(216,177,78,1) 100%);
     position: absolute;
     transform: translate3d(400px,0,0);
     height: 100%;
     top: 0;
     right: 0;
+    box-shadow:0 0 15px 0px;
 }
 
 .rightMenuHolder {

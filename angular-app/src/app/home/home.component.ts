@@ -93,7 +93,7 @@ export class HomeComponent implements OnInit{
   private hideLeftPanel() {
     let levi = document.getElementById('leftPanel');
     levi.style.webkitTransform = "translate3d(-400px,0,0)";
-    levi.style.zIndex = "1";
+    levi.style.zIndex = "-500";
   }
 
   private displayRightPanel() {
@@ -105,7 +105,7 @@ export class HomeComponent implements OnInit{
   private hideRightPanel() {
     let desni = document.getElementById('rightPanel');
     desni.style.webkitTransform = "translate3d(400px,0,0)";
-    desni.style.zIndex = "1";
+    desni.style.zIndex = "-500";
   }
 
   private moveMapRight() {
