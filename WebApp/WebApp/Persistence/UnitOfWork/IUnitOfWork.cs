@@ -20,6 +20,7 @@ namespace WebApp.Persistence.UnitOfWork
         ICoefficientRepository Coefficients { get; set; }
         IPointPathLineRepository PointPathLines { get; set; }
         ISoldTicketRepository SoldTickets { get; set; }
+        IUserRepository Users { get; set; }
 
         int Complete();
     }

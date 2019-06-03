@@ -13,7 +13,7 @@ namespace WebApp.Models
         [Required]
         public string Type { set; get; } //"vremenska", "godisnja".... name iz product typea
         [Required]
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
         public ApplicationUser User { get; set; }
         public DateTime Expires { get; set; }
         public int Usages { get; set; } = 0;

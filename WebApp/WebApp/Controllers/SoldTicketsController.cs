@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -22,6 +23,76 @@ namespace WebApp.Controllers
             this.unitOfWork = unitOfWork;
         }
 
+        [Route("api/SoldTickets/Buy/{id}")]
+        [HttpPost]
+        [ResponseType(typeof(SoldTicket))]
+        [Authorize(Roles = "AppUser")]
+        public IHttpActionResult BuyTicket(Guid id) {
+            var userId = User.Identity.GetUserId();
+
+            var productType = unitOfWork.ProductTypes.Get(id);
+
+            if (productType == null) {
+                return BadRequest("Invalid product type");
+            }
+
+            var userFromDb = unitOfWork.Users.Get(userId);
+
+            if (userFromDb == null) {
+                return InternalServerError();
+            } else if (userFromDb.Status != "verified") {
+                return BadRequest("User is not verified");
+            }
+
+
+            if (userFromDb.Type == null || userFromDb.Type.Trim().Length == 0) {
+                return InternalServerError();
+            }
+
+            var activePricelist = unitOfWork.Pricelists.Find(x => x.From <= DateTime.Now && x.To >= DateTime.Now).FirstOrDefault();
+
+            if (activePricelist == null) {
+                return BadRequest("There are no active pricelists");
+            }
+
+            var coefficient = unitOfWork.Coefficients.Find(x => x.Type.ToLower() == userFromDb.Type.ToLower()).FirstOrDefault();
+
+            if (coefficient == null) {
+                return InternalServerError();
+            }
+
+            var ticketPrice = unitOfWork.PriceHistories.Find(x => x.ProductTypeId == productType.Id && x.PricelistId == activePricelist.Id).FirstOrDefault();
+
+            if (ticketPrice == null) {
+                return InternalServerError();
+            }
+
+            var soldAtPrice = ticketPrice.Price * coefficient.Value;
+
+            SoldTicket soldTicket = new SoldTicket() {
+                Id = Guid.NewGuid(),
+                DateOfPurchase = DateTime.Now,
+                Expires = DateTime.Now.AddDays(1),
+                UserId = userId,
+                Price = soldAtPrice,
+                Usages = 0,
+                Type = productType.Name
+            };
+
+            unitOfWork.SoldTickets.Add(soldTicket);
+            try {
+                unitOfWork.Complete();
+            } catch (DbUpdateConcurrencyException) {
+                if (!SoldTicketExists(id)) {
+                    return NotFound();
+                } else {
+                    throw;
+                }
+            }
+
+            return Ok(soldTicket);
+        }
+
         // GET: api/SoldTickets
         public IEnumerable<SoldTicket> GetSoldTickets()
         {
@@ -42,7 +113,7 @@ namespace WebApp.Controllers
         }
 
         // GET: api/SoldTickets/Valid/5
-        [Route("Valid/{id}")]
+        [Route("api/SoldTickets/Valid/{id}")]
         [HttpGet]
         public IHttpActionResult IsSoldTicketValid(Guid id) {
             SoldTicket soldTicket = unitOfWork.SoldTickets.Get(id);
@@ -51,7 +122,10 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            if (soldTicket.Expires <= DateTime.Now) {
+            if (soldTicket.Expires >= DateTime.Now) {
+                soldTicket.Usages += 1;
+                unitOfWork.SoldTickets.Update(soldTicket);
+                unitOfWork.Complete();
                 return Ok("valid");
             } else {
                 return Ok("expired");

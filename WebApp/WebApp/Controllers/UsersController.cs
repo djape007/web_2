@@ -512,6 +512,12 @@ namespace WebApp.Controllers
                 return BadRequest("https://youtu.be/v6tuOipj5mk?t=68");
             }
 
+            var status = "verified";
+
+            if (newUser.Type != "obican") {
+                status = "not verified";
+            }
+
             var user = new ApplicationUser() {
                 UserName = newUser.Email,
                 Email = newUser.Email,
@@ -519,7 +525,7 @@ namespace WebApp.Controllers
                 Address = newUser.Address,
                 Name = newUser.Name,
                 Surname = newUser.Surname,
-                Status = "not verified",
+                Status = status,
                 Type = newUser.Type,
                 Files = ""
             };
