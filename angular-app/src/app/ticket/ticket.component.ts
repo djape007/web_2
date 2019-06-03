@@ -64,19 +64,10 @@ export class TicketComponent implements OnInit {
 
   }
 
-  // createPricelist() : Array<Array<string>>{
-  //   var retVal = new Array<Array<string>>();
-  //   for(let priceHistory of this.priceHistories){
-  //     for(let coef of this.coefficients){
-  //       var str = new Array<string>();
-  //       str.push(priceHistory.ProductType.Name);
-  //       str.push(coef.Type);
-  //       str.push((priceHistory.Price*coef.Value).toString(),'RSD');
-  //       retVal.push(str);
-  //     }
-  //   }
-  //   return retVal;
-  // }
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
   createPricelist() : PricelistElement[]{
     var retVal = new Array<PricelistElement>();
     for(let priceHistory of this.priceHistories){
