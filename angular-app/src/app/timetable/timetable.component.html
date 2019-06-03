@@ -18,7 +18,7 @@
       </div>
       <mat-form-field>
         <mat-label>Izaberi liniju</mat-label>
-        <mat-select formControlName="line" required>
+        <mat-select formControlName="line" required disableOptionCentering>
           <mat-option *ngFor="let timetable of timetabletModel" [value]="timetable.Line.LineCode">{{ timetable.Line.DisplayName }}</mat-option>
         </mat-select>
       </mat-form-field>

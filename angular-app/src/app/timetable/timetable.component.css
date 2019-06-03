@@ -1,15 +1,3 @@
-select{
-  overflow: hidden;
-  width: 300px;
-  margin-left: 50px;
-  margin-right: 50px;
-  font-size: 0.9em;
-}
-
-select option {
-  width: 300px;
-}
-
 .times {
   height: 500px;
   overflow-y: auto;
