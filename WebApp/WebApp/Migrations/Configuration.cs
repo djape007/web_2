@@ -66,7 +66,10 @@
                 userManager.AddToRole(user.Id, "AppUser");
             }
 
-            /*context.Lines.Add(new Line() { Id = Guid.NewGuid(), Direction = "KLISA - CENTAR - LIMAN I", LineCode = "1A" });
+            //empty database
+            //Update-Database –TargetMigration: $InitialDatabase
+
+            context.Lines.Add(new Line() { Id = Guid.NewGuid(), Direction = "KLISA - CENTAR - LIMAN I", LineCode = "1A" });
             context.Lines.Add(new Line() { Id = Guid.NewGuid(), Direction = "LIMAN I - CENTAR - KLISA", LineCode = "1B" });
             context.Lines.Add(new Line() { Id = Guid.NewGuid(), Direction = "CENTAR - NOVO NASELJE", LineCode = "2A" });
             context.Lines.Add(new Line() { Id = Guid.NewGuid(), Direction = "NOVO NASELJE - CENTAR", LineCode = "2B" });
@@ -299,7 +302,7 @@
             context.Timetables.Add(new Timetable() { Id = Guid.NewGuid(), LineId = context.Lines.First(x => x.LineCode == "84A").Id, Times = "{\"Radni_dan\": [\"05:40\", \"09:55\", \"11:40\", \"12:50\", \"13:35\", \"14:40\", \"17:35\", \"19:50\", \"21:35\"], \"Subota\": [\"05:40\", \"11:40\", \"14:40\", \"17:35\", \"20:00\", \"21:40\"], \"Nedelja\": [\"11:40\", \"14:40\", \"17:35\", \"20:00\", \"21:40\"]}", ValidFrom = DatumVazenjaRedaVoznja });
             context.Timetables.Add(new Timetable() { Id = Guid.NewGuid(), LineId = context.Lines.First(x => x.LineCode == "84B").Id, Times = "{\"Radni_dan\": [\"05:00\", \"05:45\", \"07:15\", \"11:35\", \"12:55\", \"14:15\", \"15:00\", \"16:15\", \"19:00\", \"21:15\", \"22:50\"], \"Subota\": [\"05:00\", \"07:15\", \"12:55\", \"16:15\", \"19:00\", \"21:25\", \"22:50\"], \"Nedelja\": [\"05:00\", \"12:55\", \"16:15\", \"19:00\", \"21:25\", \"22:50\"]}", ValidFrom = DatumVazenjaRedaVoznja });
 
-            context.SaveChanges();*/
+            context.SaveChanges();
 
             context.Coefficients.Add(new Coefficient() { Id = Guid.NewGuid(), Type = "penzioner", Value = 0.75 });
             context.Coefficients.Add(new Coefficient() { Id = Guid.NewGuid(), Type = "student", Value = 0.85 });
@@ -307,11 +310,11 @@
 
             context.SaveChanges();
 
-            var VremenskaProduct = new ProductType() { Id = Guid.NewGuid(), Name = "Vremenska (1h)" };
-            var DnevnaProduct = new ProductType() { Id = Guid.NewGuid(), Name = "Dnevna" };
-            var MesecnaProduct = new ProductType() { Id = Guid.NewGuid(), Name = "Mesecna" };
-            var SestomesecnaProduct = new ProductType() { Id = Guid.NewGuid(), Name = "Sestomesecna" };
-            var GodisnjaProduct = new ProductType() { Id = Guid.NewGuid(), Name = "Godisnja" };
+            var VremenskaProduct = new ProductType() { Id = Guid.NewGuid(), Name = "Vremenska (1h)", ExpiresAfterHours = 1 };
+            var DnevnaProduct = new ProductType() { Id = Guid.NewGuid(), Name = "Dnevna", ExpiresAfterHours = 24 };
+            var MesecnaProduct = new ProductType() { Id = Guid.NewGuid(), Name = "Mesecna", ExpiresAfterHours = 24*30 };
+            var SestomesecnaProduct = new ProductType() { Id = Guid.NewGuid(), Name = "Sestomesecna", ExpiresAfterHours = 24*30*6 };
+            var GodisnjaProduct = new ProductType() { Id = Guid.NewGuid(), Name = "Godisnja", ExpiresAfterHours = 24*365 };
 
             context.ProductTypes.Add(VremenskaProduct);
             context.ProductTypes.Add(DnevnaProduct);

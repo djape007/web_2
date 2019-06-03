@@ -111,6 +111,7 @@ namespace WebApp.Migrations
                     {
                         Id = c.Guid(nullable: false),
                         Name = c.String(nullable: false),
+                        ExpiresAfterHours = c.Long(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
             
