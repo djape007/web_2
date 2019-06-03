@@ -1,6 +1,6 @@
 :host {
     display: inline-block;
-    background: linear-gradient(135deg, rgba(216,200,158,1) 1%,rgba(216,177,78,1) 100%);
+    background-color: #191919;
     position: absolute;
     transform: translate3d(400px,0,0);
     height: 100%;
@@ -12,4 +12,5 @@
 .rightMenuHolder {
     display: inline-block;
     width: 400px;
+    height: 100%;
 }
