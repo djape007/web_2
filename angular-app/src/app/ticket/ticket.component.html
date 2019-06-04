@@ -26,7 +26,7 @@
   <br>
   <div>
     <button [disabled]="selectedRowElement == null" mat-flat-button color="primary" class='matButtonStyle btnKupiKartu' (click)='buyTicket(selectedRowElement)'>Kupi {{(selectedRowElement != null) ? (selectedRowElement.productTypeName + " (" + selectedRowElement.price + "rsd)") : ""}}</button><br>
-    <label class='lblMessage' [ngClass]="{'lblError': messageIsError}">{{message}}</label><br>
+    <pre class='lblMessage' [ngClass]="{'lblError': messageIsError}">{{message}}</pre><br>
     <div *ngIf="lastBoughtTicketID.length > 0" class="boughtTicketContainer">
       <label>ID Karte: <b>{{lastBoughtTicketID}}</b></label><br>
       <label>Karta važi do: <b>{{lastBoughtTicketValidUntil | date: 'dd/MM/yyyy HH:mm'}}h</b></label><br>

@@ -17,14 +17,6 @@ th.mat-sort-header-sorted {
     color: black;
 }
 
-.content {
-    height: 520px;
-    overflow-y: auto;
-    padding-bottom: 5px;
-    padding-top: 5px;
-    color: white;
-  }
-
   .highlight{
     background: #fac344;
     font-weight: bold;

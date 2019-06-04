@@ -1,35 +1,35 @@
 <div>
-    <h1>RED VOŽNJE</h1>
-    <div class="daySelector-container">
-        <button (click)='btnDayClick("radni")' id='radni' class="square_btn">Radni dan</button>
-        <button (click)='btnDayClick("subota")' id='subota' class="square_btn">Subota</button>
-        <button (click)='btnDayClick("nedelja")' id='nedelja' class="square_btn">Nedelja</button>
-    </div>
-    <br>
-    <div class="prigradskiSelector-container">
-      <button (click)='btnTypeClick("gradski")' id='gradski' class="square_btn">Gradski</button>
-      <button (click)='btnTypeClick("prigradski")' id='prigradski' class="square_btn">Prigradski</button>
-    </div>
-    <br>
-    <form [formGroup]="myForm" novalidate (ngSubmit)="save()" style='text-align: center;'>
-      <div class="form-group">
-        <input type="text" id="day" formControlName="day" hidden>
-        <input type="text" id="type" formControlName="type" hidden>
-        <mat-form-field>
-          <mat-label>Izaberi liniju</mat-label>
-          <mat-select formControlName="line" required disableOptionCentering>
-            <mat-option *ngFor="let timetable of timetabletModel" [value]="timetable.Line.LineCode">{{ timetable.Line.DisplayName }}</mat-option>
-          </mat-select>
-          <mat-error *ngIf="myForm.controls['type'].errors && myForm.controls['type'].errors['required']">Izabrate liniju</mat-error>
-        </mat-form-field>
-      </div>
-      <button mat-flat-button color="primary" type="submit" class="btnPrikaziRedVoznje matButtonStyle">Prikaži</button>
-    </form>
-    <br>
-    <div class="times">
-        <p *ngFor="let time of timetableJson">{{time}}</p>
-    </div>
+  <h1>RED VOŽNJE</h1>
+  <div class="daySelector-container">
+      <button (click)='btnDayClick("radni")' id='radni' class="square_btn">Radni dan</button>
+      <button (click)='btnDayClick("subota")' id='subota' class="square_btn">Subota</button>
+      <button (click)='btnDayClick("nedelja")' id='nedelja' class="square_btn">Nedelja</button>
   </div>
+  <br>
+  <div class="prigradskiSelector-container">
+    <button (click)='btnTypeClick("gradski")' id='gradski' class="square_btn">Gradski</button>
+    <button (click)='btnTypeClick("prigradski")' id='prigradski' class="square_btn">Prigradski</button>
+  </div>
+  <br>
+  <form [formGroup]="myForm" novalidate (ngSubmit)="save()" style='text-align: center;'>
+    <div class="form-group">
+      <input type="text" id="day" formControlName="day" hidden>
+      <input type="text" id="type" formControlName="type" hidden>
+      <mat-form-field>
+        <mat-label>Izaberi liniju</mat-label>
+        <mat-select formControlName="line" required disableOptionCentering>
+          <mat-option *ngFor="let timetable of timetabletModel" [value]="timetable.Line.LineCode">{{ timetable.Line.DisplayName }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="myForm.controls['type'].errors && myForm.controls['type'].errors['required']">Izabrate liniju</mat-error>
+      </mat-form-field>
+    </div>
+    <button mat-flat-button color="primary" type="submit" class="btnPrikaziRedVoznje matButtonStyle">Prikaži</button>
+  </form>
+  <br>
+  <div class="times">
+      <p *ngFor="let time of timetableJson">{{time}}</p>
+  </div>
+</div>
   
   
   

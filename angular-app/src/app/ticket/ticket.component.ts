@@ -131,7 +131,8 @@ export class TicketComponent implements OnInit {
             this.lastBoughtTicketPrice = a.Price;
             this.lastBoughtTicketValidUntil = Date.parse(a.Expires);
 
-            this.DisplayMessage("Karta ("+a.Type+") je kupljena", false);
+            var date = new Date(data.Expires);
+            var msg = `Uspesno ste kupili kartu\nVazi do: ${date.toLocaleString()}`;
           },
           err => {
             this.DisplayMessage(err.error.Message, true);
@@ -141,8 +142,9 @@ export class TicketComponent implements OnInit {
       this._service.buyTicketAnonymous()
         .subscribe(
           data => {
-            var a = data;
-            this.DisplayMessage("Karta je kupljena", false);
+            var date = new Date(data.Expires);
+            var msg = `Uspesno ste kupili kartu\nVazi do: ${date.toLocaleString()}`;
+            this.DisplayMessage(msg, false);
           },
           err => {
             this.DisplayMessage(err.error.Message, true);
