@@ -40,6 +40,11 @@ namespace WebApp.Providers
             ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager, "JWT");
           
             var ticket = new AuthenticationTicket(oAuthIdentity, null);
+            //custom claims                                ako bude null pa da ne padne server
+            ticket.Identity.AddClaim(new Claim("userType", (user.Type == null ? "" : user.Type)));
+            ticket.Identity.AddClaim(new Claim("userStatus", (user.Status == null ? "" : user.Status)));
+            ticket.Identity.AddClaim(new Claim("userFiles", (user.Files == null ? "" : user.Files)));
+            ticket.Identity.AddClaim(new Claim("userHasDocuments", user.HasDocument.ToString()));
 
             context.Validated(ticket);
         }
