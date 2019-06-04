@@ -15,6 +15,10 @@ export class TicketService {
     return this.http.get(`${this.api_route}/PriceHistories`);
   }
 
+  public getCurrentPriceHistories(): Observable<any>{
+    return this.http.get(`${this.api_route}/PriceHistories/Current`);
+  }
+
   public getAllCoefficients(): Observable<any>{
     return this.http.get(`${this.api_route}/Coefficients`);
   }

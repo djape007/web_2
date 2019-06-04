@@ -32,7 +32,7 @@ export class TicketComponent implements OnInit {
   ngOnInit() {
     this._parent.prikaziLeviMeni();
 
-    this._service.getAllPriceHistories()
+    this._service.getCurrentPriceHistories()
       .subscribe(
         data => {
           this.priceHistories = data;

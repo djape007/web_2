@@ -23,6 +23,13 @@ namespace WebApp.Controllers
             this.unitOfWork = unitOfWork;
         }
 
+        [Route("api/PriceHistories/Current")]
+        [HttpGet]
+        [ResponseType(typeof(ICollection<PriceHistory>))]
+        public IEnumerable<PriceHistory> GetCurrentPriceHistories()
+        {
+            return unitOfWork.PriceHistories.GetAll().Where(x => x.Pricelist.From < DateTime.Now && x.Pricelist.To > DateTime.Now);
+        }
         // GET: api/PriceHistories
         public IEnumerable<PriceHistory> GetPriceHistories()
         {
