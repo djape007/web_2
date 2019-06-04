@@ -20,10 +20,7 @@ export class AuthService {
         console.log(res.access_token);
 
         let jwt = res.access_token;
-
-        let decodedJwtData = this.parseToken(jwt);
         localStorage.setItem('token', jwt);
-        localStorage.setItem('role', decodedJwtData.role);
         this._router.navigate(['/home/profile']);
       }),
 
@@ -47,7 +44,6 @@ export class AuthService {
   logout(): void {
     this.isLoggedIn = false;
     localStorage.removeItem('token');
-    localStorage.removeItem('role');
   } 
 
   getToken(): any{
