@@ -21,6 +21,11 @@ export class TicketComponent implements OnInit {
   selectedRowIndex: number;
   selectedRowElement: PricelistElement;
   message: string = "";
+  messageIsError: boolean = false;
+
+  lastBoughtTicketID: string = "";
+  lastBoughtTicketValidUntil: number = -1;
+  lastBoughtTicketPrice: Number = -1;
 
   displayedColumns: string[] = ['productTypeName', 'person','price'];
   dataSource = new MatTableDataSource();
@@ -77,6 +82,11 @@ export class TicketComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  DisplayMessage(text:string, error:boolean) {
+    this.message = text;
+    this.messageIsError = error;
+  }
+
   createPricelist() : PricelistElement[]{
     var index = -1;
     var retVal = new Array<PricelistElement>();
@@ -106,9 +116,9 @@ export class TicketComponent implements OnInit {
   }
 
   buyTicket(row: PricelistElement){
-    this.message = '';
+    this.DisplayMessage("", false);
     if(row==undefined){
-      this.message = 'Izaberite kartu';
+      this.DisplayMessage("Izaberite kartu korisniče", true);
       return;
     }
 
@@ -117,9 +127,14 @@ export class TicketComponent implements OnInit {
         .subscribe(
           data => {
             var a = data;
+            this.lastBoughtTicketID = a.Id;
+            this.lastBoughtTicketPrice = a.Price;
+            this.lastBoughtTicketValidUntil = Date.parse(a.Expires);
+
+            this.DisplayMessage("Karta ("+a.Type+") je kupljena", false);
           },
           err => {
-            this.message = err.error.Message;
+            this.DisplayMessage(err.error.Message, true);
           }
         )
     }else{
@@ -127,9 +142,10 @@ export class TicketComponent implements OnInit {
         .subscribe(
           data => {
             var a = data;
+            this.DisplayMessage("Karta je kupljena", false);
           },
           err => {
-            this.message = err.error.Message;
+            this.DisplayMessage(err.error.Message, true);
           }
         )
     }
