@@ -1,6 +1,6 @@
 <div *ngIf="dataSource">
   <h1>CENOVNIK</h1>
-  <mat-form-field>
+  <mat-form-field class='ticketsFilter'>
       <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
   </mat-form-field>
   <div class="content">
