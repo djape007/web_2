@@ -66,9 +66,17 @@
                 userManager.AddToRole(user.Id, "AppUser");
             }
 
+            if (!context.Users.Any(u => u.UserName == "anon@anon.com"))
+            {
+                var user = new ApplicationUser() { Id = "unregistred_users", UserName = "anon@anon.com", Email = "anon@anon.com", PasswordHash = ApplicationUser.HashPassword(Guid.NewGuid().ToString()), DateOfBirth = new DateTime(1997, 1, 2, 23, 22, 10), Status="verified", Type="obican" };
+                userManager.Create(user);
+                userManager.AddToRole(user.Id, "AppUser");
+            }
+
             //empty database
             //Update-Database –TargetMigration: $InitialDatabase
-
+            
+            
             context.Lines.Add(new Line() { Id = Guid.NewGuid(), Direction = "KLISA - CENTAR - LIMAN I", LineCode = "1A" });
             context.Lines.Add(new Line() { Id = Guid.NewGuid(), Direction = "LIMAN I - CENTAR - KLISA", LineCode = "1B" });
             context.Lines.Add(new Line() { Id = Guid.NewGuid(), Direction = "CENTAR - NOVO NASELJE", LineCode = "2A" });

@@ -22,7 +22,88 @@ namespace WebApp.Controllers
         public SoldTicketsController(IUnitOfWork unitOfWork) {
             this.unitOfWork = unitOfWork;
         }
-        
+
+        [Route("api/SoldTickets/BuyAnonymous")]
+        [HttpPost]
+        [ResponseType(typeof(SoldTicket))]
+        public IHttpActionResult BuyTicketAnonymous()
+        {
+            var productType = unitOfWork.ProductTypes.Find(x => x.ExpiresAfterHours == 1).FirstOrDefault();
+    
+            if (productType == null)
+            {
+                return BadRequest("Proizvod ne postoji");
+            }
+
+            var activePricelist = unitOfWork.Pricelists.Find(x => x.From <= DateTime.Now && x.To >= DateTime.Now).FirstOrDefault();
+
+            if (activePricelist == null)
+            {
+                return BadRequest("Nema aktivnih cenovnika");
+            }
+
+            var coefficient = unitOfWork.Coefficients.Find(x => x.Type.ToLower() == "obican").FirstOrDefault();
+
+            if (coefficient == null)
+            {
+                return InternalServerError();
+            }
+
+            var ticketPrice = unitOfWork.PriceHistories.Find(x => x.ProductTypeId == productType.Id && x.PricelistId == activePricelist.Id).FirstOrDefault();
+
+            if (ticketPrice == null)
+            {
+                return InternalServerError();
+            }
+
+            var soldAtPrice = ticketPrice.Price * coefficient.Value;
+            TimeSpan ticketExpiresIn = new TimeSpan((int)productType.ExpiresAfterHours, 0, 0);
+
+            int addHours = (int)ticketExpiresIn.TotalHours;
+
+            DateTime ticketExpiresDate = DateTime.Now;
+
+            ticketExpiresDate = ticketExpiresDate.AddHours(addHours);
+            ticketExpiresDate = new DateTime(ticketExpiresDate.Year,
+                ticketExpiresDate.Month,
+                ticketExpiresDate.Day,
+                ticketExpiresDate.Hour,
+                0,
+                1);
+
+            SoldTicket soldTicket = new SoldTicket()
+            {
+                Id = Guid.NewGuid(),
+                DateOfPurchase = DateTime.Now,
+                Expires = ticketExpiresDate,
+                UserId = "unregistred_users",
+                Price = soldAtPrice,
+                Usages = 0,
+                Type = productType.Name
+            };
+
+            unitOfWork.SoldTickets.Add(soldTicket);
+            try
+            {
+                unitOfWork.Complete();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!SoldTicketExists(soldTicket.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return Ok(soldTicket);
+
+
+        }
+
 
         [Route("api/SoldTickets/Buy/{productTypeId}")]
         [HttpPost]
@@ -133,7 +214,7 @@ namespace WebApp.Controllers
             try {
                 unitOfWork.Complete();
             } catch (DbUpdateConcurrencyException) {
-                if (!SoldTicketExists(productTypeId)) {
+                if (!SoldTicketExists(soldTicket.Id)) {
                     return NotFound();
                 } else {
                     throw;

@@ -22,4 +22,8 @@ export class TicketService {
   public buyTicket(productTypeId: Guid): Observable<any>{
     return this.http.post(`${this.api_route}/SoldTickets/Buy/${productTypeId}`,'');
   }
+
+  public buyTicketAnonymous(): Observable<any>{
+    return this.http.post(`${this.api_route}/SoldTickets/BuyAnonymous`,'');
+  }
 }

@@ -7,6 +7,7 @@ import { Coefficient } from 'src/models/coefficient';
 import { PricelistElement } from 'src/models/pricelist-element';
 import { MatTableDataSource, MatSort } from '@angular/material';
 import { Guid } from 'guid-typescript';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-ticket',
@@ -26,7 +27,7 @@ export class TicketComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(@Inject(forwardRef(() => HomeComponent)) private _parent: HomeComponent,
-    private formBuilder: FormBuilder, private _service: TicketService) { }
+    private formBuilder: FormBuilder, private _service: TicketService, private _auth: AuthService) { }
 
   ngOnInit() {
     this._parent.prikaziLeviMeni();
@@ -99,15 +100,27 @@ export class TicketComponent implements OnInit {
       return;
     }
 
-    this._service.buyTicket(row.productTypeId)
-      .subscribe(
-        data => {
-          var a = data;
-        },
-        err => {
-          this.message = err.error.Message;
-        }
-      )
+    if(this._auth.getToken == undefined){
+      this._service.buyTicket(row.productTypeId)
+        .subscribe(
+          data => {
+            var a = data;
+          },
+          err => {
+            this.message = err.error.Message;
+          }
+        )
+    }else{
+      this._service.buyTicketAnonymous()
+        .subscribe(
+          data => {
+            var a = data;
+          },
+          err => {
+            this.message = err.error.Message;
+          }
+        )
+    }
 
   }
 }
