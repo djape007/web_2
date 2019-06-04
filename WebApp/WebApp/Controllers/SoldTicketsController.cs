@@ -92,7 +92,7 @@ namespace WebApp.Controllers
             {
                 //reset dane, sate minute da budu prvi dan i prvi minut u mesecu
                 //12. jun 2019. + 3 meseca => karta istice: 1. septembra 2019. 00H00M
-                ticketExpiresDate.AddMonths(addMonths);
+                ticketExpiresDate = ticketExpiresDate.AddMonths(addMonths);
                 ticketExpiresDate = new DateTime(ticketExpiresDate.Year, 
                     ticketExpiresDate.Month, 
                     1, 
@@ -101,7 +101,7 @@ namespace WebApp.Controllers
                     0);
             } else if (addMonths == 0 && addDays >= 1)
             {
-                ticketExpiresDate.AddDays(addDays);
+                ticketExpiresDate = ticketExpiresDate.AddDays(addDays);
                 ticketExpiresDate = new DateTime(ticketExpiresDate.Year, 
                     ticketExpiresDate.Month, 
                     ticketExpiresDate.Day, 
@@ -110,7 +110,7 @@ namespace WebApp.Controllers
                     0);
             } else if (addMonths == 0 && addDays == 0 && addHours > 0)
             {
-                ticketExpiresDate.AddHours(addHours);
+                ticketExpiresDate = ticketExpiresDate.AddHours(addHours);
                 ticketExpiresDate = new DateTime(ticketExpiresDate.Year, 
                     ticketExpiresDate.Month, 
                     ticketExpiresDate.Day, 
