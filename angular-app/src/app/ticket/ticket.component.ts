@@ -22,7 +22,7 @@ export class TicketComponent implements OnInit {
   selectedRowElement: PricelistElement;
   message: string = "";
 
-  displayedColumns: string[] = ['pricelist', 'person','price'];
+  displayedColumns: string[] = ['productTypeName', 'person','price'];
   dataSource = new MatTableDataSource();
   @ViewChild(MatSort) sort: MatSort;
 
@@ -40,25 +40,14 @@ export class TicketComponent implements OnInit {
             .subscribe(
               data => {
                 this.coefficients = data;
-                this.dataSource = new MatTableDataSource(this.createPricelist());
+                let priceList = this.createPricelist();//.sort((a,b) => Number(b.purchasable) - Number(a.purchasable))
+                this.dataSource = new MatTableDataSource(priceList.sort((a,b) => Number(b.purchasable) - Number(a.purchasable)));
                 this.dataSource.sort = this.sort;
               },
               err => {
                 console.log(err);
               }
             );
-        },
-        err => {
-          console.log(err);
-        }
-      );
-
-    this._service.getAllCoefficients()
-      .subscribe(
-        data => {
-          this.coefficients = data;
-          this.dataSource.sort = this.sort;
-          this.dataSource = new MatTableDataSource(this.createPricelist());
         },
         err => {
           console.log(err);
@@ -76,7 +65,11 @@ export class TicketComponent implements OnInit {
         return false;
       }
     } else {
-      return true;
+      if (row.person == this._auth.getUserType()) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 
@@ -92,10 +85,13 @@ export class TicketComponent implements OnInit {
         var pricelistEl = new PricelistElement();
         pricelistEl.productTypeName = priceHistory.ProductType.Name;
         pricelistEl.person = coef.Type;
-        pricelistEl.price = priceHistory.Price*coef.Value;
+        pricelistEl.price = priceHistory.Price * coef.Value;
         pricelistEl.id = ++index;
         pricelistEl.productTypeId = priceHistory.ProductType.Id;
         pricelistEl.purchasable = true;
+
+        pricelistEl.purchasable = this.UserCanBuy(pricelistEl);
+
         retVal.push(pricelistEl);
       }
     }
@@ -116,7 +112,7 @@ export class TicketComponent implements OnInit {
       return;
     }
 
-    if(this._auth.getToken === undefined){
+    if(this._auth.getToken() != null){
       this._service.buyTicket(row.productTypeId)
         .subscribe(
           data => {

@@ -5,7 +5,7 @@
   </mat-form-field>
   <div class="content">
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-      <ng-container matColumnDef="pricelist">
+      <ng-container matColumnDef="productTypeName">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Tip karte </th>
         <td mat-cell *matCellDef="let element"> {{element.productTypeName}} </td>
       </ng-container>
@@ -20,13 +20,13 @@
         
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"  (click)='selectRow(row)' ></tr> -->
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'highlight': selectedRowIndex == row.id, 'disabled-row': !UserCanBuy(row)}" (click)="selectTicket(row)"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'highlight': selectedRowIndex == row.id, 'disabled-row': !row.purchasable}" (click)="selectTicket(row)"></tr>
     </table>
   </div>
   <br>
   <div>
     <button mat-flat-button color="primary" class='matButtonStyle' (click)='buyTicket(selectedRowElement)'>Kupi</button><br>
-    <label *ngIf='selectedRowElement'>{{selectedRowElement.pricelist}} {{selectedRowElement.person}} {{selectedRowElement.price}} din</label><br>
+    <label *ngIf='selectedRowElement'>{{selectedRowElement.productTypeName}} {{selectedRowElement.person}} {{selectedRowElement.price}} din</label><br>
     <label style="color: red">{{message}}</label>
   </div>
 </div>
