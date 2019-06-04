@@ -11,10 +11,6 @@ export class ProfileService {
 
   constructor(private http: HttpClient) { }
 
-  public login(user: User): Observable<any>{
-    return this.http.post(`${this.api_route}/oauth/token`,`username=${user.Email}&password=${user.Password}&grant_type=password`, { "headers" : {'Content-type' : 'application/x-www-form-urlencoded'}});
-  }
-
   public register(user: User): Observable<any>{
     return this.http.post(`${this.api_route}/api/users/register`, `email=${user.Email}&Password=${user.Password}&DateOfBirth=2001-10-10&Address=${user.Address}&Name=${user.Name}&Surame=${user.Surname}&Type=${user.Type}`,  { "headers" : {'Content-type' : 'application/x-www-form-urlencoded'}} )
   }

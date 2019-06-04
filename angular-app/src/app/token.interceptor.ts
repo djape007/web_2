@@ -10,8 +10,8 @@ export class TokenInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         // add authorization header with jwt token if available
         var token = this.authService.getToken();
-        var isLoggedIn = this.authService.getIsLoggedIn();
-        if (token && isLoggedIn=="true") {
+        var role = this.authService.getRole();
+        if (token && role) {
             request = request.clone({
                 setHeaders: { 
                     Authorization: `Bearer ${token}`

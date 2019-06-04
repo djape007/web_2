@@ -1,9 +1,9 @@
 import { Component, OnInit, Inject, forwardRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HomeComponent } from '../home/home.component';
-import { ProfileService } from '../services/profile.service';
 import { User } from 'src/models/user';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
   message: string;
 
   constructor(@Inject(forwardRef(() => HomeComponent)) private _parent: HomeComponent,
-    private formBuilder: FormBuilder, private _service: ProfileService, private _router: Router) { }
+    private formBuilder: FormBuilder, private _service: AuthService, private _router: Router) { }
 
   ngOnInit() {
     this._parent.prikaziDesniMeni();
@@ -44,16 +44,9 @@ export class LoginComponent implements OnInit {
       user.Password = this.f.password.value;
       this._service.login(user)
         .subscribe(data => {
-          if(data){
-            let token = data.access_token;
-            localStorage.setItem('isLoggedIn', "true");
-            localStorage.setItem('token', token);
-            this._router.navigate(['/home/profile']); //redirect to page if loggedIn
-          }
-        },
-        error => {
-          this.message = "Email i lozinka nisu validni";
-        });
+          //if(data){
+          //  this._router.navigate(['/home/profile']); //redirect to page if loggedIn
+        })
     }   
   }
 }
