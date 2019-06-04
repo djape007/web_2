@@ -84,6 +84,10 @@ export class HomeComponent implements OnInit{
   this.removeOverlay();
  }
 
+ private NavigateToMap() {
+  this._router.navigate(['/home']);
+ }
+
   private displayLeftPanel() {
     let levi = document.getElementById('leftPanel');
     levi.style.webkitTransform = "translate3d(0,0,0)";
