@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
       this._service.login(user)
         .subscribe(data => {
           if(data){
-            let token = data;
+            let token = data.access_token;
             localStorage.setItem('isLoggedIn', "true");
             localStorage.setItem('token', token);
             this._router.navigate(['/home/profile']); //redirect to page if loggedIn

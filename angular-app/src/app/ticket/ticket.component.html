@@ -19,8 +19,15 @@
       </ng-container>
         
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"  (click)='selectRow(row)' ></tr> -->
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'highlight': selectedRowIndex == row.id}" (click)="highlight(row)" ></tr>
     </table>
+  </div>
+  <br>
+  <div>
+    <button (click)='buyTicket(selectedRowElement)' >Kupi</button><br>
+    <label *ngIf='selectedRowElement'>{{selectedRowElement.pricelist}} {{selectedRowElement.person}} {{selectedRowElement.price}} din</label><br>
+    <label style="color: red">{{message}}</label>
   </div>
 </div>
   

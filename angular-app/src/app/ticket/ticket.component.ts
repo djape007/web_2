@@ -6,6 +6,7 @@ import { PriceHistory } from 'src/models/price-history';
 import { Coefficient } from 'src/models/coefficient';
 import { PricelistElement } from 'src/models/pricelist-element';
 import { MatTableDataSource, MatSort } from '@angular/material';
+import { Guid } from 'guid-typescript';
 
 @Component({
   selector: 'app-ticket',
@@ -16,11 +17,12 @@ export class TicketComponent implements OnInit {
 
   priceHistories: Array<PriceHistory> = new Array<PriceHistory>();
   coefficients: Array<Coefficient> = new Array<Coefficient>();
+  selectedRowIndex: number;
+  selectedRowElement: PricelistElement;
+  message: string = "";
 
   displayedColumns: string[] = ['pricelist', 'person','price'];
-  
   dataSource = new MatTableDataSource();
-  
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(@Inject(forwardRef(() => HomeComponent)) private _parent: HomeComponent,
@@ -69,6 +71,7 @@ export class TicketComponent implements OnInit {
   }
 
   createPricelist() : PricelistElement[]{
+    var index = -1;
     var retVal = new Array<PricelistElement>();
     for(let priceHistory of this.priceHistories){
       for(let coef of this.coefficients){
@@ -76,9 +79,35 @@ export class TicketComponent implements OnInit {
         pricelistEl.pricelist = priceHistory.ProductType.Name;
         pricelistEl.person = coef.Type;
         pricelistEl.price = priceHistory.Price*coef.Value;
+        pricelistEl.id = ++index;
+        pricelistEl.productTypeId = priceHistory.ProductType.Id;
         retVal.push(pricelistEl);
       }
     }
     return retVal;
+  }
+
+  highlight(row: any){
+    this.selectedRowIndex = row.id;
+    this.selectedRowElement = row;
+  }
+
+  buyTicket(row: any){
+    this.message = '';
+    if(row==undefined){
+      this.message = 'Izaberite kartu';
+      return;
+    }
+
+    this._service.buyTicket(row.productTypeId)
+      .subscribe(
+        data => {
+          var a = data;
+        },
+        err => {
+          this.message = err.error.Message;
+        }
+      )
+
   }
 }
