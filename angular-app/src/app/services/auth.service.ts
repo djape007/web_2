@@ -21,12 +21,9 @@ export class AuthService {
 
         let jwt = res.access_token;
 
-        let jwtData = jwt.split('.')[1]
-        let decodedJwtJsonData = window.atob(jwtData)
-        let decodedJwtData = JSON.parse(decodedJwtJsonData)
-        let role = decodedJwtData.role
-        localStorage.setItem('token', jwt)
-        localStorage.setItem('role', role);
+        let decodedJwtData = this.parseToken(jwt);
+        localStorage.setItem('token', jwt);
+        localStorage.setItem('role', decodedJwtData.role);
         this._router.navigate(['/home/profile']);
       }),
 
@@ -40,6 +37,13 @@ export class AuthService {
     };
   }
 
+  private parseToken(token:any): any {
+    let jwtData = token.split('.')[1];
+    let decodedJwtJsonData = window.atob(jwtData);
+    let decodedJwtData = JSON.parse(decodedJwtJsonData);
+    return decodedJwtData;
+  }
+
   logout(): void {
     this.isLoggedIn = false;
     localStorage.removeItem('token');
@@ -51,6 +55,56 @@ export class AuthService {
   }
 
   getRole(): any{
-    return localStorage.getItem('role');
+    let tkn = this.getToken();
+    if (tkn == null) {
+      return "";
+    }
+
+    let jwtParsed = this.parseToken(tkn);
+    return jwtParsed.role;
+  }
+
+  getUserType(): any{
+    let tkn = this.getToken();
+    if (tkn == null) {
+      return "";
+    }
+    
+    let jwtParsed = this.parseToken(tkn);
+    return jwtParsed.userType;
+  }
+
+  getUserFiles(): any{
+    let tkn = this.getToken();
+    if (tkn == null) {
+      return "";
+    }
+    
+    let jwtParsed = this.parseToken(tkn);
+    return jwtParsed.userFiles;
+  }
+
+  getUserStatus(): any{
+    let tkn = this.getToken();
+    if (tkn == null) {
+      return "";
+    }
+    
+    let jwtParsed = this.parseToken(tkn);
+    return jwtParsed.userStatus;
+  }
+
+  getUserHasDocuments(): any{
+    let tkn = this.getToken();
+    if (tkn == null) {
+      return false;
+    }
+    
+    let jwtParsed = this.parseToken(tkn);
+    if (jwtParsed.userHasDocuments == "True") {
+       return true;
+    } else {
+      return false;
+    }
   }
 }
