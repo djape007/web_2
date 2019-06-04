@@ -28,8 +28,17 @@ th.mat-sort-header-sorted {
     background: #f1a72e; /* green */
   }
 
+  .disabled-row {
+    background: #3a0f0f;
+  }
+
   .mat-row:hover {
     background-color:#f7c859;
+    cursor: pointer;
+  }
+
+  .mat-row.disabled-row:hover {
+    background-color:#791c1c;
     cursor: pointer;
   }
 

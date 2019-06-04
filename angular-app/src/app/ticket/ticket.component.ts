@@ -67,6 +67,19 @@ export class TicketComponent implements OnInit {
 
   }
 
+  UserCanBuy(row: PricelistElement) {
+    if(this._auth.getToken() === null){
+      if (row.person == "obican" && row.productTypeName == "Vremenska (1h)") {
+        return true;
+      } else {
+        row.purchasable = false;
+        return false;
+      }
+    } else {
+      return true;
+    }
+  }
+
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
@@ -77,30 +90,33 @@ export class TicketComponent implements OnInit {
     for(let priceHistory of this.priceHistories){
       for(let coef of this.coefficients){
         var pricelistEl = new PricelistElement();
-        pricelistEl.pricelist = priceHistory.ProductType.Name;
+        pricelistEl.productTypeName = priceHistory.ProductType.Name;
         pricelistEl.person = coef.Type;
         pricelistEl.price = priceHistory.Price*coef.Value;
         pricelistEl.id = ++index;
         pricelistEl.productTypeId = priceHistory.ProductType.Id;
+        pricelistEl.purchasable = true;
         retVal.push(pricelistEl);
       }
     }
     return retVal;
   }
 
-  highlight(row: any){
-    this.selectedRowIndex = row.id;
-    this.selectedRowElement = row;
+  selectTicket(row: PricelistElement){
+    if (row.purchasable) {
+      this.selectedRowIndex = row.id;
+      this.selectedRowElement = row;
+    }
   }
 
-  buyTicket(row: any){
+  buyTicket(row: PricelistElement){
     this.message = '';
     if(row==undefined){
       this.message = 'Izaberite kartu';
       return;
     }
 
-    if(this._auth.getToken == undefined){
+    if(this._auth.getToken === undefined){
       this._service.buyTicket(row.productTypeId)
         .subscribe(
           data => {
