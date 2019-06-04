@@ -70,7 +70,7 @@ export class TicketComponent implements OnInit {
         return false;
       }
     } else {
-      if (row.person == this._auth.getUserType()) {
+      if (row.person == this._auth.getUserType().toLowerCase()) {
         return true;
       } else {
         return false;
