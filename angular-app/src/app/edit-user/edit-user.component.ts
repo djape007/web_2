@@ -16,24 +16,23 @@ export class EditUserComponent implements OnInit {
   myForm: FormGroup;
   selectedValue: string;
   user: User;
+  message: string = '';
 
   constructor(private _service: ProfileService, private _auth: AuthService, private _router: Router, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    this.myForm = this.formBuilder.group({
-      name: ['', Validators.compose([Validators.required, Validators.minLength(2)])],
-      address: ['', Validators.compose([Validators.required, Validators.minLength(2)])],
-      surname: ['', Validators.compose([Validators.required, Validators.minLength(2)])],
-      birthday: ['', Validators.required],
-    });
-
     if(this.email != '')
     this._service.getUser(this.email)
       .subscribe(
         data => {
           this.user = data;
-          //var date = data.DateOfBirth;
-          //this.user.DateOfBirth = new Date(date);
+          var date = new Date(this.user.DateOfBirth);
+          this.myForm = this.formBuilder.group({
+            name: [this.user.Name, Validators.compose([Validators.required, Validators.minLength(2)])],
+            address: [this.user.Address, Validators.compose([Validators.required, Validators.minLength(2)])],
+            surname: [this.user.Surname, Validators.compose([Validators.required, Validators.minLength(2)])],
+            birthday: [date, Validators.required],
+          });
 
         },
         err => {
@@ -42,12 +41,38 @@ export class EditUserComponent implements OnInit {
       )
   }
 
+  get f() { return this.myForm.controls; }
+
   logout(){
     this._auth.logout();
     this._router.navigate(['/home/login']);
   }
 
   edit(){
-    console.log(this.myForm.value);
+    this.message = '';
+
+    if (this.myForm.invalid) {
+      return;
+    }
+
+    var user = new User();
+    user.DateOfBirth = this.f.birthday.value;
+    user.Name = this.f.name.value;
+    user.Surname = this.f.surname.value;
+    user.Address = this.f.address.value;
+    user.Id = this.user.Id;
+
+    var arrMonthDayYear = (user.DateOfBirth.toLocaleDateString()).split('/');
+    var dobString = `${arrMonthDayYear[2]}-${arrMonthDayYear[0]}-${arrMonthDayYear[1]}`;
+
+    this._service.editUser(user, dobString)
+    .subscribe(
+      data => {
+        this.message = "Uspesno izvrsene promene";
+      },
+      err => {
+        console.log(err);
+      }
+    )
   }
 }

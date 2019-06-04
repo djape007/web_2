@@ -56,6 +56,7 @@ namespace WebApp.Controllers
         
         // PUT: api/Users/5
         [ResponseType(typeof(void))]
+        [Authorize(Roles = "Admin, AppUser")]
         public async Task<IHttpActionResult> PutUser(string id, ApplicationUser user)
         {
             if (!ModelState.IsValid || user == null)
@@ -77,8 +78,8 @@ namespace WebApp.Controllers
             
             userInDB.Address = user.Address;
             userInDB.DateOfBirth = user.DateOfBirth;
-            userInDB.EmailConfirmed = user.EmailConfirmed;
-            userInDB.Type = user.Type;
+            //userInDB.EmailConfirmed = user.EmailConfirmed;
+            //userInDB.Type = user.Type;
             userInDB.Name = user.Name;
             userInDB.Surname = user.Surname;
             
