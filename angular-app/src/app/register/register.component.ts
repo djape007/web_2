@@ -58,7 +58,10 @@ export class RegisterComponent implements OnInit {
     user.Password = this.f.password.value;
     user.Type = this.f.type.value;
 
-    this._service.register(user)
+    var arrMonthDayYear = user.DateOfBirth.toLocaleDateString().split('/');
+    var dobString = `${arrMonthDayYear[2]}-${arrMonthDayYear[0]}-${arrMonthDayYear[1]}`;
+
+    this._service.register(user,dobString)
       .subscribe(
         data => {
           this._router.navigate(['/home/login']);

@@ -60,6 +60,15 @@ export class AuthService {
     return jwtParsed.role;
   }
 
+  getEmail(): any{
+    let tkn = this.getToken();
+    if (tkn == null) {
+      return "";
+    }
+    
+    let jwtParsed = this.parseToken(tkn);
+    return jwtParsed.unique_name; //unique_name -> email
+  }
   getUserType(): any{
     let tkn = this.getToken();
     if (tkn == null) {

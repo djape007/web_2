@@ -11,7 +11,11 @@ export class ProfileService {
 
   constructor(private http: HttpClient) { }
 
-  public register(user: User): Observable<any>{
-    return this.http.post(`${this.api_route}/api/users/register`, `email=${user.Email}&Password=${user.Password}&DateOfBirth=2001-10-10&Address=${user.Address}&Name=${user.Name}&Surame=${user.Surname}&Type=${user.Type}`,  { "headers" : {'Content-type' : 'application/x-www-form-urlencoded'}} )
+  public register(user: User, dobString: string): Observable<any>{
+    return this.http.post(`${this.api_route}/api/users/register`, `email=${user.Email}&Password=${user.Password}&DateOfBirth=${dobString}&Address=${user.Address}&Name=${user.Name}&Surname=${user.Surname}&Type=${user.Type}`,  { "headers" : {'Content-type' : 'application/x-www-form-urlencoded'}} )
+  }
+
+  public getUser(email: string): Observable<any>{
+    return this.http.get(`${this.api_route}/api/Users/${email}`);
   }
 }

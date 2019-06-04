@@ -21,6 +21,7 @@ import { TicketComponent } from './ticket/ticket.component';
 import { MatInputModule, MatButtonModule, MatSelectModule, MatIconModule, MatNativeDateModule, MatDatepickerModule, MatTableModule, MatSortModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { ProfileComponent } from './profile/profile.component';
+import { EditUserComponent } from './edit-user/edit-user.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ProfileComponent } from './profile/profile.component';
     LeftMenuComponent,
     RightMenuComponent,
     TicketComponent,
-    ProfileComponent
+    ProfileComponent,
+    EditUserComponent
   ],
   imports: [
     BrowserModule,

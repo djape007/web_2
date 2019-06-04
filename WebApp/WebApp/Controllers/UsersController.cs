@@ -42,10 +42,10 @@ namespace WebApp.Controllers
 
         // GET: api/Users/5
         [ResponseType(typeof(ApplicationUser))]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, AppUser")]
         public IHttpActionResult GetUser(string id)
         {
-            ApplicationUser user = UserManager.Users.ToList().Find(x => x.Id == id);
+            ApplicationUser user = UserManager.Users.ToList().Find(x => x.Email == id);
             if (user == null)
             {
                 return NotFound();

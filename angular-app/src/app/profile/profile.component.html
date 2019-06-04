@@ -1,3 +1,5 @@
 <div>
-  <button (click)='logout()'>Odjava</button>
+  <div *ngIf="role == 'AppUser'">
+    <app-edit-user [email]="email"></app-edit-user>
+  </div>
 </div>

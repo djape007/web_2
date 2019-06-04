@@ -1,0 +1,33 @@
+<div *ngIf="user">
+  <form [formGroup]="myForm" novalidate (ngSubmit)="edit()" style='text-align: center;'>     
+    <div class="form-group">
+      <mat-form-field class="example-full-width">
+        <input formControlName='name' matInput placeholder="Ime" matNativeControl required value="{{user.Name}}">
+        <mat-error *ngIf="myForm.controls['name'].errors && myForm.controls['name'].errors['required']">Obavezno polje</mat-error>
+        <mat-error *ngIf="myForm.controls['name'].errors && myForm.controls['name'].errors['minlength']">Mora biti duze od 2 karaktera</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input formControlName='surname' matInput placeholder="Prezime" matNativeControl required value="{{user.Surname}}">
+        <mat-error *ngIf="myForm.controls['surname'].errors && myForm.controls['surname'].errors['required']">Obavezno polje</mat-error>
+        <mat-error *ngIf="myForm.controls['surname'].errors && myForm.controls['surname'].errors['minlength']">Mora biti duze od 2 karaktera</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input formControlName='address' matInput placeholder="Adresa" matNativeControl required value="{{user.Address}}">
+        <mat-error *ngIf="myForm.controls['address'].errors && myForm.controls['address'].errors['required']">Obavezno polje</mat-error>
+        <mat-error *ngIf="myForm.controls['address'].errors && myForm.controls['address'].errors['minlength']">Mora biti duza od 2 karaktera</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input matInput [matDatepicker]="picker" formControlName='birthday' placeholder="Datum rodjenja" required value="{{user.DateOfBirth}}">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="myForm.controls['birthday'].errors && myForm.controls['birthday'].errors['required']">Obavezno polje</mat-error>
+      </mat-form-field>
+    </div>
+    <br>
+    <button mat-flat-button color="primary" class='matButtonStyle' type="submit">Potvrdi</button>
+  </form>
+</div>
+<br>
+<div class="text-right">
+    <button mat-flat-button color="primary" class='matButtonStyle' (click)='logout()'>Odjava</button>
+</div>
