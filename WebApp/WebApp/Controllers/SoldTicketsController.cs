@@ -22,18 +22,19 @@ namespace WebApp.Controllers
         public SoldTicketsController(IUnitOfWork unitOfWork) {
             this.unitOfWork = unitOfWork;
         }
+        
 
-        [Route("api/SoldTickets/Buy/{id}")]
+        [Route("api/SoldTickets/Buy/{productTypeId}")]
         [HttpPost]
         [ResponseType(typeof(SoldTicket))]
         [Authorize(Roles = "AppUser")]
-        public IHttpActionResult BuyTicket(Guid id) {
+        public IHttpActionResult BuyTicket(Guid productTypeId) {
             var userId = User.Identity.GetUserId();
 
-            var productType = unitOfWork.ProductTypes.Get(id);
+            var productType = unitOfWork.ProductTypes.Get(productTypeId);
 
             if (productType == null) {
-                return BadRequest("Invalid product type");
+                return BadRequest("Proizvod ne postoji");
             }
 
             var userFromDb = unitOfWork.Users.Get(userId);
@@ -41,7 +42,7 @@ namespace WebApp.Controllers
             if (userFromDb == null) {
                 return InternalServerError();
             } else if (userFromDb.Status != "verified") {
-                return BadRequest("User is not verified");
+                return BadRequest("Korisnik nije verifikovan");
             }
 
 
@@ -52,7 +53,7 @@ namespace WebApp.Controllers
             var activePricelist = unitOfWork.Pricelists.Find(x => x.From <= DateTime.Now && x.To >= DateTime.Now).FirstOrDefault();
 
             if (activePricelist == null) {
-                return BadRequest("There are no active pricelists");
+                return BadRequest("Nema aktivnih cenovnika");
             }
 
             var coefficient = unitOfWork.Coefficients.Find(x => x.Type.ToLower() == userFromDb.Type.ToLower()).FirstOrDefault();
@@ -68,11 +69,48 @@ namespace WebApp.Controllers
             }
 
             var soldAtPrice = ticketPrice.Price * coefficient.Value;
+            TimeSpan ticketExpiresIn = new TimeSpan((int)productType.ExpiresAfterHours, 0, 0);
+            
 
+            int addMonths = (int)Math.Floor(ticketExpiresIn.TotalDays / 30.0);
+            int addDays = (int)ticketExpiresIn.TotalDays;
+            int addHours = (int)ticketExpiresIn.TotalHours;
+
+            DateTime ticketExpiresDate = DateTime.Now;
+            
+            if (addMonths >= 12) //godisnja
+            {
+                if (DateTime.Now.DayOfYear > 345) //pred kraj godine moze da se kupi godisnja za sledecu godinu
+                {
+                    ticketExpiresDate = new DateTime(DateTime.Now.Year + 1, 12, 31, 23, 59, 59);
+                } else
+                {
+                    ticketExpiresDate = new DateTime(DateTime.Now.Year, 12, 31, 23, 59, 59);
+                }
+            }
+            else if (addMonths >= 1)
+            {
+                //reset dane, sate minute da budu prvi dan i prvi minut u mesecu
+                //12. jun 2019. + 3 meseca => karta istice: 1. septembra 2019. 00H00M
+                ticketExpiresDate.AddDays(-1 * ticketExpiresDate.Day);
+                ticketExpiresDate.AddHours(-1 * ticketExpiresDate.Hour);
+                ticketExpiresDate.AddMinutes(-1 * ticketExpiresDate.Minute);
+                ticketExpiresDate.AddMonths(addMonths);
+            } else if (addMonths == 0 && addDays >= 1)
+            {
+                ticketExpiresDate.AddHours(-1 * ticketExpiresDate.Hour);
+                ticketExpiresDate.AddMinutes(-1 * ticketExpiresDate.Minute);
+                ticketExpiresDate.AddDays(addDays);
+            } else if (addMonths == 0 && addDays == 0 && addHours > 0)
+            {
+                ticketExpiresDate.AddHours(addHours);
+                ticketExpiresDate.AddMinutes(-1 * ticketExpiresDate.Minute);
+            }
+            
             SoldTicket soldTicket = new SoldTicket() {
                 Id = Guid.NewGuid(),
                 DateOfPurchase = DateTime.Now,
-                Expires = DateTime.Now.AddDays(1),
+                Expires = ticketExpiresDate,
                 UserId = userId,
                 Price = soldAtPrice,
                 Usages = 0,
@@ -83,7 +121,7 @@ namespace WebApp.Controllers
             try {
                 unitOfWork.Complete();
             } catch (DbUpdateConcurrencyException) {
-                if (!SoldTicketExists(id)) {
+                if (!SoldTicketExists(productTypeId)) {
                     return NotFound();
                 } else {
                     throw;
