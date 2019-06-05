@@ -125,10 +125,55 @@
 
             //PUTANJE ZA SVAKU LINIJU; ucitava iz fajla
             DodajPutanjeLinija(context);
+
+            //DODAVANJE STAJALISTA
+            DodajAutobuskaStajalista(context);
         }
-        
+
+        #region PomocneMetodeZaSetvu
+
+        private void DodajAutobuskaStajalista(WebApp.Persistence.ApplicationDbContext context) {
+            //TODO: PROMENI PUTANJU DO FAJLA
+            string text = System.IO.File.ReadAllText(@"D:\My documents\GitHub\web_2\WebApp\WebApp\Migrations\busStops.csv");
+            var redovi = text.Split('\n');
+            for (int i = 0; i < redovi.Length; i++) {
+                if (redovi[i].Length < 5) {
+                    continue;
+                }
+                var data = redovi[i].Split('|');
+
+                var linijeNaStanici = data[0].Trim().Split(',');
+                
+                var yCord = Double.Parse(data[1].Trim());
+                var xCord = Double.Parse(data[2].Trim());
+                var nazivStanice = data[3].Trim();
+                var nalaziSeUZoni = data[5].Trim();
+
+                var trenutnaStanica = new BusStop() { Id = Guid.NewGuid(), Address = nazivStanice, Name = nazivStanice, X = xCord, Y = yCord };
+
+                context.BusStops.Add(trenutnaStanica);
+
+                for(int j = 0; j < linijeNaStanici.Length; j++) {
+                    var lineCode = linijeNaStanici[j].Replace('[',' ').Replace(']', ' ').Trim();
+                    var lineObj = context.Lines.FirstOrDefault(x => x.LineCode == lineCode.ToUpper());
+
+                    if (lineObj == null) {
+                        continue;
+                    }
+
+                    context.BusStopsOnLines.Add(new BusStopsOnLine() { Id = Guid.NewGuid(), BusStopId = trenutnaStanica.Id, LineId = lineObj.Id });
+                }
+
+
+                if (i % 300 == 0) {
+                    context.SaveChanges();
+                }
+            }
+        }
+
         private void DodajPutanjeLinija(WebApp.Persistence.ApplicationDbContext context) {
-            string text = System.IO.File.ReadAllText(@"OVDE_PUTANJA_DO_OVOG_FAJLA===>\GitHub\web_2\WebApp\WebApp\Migrations\pathsCoords.csv");
+            //TODO: PROMENI PUTANJU DO FAJLA
+            string text = System.IO.File.ReadAllText(@"D:\My documents\GitHub\web_2\WebApp\WebApp\Migrations\pathsCoords.csv");
             var redovi = text.Split('\n');
             for (int i = 0; i < redovi.Length; i++) {
                 if (redovi[i].Length < 5) {
@@ -403,5 +448,7 @@
 
             context.SaveChanges();
         }
+
+        #endregion PomocneMetodeZaSetvu
     }
 }
