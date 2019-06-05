@@ -33,6 +33,30 @@ namespace WebApp.Controllers
         private ApplicationUserManager _userManager;
 
 
+        private void CreateUserFolder(string path)
+        {
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+        }
+
+        private string GetUserFolderPath(string userId)
+        {
+            return System.Web.Hosting.HostingEnvironment.MapPath("~/imgs/users/" + userId);
+        }
+
+        private bool IsCorrectFileExtension(string fileName)
+        {
+            var fileExtension = fileName.Split('.').Last();
+
+            if (fileExtension == "jpg" || fileExtension == "jpeg" || fileExtension == "png" || fileExtension == "bmp")
+            {
+                return true;
+            }
+            return false;
+        }
+
         // GET: api/Users
         [Authorize(Roles = "Admin")]
         public List<ApplicationUser> GetUsers()
@@ -218,14 +242,9 @@ namespace WebApp.Controllers
                 return BadRequest("User does not exist");
             }
 
-            var mappedPath = System.Web.Hosting.HostingEnvironment.MapPath("~/imgs/users/" + userId);
-
-            if (!Directory.Exists(mappedPath)) {
-                Directory.CreateDirectory(mappedPath);
-            }
-
+            var mappedPath = GetUserFolderPath(userId);
+            CreateUserFolder(mappedPath);
             
-
             if (request.Files.Count == 0) {
                 return BadRequest("No files selected");
             }
@@ -234,9 +253,7 @@ namespace WebApp.Controllers
             foreach (string file in request.Files) {
                 var postedFile = request.Files[file];
 
-                var fileExtension = postedFile.FileName.Split('.').Last();
-
-                if (fileExtension == "jpg" || fileExtension == "jpeg" || fileExtension == "png" || fileExtension == "bmp") {
+                if (IsCorrectFileExtension(postedFile.FileName)) {
                     postedFile.SaveAs(mappedPath + "/" + postedFile.FileName);
                     listaNazivaUploadovanihFajlova.Add(postedFile.FileName);
                 }
@@ -246,7 +263,7 @@ namespace WebApp.Controllers
                 return BadRequest("Invalid file type");
             }
 
-            if (userInDb.Files.Length > 0) {
+            if (userInDb.Files != null & userInDb.Files.Length > 0) {
                 userInDb.Files += "," + String.Join(",", listaNazivaUploadovanihFajlova);
             } else {
                 userInDb.Files = String.Join(",", listaNazivaUploadovanihFajlova);
@@ -506,38 +523,83 @@ namespace WebApp.Controllers
         [AllowAnonymous]
         [ResponseType(typeof(ApplicationUser))]
         [Route("Register")]
-        public async Task<IHttpActionResult> Register(ApplicationUser newUser)
+        //public async Task<IHttpActionResult> Register([FromBody]ApplicationUser newUser, [FromBody]HttpPostedFile postedFile)
+        /*public async Task<IHttpActionResult> Register(
+            [FromBody] string Email,
+            [FromBody] string DateOfBirth,
+            [FromBody] string Address,
+            [FromBody] string Name,
+            [FromBody] string Surname,
+            [FromBody] string Type,
+            [FromBody] string Password,
+            [FromBody] HttpPostedFile postedFile)*/
+        public async Task<IHttpActionResult> Register()
         {
-            if (!ModelState.IsValid || newUser == null || newUser.Password.Trim().Length == 0 || newUser.Email.Trim().Length == 0)
-            {
-                return BadRequest("https://youtu.be/v6tuOipj5mk?t=68");
-            }
+            var request = HttpContext.Current.Request;
+            var status = "not verified";
 
-            var status = "verified";
-
-            if (newUser.Type != "obican") {
+            if (request.Form.Get("Type") != "obican") {
                 status = "not verified";
             }
 
-            var user = new ApplicationUser() {
-                UserName = newUser.Email,
-                Email = newUser.Email,
-                DateOfBirth = newUser.DateOfBirth,
-                Address = newUser.Address,
-                Name = newUser.Name,
-                Surname = newUser.Surname,
+            var user = new ApplicationUser()
+            {
+                UserName = request.Form.Get("Email"),
+                Email = request.Form.Get("Email"),
+                DateOfBirth = DateTime.Parse(request.Form.Get("DateOfBirth")),
+                Address = request.Form.Get("Address"),
+                Name = request.Form.Get("Name"),
+                Surname = request.Form.Get("Surname"),
                 Status = status,
-                Type = newUser.Type,
+                Type = request.Form.Get("Type"),
                 Files = ""
             };
 
-            IdentityResult result = await UserManager.CreateAsync(user, newUser.Password);
+            //RegisterBindingModel registerBindingModel = new RegisterBindingModel() { Email = user.Email, Password = request.Form.Get("Password"), ConfirmPassword = request.Form.Get("Password") };
+            
+
+            IdentityResult result = await UserManager.CreateAsync(user, request.Form.Get("Password"));
 
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
             } else {
                 UserManager.AddToRole(user.Id, "AppUser");
+
+                //ako je dodao usera, onda cemo i fajl da sacuvamo (ako ga je poslao)
+                if (request.Files.Count > 0)
+                {
+                    var mappedPath = GetUserFolderPath(user.Id);
+                    CreateUserFolder(mappedPath);
+                    
+                    List<string> listaNazivaUploadovanihFajlova = new List<string>();
+                    foreach (string file in request.Files)
+                    {
+                        var postedFile = request.Files[file];
+
+                        if (IsCorrectFileExtension(postedFile.FileName))
+                        {
+                            postedFile.SaveAs(mappedPath + "/" + postedFile.FileName);
+                            listaNazivaUploadovanihFajlova.Add(postedFile.FileName);
+                        }
+                    }
+
+                    if (listaNazivaUploadovanihFajlova.Count > 0)
+                    {
+                        if (user.Files != null & user.Files.Length > 0)
+                        {
+                            user.Files += "," + String.Join(",", listaNazivaUploadovanihFajlova);
+                        }
+                        else
+                        {
+                            user.Files = String.Join(",", listaNazivaUploadovanihFajlova);
+                        }
+
+                        user.Status = "processing";
+                        UserManager.Update(user);
+                    }
+                }
+
             }
 
             return Ok(user);
