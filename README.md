@@ -1,6 +1,6 @@
 # Sajt autoprevoznika "VINKO KLOCNA PREVOZ"
 
-##Skrinšotovi sajta
+## Skrinšotovi sajta
 
 #### Pocetna strana
 ![pocetna](https://github.com/djape007/web_2/blob/master/sajt_pocetna.png)
