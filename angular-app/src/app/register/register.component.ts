@@ -14,6 +14,7 @@ export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup;
   selectedValue: string;
+  selectedFile: File;
 
   constructor(@Inject(forwardRef(() => HomeComponent)) private _parent: HomeComponent,
   private formBuilder: FormBuilder, private _service: ProfileService, private _router: Router) { }
@@ -44,6 +45,10 @@ export class RegisterComponent implements OnInit {
     this.selectedValue = this.registerForm.get('type').value
   }
 
+  onFileChanged(event) {
+    this.selectedFile = event.target.files[0]
+  }
+
   register(){
     if (this.registerForm.invalid) {
       return;
@@ -51,17 +56,18 @@ export class RegisterComponent implements OnInit {
 
     var user = new User();
     user.Email = this.f.email.value;
-    user.DateOfBirth = this.f.birthday.value;
+    user.Dob = this.f.birthday.value;
     user.Name = this.f.name.value;
     user.Surname = this.f.surname.value;
     user.Address = this.f.address.value;
     user.Password = this.f.password.value;
     user.Type = this.f.type.value;
 
-    var arrMonthDayYear = user.DateOfBirth.toLocaleDateString().split('/');
+    var arrMonthDayYear = user.Dob.toLocaleDateString().split('/');
     var dobString = `${arrMonthDayYear[2]}-${arrMonthDayYear[0]}-${arrMonthDayYear[1]}`;
 
-    this._service.register(user,dobString)
+    user['DateOfBirth'] = dobString;
+    this._service.register(user, this.selectedFile)
       .subscribe(
         data => {
           this._router.navigate(['/home/login']);

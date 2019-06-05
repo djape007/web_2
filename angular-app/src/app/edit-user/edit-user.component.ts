@@ -28,7 +28,7 @@ export class EditUserComponent implements OnInit {
       .subscribe(
         data => {
           this.user = data;
-          var date = new Date(this.user.DateOfBirth);
+          var date = new Date(data.DateOfBirth);
           this.myForm = this.formBuilder.group({
             name: [this.user.Name, Validators.compose([Validators.required, Validators.minLength(2)])],
             address: [this.user.Address, Validators.compose([Validators.required, Validators.minLength(2)])],
@@ -78,7 +78,6 @@ export class EditUserComponent implements OnInit {
             this.message_password = "Desila se greska";
         }
       )
-
   }
 
   logout(){
@@ -94,13 +93,13 @@ export class EditUserComponent implements OnInit {
     }
 
     var user = new User();
-    user.DateOfBirth = this.f.birthday.value;
+    user.Dob = this.f.birthday.value;
     user.Name = this.f.name.value;
     user.Surname = this.f.surname.value;
     user.Address = this.f.address.value;
     user.Id = this.user.Id;
 
-    var arrMonthDayYear = (user.DateOfBirth.toLocaleDateString()).split('/');
+    var arrMonthDayYear = (user.Dob.toLocaleDateString()).split('/');
     var dobString = `${arrMonthDayYear[2]}-${arrMonthDayYear[0]}-${arrMonthDayYear[1]}`;
 
     this._service.editUser(user, dobString)

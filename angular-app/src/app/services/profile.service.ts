@@ -11,8 +11,16 @@ export class ProfileService {
 
   constructor(private http: HttpClient) { }
 
-  public register(user: User, dobString: string): Observable<any>{
-    return this.http.post(`${this.api_route}/api/users/register`, `email=${user.Email}&Password=${user.Password}&DateOfBirth=${dobString}&Address=${user.Address}&Name=${user.Name}&Surname=${user.Surname}&Type=${user.Type}`,  { "headers" : {'Content-type' : 'application/x-www-form-urlencoded'}});
+  public register(user: User, file: File): Observable<any>{
+    delete user['Dob'];
+    delete user['SoldTickets'];
+    var formData = new FormData();
+    if(file != null)
+      formData.append("0",file, file.name);
+    for(var key in user)
+      formData.append(key, user[key]);
+      
+    return this.http.post(`${this.api_route}/api/users/register`, formData)
   }
 
   public getUser(id: string): Observable<any>{
