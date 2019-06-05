@@ -19,6 +19,8 @@ export class EditUserComponent implements OnInit {
   user: User;
   message: string = '';
   message_password: string = '';
+  selectedFile: File;
+  imgURL: any;
 
   constructor(private _service: ProfileService, private _auth: AuthService, private _router: Router, private formBuilder: FormBuilder) { }
 
@@ -83,6 +85,20 @@ export class EditUserComponent implements OnInit {
   logout(){
     this._auth.logout();
     this._router.navigate(['/home/login']);
+  }
+
+  onFileChanged(event) {
+    this.selectedFile = event.target.files[0];
+
+    var reader = new FileReader();
+    reader.readAsDataURL(this.selectedFile); 
+    reader.onload = (_event) => { 
+      this.imgURL = reader.result; 
+    }
+  }
+
+  dodajSliku(){
+    
   }
 
   edit(){

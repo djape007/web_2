@@ -24,7 +24,7 @@
       </mat-form-field>
     </div>
     <label>{{message}}</label><br>
-    <button mat-flat-button color="primary" class='matButtonStyle' type="submit">Potvrdi</button>
+    <button mat-flat-button color="primary" class='matButtonStyle' type="submit">Izmeni</button>
   </form>
 </div>
 <div *ngIf="user" class="text-center">
@@ -46,8 +46,16 @@
         </mat-form-field>
     </div>
     <label>{{message_password}}</label><br>
-    <button mat-flat-button color="primary" class='matButtonStyle' type="submit">Potvrdi</button>
+    <button mat-flat-button color="primary" class='matButtonStyle' type="submit">Izmeni lozinku</button>
   </form>
+</div>
+<div *ngIf="user">
+  <div class="upload-file">
+    <input (change)="onFileChanged($event)" type="file" accept="image/png,image/jpeg,image/jpg,image/bmp">
+    <img [src]="imgURL" style="margin-top: 5px" width="320" height="auto" *ngIf="imgURL">
+    <br>
+    <button mat-flat-button color="primary" class='matButtonStyle' (click)='dodajSliku()'>Dodaj sliku</button>
+  </div>
 </div>
 <br>
 <div class="text-right">
