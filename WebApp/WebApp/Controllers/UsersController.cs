@@ -22,6 +22,10 @@ using System.Web.Http.Description;
 using System.Data.Entity.Infrastructure;
 using System.Net;
 using System.IO;
+using SendGrid;
+using SendGrid.Helpers.Mail;
+using System.Net.Mail;
+using WebApp.App_Start;
 
 namespace WebApp.Controllers
 {
@@ -535,6 +539,7 @@ namespace WebApp.Controllers
             [FromBody] HttpPostedFile postedFile)*/
         public async Task<IHttpActionResult> Register()
         {
+    
             var request = HttpContext.Current.Request;
             
 
@@ -550,7 +555,8 @@ namespace WebApp.Controllers
 
             var status = "verified";
 
-            if (request.Form.Get("Type") != "obican") {
+            if (request.Form.Get("Type") != "Obican")
+            {
                 status = "not verified";
             }
 
@@ -608,8 +614,11 @@ namespace WebApp.Controllers
                         UserManager.Update(user);
                     }
                 }
-
             }
+
+            string subject = "Registracija";
+            string body = "<p>Poštovani " + user.Name + " " + user.Surname + "</p><p>Uspešno ste se registrovali.</p><p><b>Vinko Klocna Prevoz</b></p>";
+            SendEmailConfig.Execute(user.Email, subject, body);
 
             return Ok(user);
         }
