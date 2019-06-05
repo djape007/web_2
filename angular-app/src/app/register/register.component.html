@@ -49,6 +49,7 @@
       </mat-form-field>
       <div *ngIf="selectedValue == 'Student' || selectedValue=='Penzioner'" class="upload-file">
         <input (change)="onFileChanged($event)" type="file" accept="image/png,image/jpeg,image/jpg,image/bmp">
+        <img [src]="imgURL" style="margin-left: 10%; margin-top: 5px" width="320" height="auto" *ngIf="imgURL">
       </div>
     </div>
     <br>

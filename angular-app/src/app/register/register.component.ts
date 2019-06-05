@@ -15,6 +15,7 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   selectedValue: string;
   selectedFile: File;
+  imgURL: any;
 
   constructor(@Inject(forwardRef(() => HomeComponent)) private _parent: HomeComponent,
   private formBuilder: FormBuilder, private _service: ProfileService, private _router: Router) { }
@@ -46,7 +47,13 @@ export class RegisterComponent implements OnInit {
   }
 
   onFileChanged(event) {
-    this.selectedFile = event.target.files[0]
+    this.selectedFile = event.target.files[0];
+
+    var reader = new FileReader();
+    reader.readAsDataURL(this.selectedFile); 
+    reader.onload = (_event) => { 
+      this.imgURL = reader.result; 
+    }
   }
 
   register(){
