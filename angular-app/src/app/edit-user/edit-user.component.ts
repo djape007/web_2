@@ -14,9 +14,11 @@ export class EditUserComponent implements OnInit {
 
   @Input() email: string;
   myForm: FormGroup;
+  passwordForm: FormGroup;
   selectedValue: string;
   user: User;
   message: string = '';
+  message_password: string = '';
 
   constructor(private _service: ProfileService, private _auth: AuthService, private _router: Router, private formBuilder: FormBuilder) { }
 
@@ -34,6 +36,12 @@ export class EditUserComponent implements OnInit {
             birthday: [date, Validators.required],
           });
 
+          this.passwordForm = this.formBuilder.group({
+            old_password: ['', Validators.required],
+            new_password: ['', Validators.compose([Validators.required, Validators.minLength(6)])],
+            repeat_password: ['', Validators.required],
+          });
+
         },
         err => {
           console.log(err);
@@ -42,6 +50,36 @@ export class EditUserComponent implements OnInit {
   }
 
   get f() { return this.myForm.controls; }
+  get passf() { return this.passwordForm.controls; }
+
+  isSameAsPassword(){
+    if (this.passf.new_password.value != this.passf.repeat_password.value)
+      this.passf.repeat_password.setErrors({'notsame': true});
+  }
+
+  changePassword(){
+    this.message_password = '';
+    if (this.passwordForm.invalid) {
+      return;
+    }
+    var old_pass = this.passf.old_password.value;
+    var new_pass = this.passf.new_password.value;
+    var rep_pass = this.passf.repeat_password.value;
+
+    this._service.changePassword(old_pass, new_pass, rep_pass)
+      .subscribe(
+        data => {
+          this.message_password = "Uspesno ste promenuli lozinku"
+        },
+        err => {
+          if(err.error.ModelState[""] == "Incorrect password.")
+            this.message_password = "Stara lozinka nije odgovarajuca";
+          else
+            this.message_password = "Desila se greska";
+        }
+      )
+
+  }
 
   logout(){
     this._auth.logout();

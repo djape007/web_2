@@ -12,7 +12,7 @@ export class ProfileService {
   constructor(private http: HttpClient) { }
 
   public register(user: User, dobString: string): Observable<any>{
-    return this.http.post(`${this.api_route}/api/users/register`, `email=${user.Email}&Password=${user.Password}&DateOfBirth=${dobString}&Address=${user.Address}&Name=${user.Name}&Surname=${user.Surname}&Type=${user.Type}`,  { "headers" : {'Content-type' : 'application/x-www-form-urlencoded'}} )
+    return this.http.post(`${this.api_route}/api/users/register`, `email=${user.Email}&Password=${user.Password}&DateOfBirth=${dobString}&Address=${user.Address}&Name=${user.Name}&Surname=${user.Surname}&Type=${user.Type}`,  { "headers" : {'Content-type' : 'application/x-www-form-urlencoded'}});
   }
 
   public getUser(email: string): Observable<any>{
@@ -21,5 +21,9 @@ export class ProfileService {
 
   public editUser(user: User, dobString: string): Observable<any>{
     return this.http.put(`${this.api_route}/api/Users/${user.Id}`, `Id=${user.Id}&DateOfBirth=${dobString}&Address=${user.Address}&Name=${user.Name}&Surname=${user.Surname}`,  { "headers" : {'Content-type' : 'application/x-www-form-urlencoded'}} );
+  }
+
+  public changePassword(oldpass: string, newpass: string, reppass: string): Observable<any>{
+    return this.http.post(`${this.api_route}/api/Users/ChangePassword`, `OldPassword=${oldpass}&NewPassword=${newpass}&ConfirmPassword=${reppass}`,  { "headers" : {'Content-type' : 'application/x-www-form-urlencoded'}});
   }
 }
