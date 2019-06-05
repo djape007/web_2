@@ -83,13 +83,6 @@ export class TicketComponent implements OnInit {
           return false;
         }
       }
-
-
-      if (row.person == this._auth.getUserType().toLowerCase()) {
-        return true;
-      } else {
-        return false;
-      }
     }
   }
 
@@ -141,13 +134,10 @@ export class TicketComponent implements OnInit {
       this._service.buyTicket(row.productTypeId)
         .subscribe(
           data => {
-            var a = data;
-            this.lastBoughtTicketID = a.Id;
-            this.lastBoughtTicketPrice = a.Price;
-            this.lastBoughtTicketValidUntil = Date.parse(a.Expires);
-
-            var date = new Date(data.Expires);
-            var msg = `Uspesno ste kupili kartu\nVazi do: ${date.toLocaleString()}`;
+            this.lastBoughtTicketID = data.Id;
+            this.lastBoughtTicketPrice = data.Price;
+            this.lastBoughtTicketValidUntil = Date.parse(data.Expires);
+            this.DisplayMessage("Karta je kupljena", false);
           },
           err => {
             this.DisplayMessage(err.error.Message, true);
@@ -157,9 +147,10 @@ export class TicketComponent implements OnInit {
       this._service.buyTicketAnonymous()
         .subscribe(
           data => {
-            var date = new Date(data.Expires);
-            var msg = `Uspesno ste kupili kartu\nVazi do: ${date.toLocaleString()}`;
-            this.DisplayMessage(msg, false);
+            this.lastBoughtTicketID = data.Id;
+            this.lastBoughtTicketPrice = data.Price;
+            this.lastBoughtTicketValidUntil = Date.parse(data.Expires);
+            this.DisplayMessage("Karta je kupljena", false);
           },
           err => {
             this.DisplayMessage(err.error.Message, true);
