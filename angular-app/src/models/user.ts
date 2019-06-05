@@ -10,7 +10,7 @@ export class User {
     public Email: string;
     public Name: string;
     public Surname: string;
-    public DateOfBirth: Date;
+    public Dob: Date;
     public HasDocument: boolean;
     public Address: string;
     public Files: string;

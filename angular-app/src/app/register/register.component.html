@@ -40,19 +40,18 @@
       </mat-form-field>
       <mat-form-field class="example-right-half-width">
         <mat-label>Tip korisnika</mat-label>
-        <mat-select disableOptionCentering panelClass='selectLinePanel' (change)='selectChange()' formControlName='type' matNativeControl required>
+        <mat-select disableOptionCentering panelClass='selectLinePanel' (selectionChange)='selectChange()' formControlName='type' matNativeControl required>
           <mat-option value="Obican">Obican</mat-option>
           <mat-option value="Student">Student - Djak</mat-option>
           <mat-option value="Penzioner">Penzos</mat-option>
         </mat-select>
         <mat-error *ngIf="registerForm.controls['type'].errors && registerForm.controls['type'].errors['required']">Obavezno polje</mat-error>
       </mat-form-field>
+      <div *ngIf="selectedValue == 'Student' || selectedValue=='Penzioner'" class="upload-file">
+        <input (change)="onFileChanged($event)" type="file" accept="image/png,image/jpeg,image/jpg,image/bmp">
+      </div>
     </div>
     <br>
     <button mat-flat-button color="primary" class='matButtonStyle' type="submit">Potvrdi</button>
   </form>
-  <div *ngIf="selectedValue == 'Student' || selectedValue=='Penzioner'">
-    <!-- <input class="ng-hide" id="input-file-id" multiple type="file"/>
-    <label for="input-file-id" class="md-button md-raised md-primary">Choose Files</label> -->
-  </div>
 </div>
