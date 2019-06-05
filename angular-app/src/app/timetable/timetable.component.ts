@@ -16,6 +16,7 @@ export class TimetableComponent implements OnInit {
   timetables = new Array<Timetable>();
   timetabletModel = new Array<Timetable>();
   timetableJson = Array<string>();
+  selectedLineName: string = "";
   myForm: FormGroup;
 
   constructor(@Inject(forwardRef(() => HomeComponent)) private _parent: HomeComponent,
@@ -48,7 +49,6 @@ export class TimetableComponent implements OnInit {
   get f() { return this.myForm.controls; }
   
   save() {
-
     this.f.day.setValue(this.picked_day);
     this.f.type.setValue(this.picked_type);
 
@@ -57,9 +57,12 @@ export class TimetableComponent implements OnInit {
       return;
     }
 
-    var selectedLineCode = this.f.line.value;
-    var timesJson = JSON.parse(this.timetables.find(x => x.Line.LineCode == selectedLineCode).Times);
-    var selectedDayTimesJson = new Array<string>();
+    let selectedLineCode = this.f.line.value;
+    let selectedLineObject = this.timetables.find(x => x.Line.LineCode == selectedLineCode);
+    this.selectedLineName = selectedLineObject.Line.DisplayName;
+
+    let timesJson = JSON.parse(selectedLineObject.Times);
+    let selectedDayTimesJson = new Array<string>();
     if(this.picked_day == "Radni_dan")
       selectedDayTimesJson = timesJson['Radni_dan'];
     else if(this.picked_day == "Subota")
@@ -68,21 +71,42 @@ export class TimetableComponent implements OnInit {
       selectedDayTimesJson = timesJson['Nedelja'];
 
     this.timetableJson = new Array<string>();
-    var startTime = selectedDayTimesJson[0].split(':')[0];
-    var str = '';
+
+    let polasciPoSatima = {};
+    selectedDayTimesJson.forEach(
+      (item, indeks) => {
+        let satMinut = item.split(":");
+        if (!(satMinut[0] in polasciPoSatima)) {
+          polasciPoSatima[satMinut[0]] = new Array<string>();
+        }
+
+        polasciPoSatima[satMinut[0]].push(satMinut[1]);
+      });
+    
+    for (let sat = 4; sat < 24; sat++) {
+      let satStr = sat.toString().padStart(2, '0');
+      if (satStr in polasciPoSatima) {
+        let prikazJednogSata = satStr+"|" + polasciPoSatima[satStr].join(",");
+        this.timetableJson.push(prikazJednogSata);
+      }
+    }
+
+    /* stari ispis
+    let startTime = selectedDayTimesJson[0].split(':')[0];
+    let jedanSat = ''; //06:05 06:15 06:30 06:45 06:57
+
     for (let time of selectedDayTimesJson) {
       if(time.split(':')[0] == startTime){
-        str = str.concat(`${time}\t`);
+        jedanSat = jedanSat.concat(`${time}\t`);
       }
       else{
         startTime = time.split(':')[0];
-        this.timetableJson.push(str);
-        str = '';
-        str = str.concat(`${time}\t`);
+        this.timetableJson.push(jedanSat);
+        jedanSat = '';
+        jedanSat = jedanSat.concat(`${time}\t`);
       }
     }
-    this.timetableJson.push(str);
-    //this._parent.removeOverlay();
+    this.timetableJson.push(jedanSat);*/
   }
   
   getPrigradski(): Array<Timetable>{

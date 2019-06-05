@@ -28,3 +28,19 @@ h1{
   text-align: left;
   margin-left: 35px;
 }
+
+.timetableJedanSat {
+  font-size: 1.3em;
+}
+
+.timetableMinut {
+  margin-left: 11px;
+  font-size: 1.1em;
+}
+
+.selectedLineName {
+  color: white;
+  margin: 0;
+  margin-left: 8px;
+  font-size: 1.1em;
+}

@@ -26,8 +26,13 @@
     <button mat-flat-button color="primary" type="submit" class="btnPrikaziRedVoznje matButtonStyle">Prikaži</button>
   </form>
   <br>
+  <h3 *ngIf="selectedLineName.length > 0" class='selectedLineName'>{{selectedLineName}}</h3>
   <div class="times">
-      <p *ngFor="let time of timetableJson">{{time}}</p>
+      <div *ngFor="let satMinute of timetableJson">
+        <b class='timetableJedanSat'>
+          {{ satMinute.split("|")[0] }}H</b>
+        <span class='timetableMinut' *ngFor="let minut of satMinute.split('|')[1].split(',')">{{ minut }}m</span>
+      </div>
   </div>
 </div>
   
