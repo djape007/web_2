@@ -548,7 +548,7 @@ namespace WebApp.Controllers
             }
 
 
-            var status = "not verified";
+            var status = "verified";
 
             if (request.Form.Get("Type") != "obican") {
                 status = "not verified";

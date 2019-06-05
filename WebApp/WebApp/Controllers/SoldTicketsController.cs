@@ -120,15 +120,19 @@ namespace WebApp.Controllers
 
             var userFromDb = unitOfWork.Users.Get(userId);
 
-            if (userFromDb == null) {
+            if (userFromDb == null || userFromDb.Type == null || userFromDb.Type.Trim().Length == 0)
+            {
                 return InternalServerError();
-            } else if (userFromDb.Status != "verified") {
-                return BadRequest("Korisnik nije verifikovan");
             }
 
+            string ticketDiscount = "obican";
 
-            if (userFromDb.Type == null || userFromDb.Type.Trim().Length == 0) {
-                return InternalServerError();
+            if (userFromDb.Type == "penzioner" && userFromDb.Status == "verified")
+            {
+                ticketDiscount = "penzioner";
+            } else if (userFromDb.Type == "student" && userFromDb.Status == "verified")
+            {
+                ticketDiscount = "student";
             }
 
             var activePricelist = unitOfWork.Pricelists.Find(x => x.From <= DateTime.Now && x.To >= DateTime.Now).FirstOrDefault();
@@ -137,7 +141,7 @@ namespace WebApp.Controllers
                 return BadRequest("Nema aktivnih cenovnika");
             }
 
-            var coefficient = unitOfWork.Coefficients.Find(x => x.Type.ToLower() == userFromDb.Type.ToLower()).FirstOrDefault();
+            var coefficient = unitOfWork.Coefficients.Find(x => x.Type.ToLower() == ticketDiscount.ToLower()).FirstOrDefault();
 
             if (coefficient == null) {
                 return InternalServerError();
@@ -152,7 +156,6 @@ namespace WebApp.Controllers
             var soldAtPrice = ticketPrice.Price * coefficient.Value;
             TimeSpan ticketExpiresIn = new TimeSpan((int)productType.ExpiresAfterHours, 0, 0);
             
-
             int addMonths = (int)Math.Floor(ticketExpiresIn.TotalDays / 30.0);
             int addDays = (int)ticketExpiresIn.TotalDays;
             int addHours = (int)ticketExpiresIn.TotalHours;
