@@ -3,6 +3,7 @@ import {} from 'googlemaps';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Router, RoutesRecognized } from '@angular/router';
 import { Line } from 'src/models/line';
+import { BusStop } from 'src/models/bus-stop';
 
 @Component({
   selector: 'app-home',
@@ -16,6 +17,7 @@ export class HomeComponent implements OnInit{
   @ViewChild('rightPanel') rightPanelComponent: any;
   map: google.maps.Map;
   polylines: Array<any> = new Array<any>();
+  markers: Array<any> = new Array<any>();
 
   public displayedPanel: string = 'none';
 
@@ -158,6 +160,35 @@ export class HomeComponent implements OnInit{
     }
 		
 		this.polylines[linija.LineCode] = new google.maps.Polyline(polyOptions);
-		this.polylines[linija.LineCode].setMap(this.map);
+    this.polylines[linija.LineCode].setMap(this.map);
+    
+    if (linija.BusStopsOnLines.length > 0) {
+      linija.BusStopsOnLines.forEach(BusStopLineConnection => {
+        this.DrawBusStopOnMap(BusStopLineConnection.BusStop);
+      });
+    } else {
+      console.log(linija.LineCode + " nema stanice");
+    }
+
+  }
+
+  public DrawBusStopOnMap(busStop: BusStop) {
+    let marker = this.DrawMarkerOnMap(busStop.X, busStop.Y, busStop.Name);
+    
+    if (busStop != null) {
+      this.markers[busStop.Id.toString()] = marker;
+    }
+  }
+
+  public DrawMarkerOnMap(latX: number, lngY: number, title: string) {
+    let marker = new google.maps.Marker({
+        position: new google.maps.LatLng(latX, lngY),
+        map: this.map,
+        title: title
+    });
+
+    marker.setMap(this.map);
+
+    return marker;
   }
 }

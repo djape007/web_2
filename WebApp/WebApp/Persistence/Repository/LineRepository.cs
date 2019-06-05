@@ -21,7 +21,7 @@ namespace WebApp.Persistence.Repository
 
         new public Line Get(Guid id)
         {
-            return context.Set<Line>().Include("Buses").Include("BusStopsOnLines").Include("PointLinePaths").FirstOrDefault(x => x.Id == id);
+            return context.Set<Line>().Include("Buses").Include("BusStopsOnLines").Include("BusStopsOnLines.BusStop").Include("PointLinePaths").FirstOrDefault(x => x.Id == id);
         }
     }
 }
