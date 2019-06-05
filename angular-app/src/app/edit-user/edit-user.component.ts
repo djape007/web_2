@@ -12,7 +12,7 @@ import { ProfileService } from '../services/profile.service';
 })
 export class EditUserComponent implements OnInit {
 
-  @Input() email: string;
+  @Input() id: string;
   myForm: FormGroup;
   passwordForm: FormGroup;
   selectedValue: string;
@@ -23,8 +23,8 @@ export class EditUserComponent implements OnInit {
   constructor(private _service: ProfileService, private _auth: AuthService, private _router: Router, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    if(this.email != '')
-    this._service.getUser(this.email)
+    if(this.id != '')
+    this._service.getUser(this.id)
       .subscribe(
         data => {
           this.user = data;

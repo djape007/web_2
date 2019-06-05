@@ -15,8 +15,8 @@ export class ProfileService {
     return this.http.post(`${this.api_route}/api/users/register`, `email=${user.Email}&Password=${user.Password}&DateOfBirth=${dobString}&Address=${user.Address}&Name=${user.Name}&Surname=${user.Surname}&Type=${user.Type}`,  { "headers" : {'Content-type' : 'application/x-www-form-urlencoded'}});
   }
 
-  public getUser(email: string): Observable<any>{
-    return this.http.get(`${this.api_route}/api/Users/${email}`);
+  public getUser(id: string): Observable<any>{
+    return this.http.get(`${this.api_route}/api/Users/${id}`);
   }
 
   public editUser(user: User, dobString: string): Observable<any>{

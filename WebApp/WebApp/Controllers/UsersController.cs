@@ -45,7 +45,7 @@ namespace WebApp.Controllers
         [Authorize(Roles = "Admin, AppUser")]
         public IHttpActionResult GetUser(string id)
         {
-            ApplicationUser user = UserManager.Users.ToList().Find(x => x.Email == id);
+            ApplicationUser user = UserManager.Users.ToList().Find(x => x.Id == id);
             if (user == null)
             {
                 return NotFound();

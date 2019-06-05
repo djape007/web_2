@@ -1,5 +1,15 @@
 <div>
   <div *ngIf="role == 'AppUser'">
-    <app-edit-user [email]="email"></app-edit-user>
+    <app-edit-user [id]="id"></app-edit-user>
+  </div>
+  <div *ngIf="role == 'Admin'">
+    <div class="text-right">
+      <button mat-flat-button color="primary" class='matButtonStyle' (click)='logout()'>Odjava</button>
+    </div>
+  </div>
+  <div *ngIf="role == 'Controller'">
+    <div class="text-right">
+      <button mat-flat-button color="primary" class='matButtonStyle' (click)='logout()'>Odjava</button>
+    </div>
   </div>
 </div>

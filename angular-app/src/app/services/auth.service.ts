@@ -69,6 +69,17 @@ export class AuthService {
     let jwtParsed = this.parseToken(tkn);
     return jwtParsed.unique_name; //unique_name -> email
   }
+
+  getId(): any{
+    let tkn = this.getToken();
+    if (tkn == null) {
+      return "";
+    }
+    
+    let jwtParsed = this.parseToken(tkn);
+    return jwtParsed.nameid; //nameid -> id
+  }
+
   getUserType(): any{
     let tkn = this.getToken();
     if (tkn == null) {

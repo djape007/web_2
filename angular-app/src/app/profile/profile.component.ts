@@ -12,7 +12,7 @@ import { ProfileService } from '../services/profile.service';
 })
 export class ProfileComponent implements OnInit {
 
-  email: string;
+  id: string;
   role: string;
 
   constructor(@Inject(forwardRef(() => HomeComponent)) private _parent: HomeComponent,
@@ -20,13 +20,13 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this._parent.prikaziDesniMeni();
-    this.email = this._auth.getEmail();
+    this.id = this._auth.getId();
     this.role = this._auth.getRole();
   }
 
-  // logout(){
-  //   this._auth.logout();
-  //   this._router.navigate(['/home/login']);
-  // }
+  logout(){
+    this._auth.logout();
+    this._router.navigate(['/home/login']);
+  }
 
 }
