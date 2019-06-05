@@ -2,6 +2,7 @@ import { Component, ViewChild, OnInit, Input } from '@angular/core';
 import {} from 'googlemaps';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Router, RoutesRecognized } from '@angular/router';
+import { Line } from 'src/models/line';
 
 @Component({
   selector: 'app-home',
@@ -14,6 +15,7 @@ export class HomeComponent implements OnInit{
   @ViewChild('leftPanel') leftPanelComponent: any;
   @ViewChild('rightPanel') rightPanelComponent: any;
   map: google.maps.Map;
+  polylines: Array<any> = new Array<any>();
 
   public displayedPanel: string = 'none';
 
@@ -125,5 +127,37 @@ export class HomeComponent implements OnInit{
   private centerMap() {
     let mapHolder = document.getElementById('map-holder');
     mapHolder.style.webkitTransform = "translate3d(0,0,0)";
+  }
+
+  public DrawLineOnMap(linija: Line) {
+		let SelectedLineCoordinates = new Array<google.maps.LatLng>();
+    
+    if (linija.PointLinePaths.length == 0) {
+      console.log(linija.LineCode + " nema putanju");
+      return;
+    }
+
+    let sortiranaPutanja = linija.PointLinePaths.sort((a,b) => a.SequenceNumber - b.SequenceNumber);
+    
+		sortiranaPutanja.forEach((item) => {
+      SelectedLineCoordinates.push(new google.maps.LatLng(item.X,item.Y));	
+		});
+    
+    let bojaLinije = "#"+linija.LineCode+linija.LineCode;
+
+    if (bojaLinije.length == 5) {
+      bojaLinije += "55";
+    }
+
+		let polyOptions = {
+            path: SelectedLineCoordinates,
+            geodesic: true,
+						strokeColor: bojaLinije,
+						strokeOpacity: 1,
+            strokeWeight: 4
+    }
+		
+		this.polylines[linija.LineCode] = new google.maps.Polyline(polyOptions);
+		this.polylines[linija.LineCode].setMap(this.map);
   }
 }

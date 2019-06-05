@@ -9,7 +9,7 @@ export class Line {
     public Direction: string;
     public Buses: Array<Bus> = new Array();
     public BusStopsOnLines: Array<BusStopsOnLine> = new Array();
-    public BointLinePaths: Array<PointPathLine> = new Array();
+    public PointLinePaths: Array<PointPathLine> = new Array();
     public DisplayName: string;
 }
 
