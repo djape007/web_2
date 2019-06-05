@@ -77,7 +77,7 @@ namespace WebApp.Controllers
 
             return Ok(user);
         }
-        
+
         // PUT: api/Users/5
         [ResponseType(typeof(void))]
         [Authorize(Roles = "Admin, AppUser")]
@@ -99,20 +99,20 @@ namespace WebApp.Controllers
             {
                 return BadRequest("Korisnik ne postoji");
             }
-            
+
             userInDB.Address = user.Address;
             userInDB.DateOfBirth = user.DateOfBirth;
             //userInDB.EmailConfirmed = user.EmailConfirmed;
             //userInDB.Type = user.Type;
             userInDB.Name = user.Name;
             userInDB.Surname = user.Surname;
-            
+
             IdentityResult result = await UserManager.UpdateAsync(userInDB);
-            
+
             if (!result.Succeeded) {
                 return BadRequest();
             }
-            
+
             return StatusCode(HttpStatusCode.NoContent);
         }
 
@@ -237,18 +237,18 @@ namespace WebApp.Controllers
             var userId = User.Identity.GetUserId();
 
             var userInDb = UserManager.Users.FirstOrDefault(x => x.Id == userId);
-            
+
             if (userInDb == null) {
                 return BadRequest("User does not exist");
             }
 
             var mappedPath = GetUserFolderPath(userId);
             CreateUserFolder(mappedPath);
-            
+
             if (request.Files.Count == 0) {
                 return BadRequest("No files selected");
             }
-            
+
             List<string> listaNazivaUploadovanihFajlova = new List<string>();
             foreach (string file in request.Files) {
                 var postedFile = request.Files[file];
@@ -326,7 +326,7 @@ namespace WebApp.Controllers
 
             IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
                 model.NewPassword);
-            
+
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
@@ -459,9 +459,9 @@ namespace WebApp.Controllers
             if (hasRegistered)
             {
                 Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-                
-                 ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
-                    OAuthDefaults.AuthenticationType);
+
+                ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
+                   OAuthDefaults.AuthenticationType);
                 ClaimsIdentity cookieIdentity = await user.GenerateUserIdentityAsync(UserManager,
                     CookieAuthenticationDefaults.AuthenticationType);
 
@@ -518,7 +518,7 @@ namespace WebApp.Controllers
 
             return logins;
         }
-        
+
         // POST api/Account/Register
         [AllowAnonymous]
         [ResponseType(typeof(ApplicationUser))]
@@ -536,6 +536,18 @@ namespace WebApp.Controllers
         public async Task<IHttpActionResult> Register()
         {
             var request = HttpContext.Current.Request;
+            
+
+            string[] validate = { "Email", "DateOfBirth", "Password", "Name", "Surname"};
+            foreach(var itemToValidate in validate)
+            {
+                if (request.Form.Get(itemToValidate) == null || request.Form.Get(itemToValidate).Trim().Length == 0)
+                {
+                    return BadRequest(itemToValidate + " is required");
+                }
+            }
+
+
             var status = "not verified";
 
             if (request.Form.Get("Type") != "obican") {
@@ -554,9 +566,6 @@ namespace WebApp.Controllers
                 Type = request.Form.Get("Type"),
                 Files = ""
             };
-
-            //RegisterBindingModel registerBindingModel = new RegisterBindingModel() { Email = user.Email, Password = request.Form.Get("Password"), ConfirmPassword = request.Form.Get("Password") };
-            
 
             IdentityResult result = await UserManager.CreateAsync(user, request.Form.Get("Password"));
 
