@@ -128,7 +128,7 @@
         }
         
         private void DodajPutanjeLinija(WebApp.Persistence.ApplicationDbContext context) {
-            string text = System.IO.File.ReadAllText(@"D:\My documents\GitHub\web_2\WebApp\WebApp\Migrations\pathsCoords.csv");
+            string text = System.IO.File.ReadAllText(@"OVDE_PUTANJA_DO_OVOG_FAJLA===>\GitHub\web_2\WebApp\WebApp\Migrations\pathsCoords.csv");
             var redovi = text.Split('\n');
             for (int i = 0; i < redovi.Length; i++) {
                 if (redovi[i].Length < 5) {
@@ -156,7 +156,7 @@
                 };
                 context.PointPathLines.Add(obj);
 
-                if (i % 50 == 0) {
+                if (i % 500 == 0) {
                     context.SaveChanges();
                 }
             }
