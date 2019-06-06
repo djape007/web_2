@@ -7,9 +7,12 @@
         </ul>
     </nav>
     <nav class='navMenu navRight'>
-        <ul>
+        <ul *ngIf="!checkIfLoggedIn()">
             <li><a class="nav-link2" routerLink="/home/register" routerLinkActive="active">REGISTRACIJA</a></li>
             <li><a class="nav-link2" routerLink="/home/login" routerLinkActive="active">PRIJAVA</a></li>
+        </ul>
+        <ul *ngIf="checkIfLoggedIn()">
+            <li><a class="nav-link2" routerLink="/home/profile" routerLinkActive="active">PROFIL</a></li>
         </ul>
     </nav>
     <div id='mapOverlay' (click)='NavigateToMap()' class='map-no-overlay'></div>

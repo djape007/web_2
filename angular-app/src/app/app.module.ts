@@ -22,6 +22,7 @@ import { MatInputModule, MatButtonModule, MatSelectModule, MatIconModule, MatNat
 import { FormsModule } from '@angular/forms';
 import { ProfileComponent } from './profile/profile.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
+import { VerifyUserComponent } from './verify-user/verify-user.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { EditUserComponent } from './edit-user/edit-user.component';
     RightMenuComponent,
     TicketComponent,
     ProfileComponent,
-    EditUserComponent
+    EditUserComponent,
+    VerifyUserComponent
   ],
   imports: [
     BrowserModule,

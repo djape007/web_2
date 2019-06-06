@@ -617,9 +617,11 @@ namespace WebApp.Controllers
                 }
             }
 
-            string subject = "Registracija";
-            string body = "<p>Poštovani " + user.Name + " " + user.Surname + "</p><p>Uspešno ste se registrovali.</p><p><b>Vinko Klocna Prevoz</b></p>";
-            //SendEmailConfig.Execute(user.Email, subject, body);
+            if(user.Status == "processing") {
+                string subject = "Status klijenta";
+                string body = "<p>Poštovani " + user.Name + " " + user.Surname + "</p><p>Vas status se verifikuje.</p><p><b>Vinko Klocna Prevoz</b></p>";
+                //SendEmailConfig.Execute(user.Email, subject, body);
+            }
 
             return Ok(user);
         }

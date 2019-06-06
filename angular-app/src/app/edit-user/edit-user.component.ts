@@ -52,7 +52,7 @@ export class EditUserComponent implements OnInit {
   }
 
   getUserPhotos(): Array<string>{
-    if(this.user.Files == '')
+    if(this.user.Files == '' || this.user.Files == null)
       return;
 
     let photos = new Array<string>();

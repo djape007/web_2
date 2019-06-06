@@ -4,6 +4,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Router, RoutesRecognized } from '@angular/router';
 import { Line } from 'src/models/line';
 import { BusStop } from 'src/models/bus-stop';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -21,7 +22,7 @@ export class HomeComponent implements OnInit{
 
   public displayedPanel: string = 'none';
 
-  constructor(private _router: Router) { }
+  constructor(private _router: Router, private _auth: AuthService) { }
 
   ngOnInit(): void {
     this._router.events.subscribe(event => {
@@ -64,6 +65,13 @@ export class HomeComponent implements OnInit{
     this.mapElement.nativeElement.className = "blurGrayscale";
   }
  }
+
+ public checkIfLoggedIn(): Boolean{
+    if(this._auth.getToken())
+      return true;
+    else
+      return false;
+  }
 
  public prikaziLeviMeni() {
   this.hideRightPanel();
