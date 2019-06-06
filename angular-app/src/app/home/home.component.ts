@@ -5,6 +5,9 @@ import { Router, RoutesRecognized } from '@angular/router';
 import { Line } from 'src/models/line';
 import { BusStop } from 'src/models/bus-stop';
 import { AuthService } from '../services/auth.service';
+import { LineService } from '../services/line.service';
+import { timeout } from 'q';
+import { timeInterval } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -17,12 +20,13 @@ export class HomeComponent implements OnInit{
   @ViewChild('leftPanel') leftPanelComponent: any;
   @ViewChild('rightPanel') rightPanelComponent: any;
   map: google.maps.Map;
-  polylines: Array<any> = new Array<any>();
-  markers: Array<any> = new Array<any>();
+  putanjePrikazanihLinija: Array<any> = new Array<any>();
+  stanicePrikazaneNaMapi: Array<any> = new Array<any>();
+  prikazaneLinije: Array<any> = new Array<any>(); //lineId => Line objekat
 
   public displayedPanel: string = 'none';
 
-  constructor(private _router: Router, private _auth: AuthService) { }
+  constructor(private _router: Router, private _auth: AuthService,private _lineService: LineService) { }
 
   ngOnInit(): void {
     this._router.events.subscribe(event => {
@@ -139,7 +143,23 @@ export class HomeComponent implements OnInit{
     mapHolder.style.webkitTransform = "translate3d(0,0,0)";
   }
 
+  public DisplayLineOnMap(lineId: string) {
+    this._lineService.getLine(lineId).subscribe(
+      (data) => {
+        console.log(data);
+        this.DrawLineOnMap(data);
+      }, 
+      (error) => {
+        console.log(error);
+      })
+  }
+
   public DrawLineOnMap(linija: Line) {
+    if (linija.Id in this.putanjePrikazanihLinija) {
+      console.log("Linija je vec nacrtana");
+      return;
+    }
+
 		let SelectedLineCoordinates = new Array<google.maps.LatLng>();
     
     if (linija.PointLinePaths.length == 0) {
@@ -164,15 +184,17 @@ export class HomeComponent implements OnInit{
             geodesic: true,
 						strokeColor: bojaLinije,
 						strokeOpacity: 1,
-            strokeWeight: 4
+            strokeWeight: 4,
+            //editable: true //za admina
     }
 		
-		this.polylines[linija.Id] = new google.maps.Polyline(polyOptions);
-    this.polylines[linija.Id].setMap(this.map);
-    
+		this.putanjePrikazanihLinija[linija.Id] = new google.maps.Polyline(polyOptions);
+    this.putanjePrikazanihLinija[linija.Id].setMap(this.map);
+    this.prikazaneLinije[linija.Id] = linija;
+
     if (linija.BusStopsOnLines.length > 0) {
-      linija.BusStopsOnLines.forEach(BusStopLineConnection => {
-        this.DrawBusStopOnMap(BusStopLineConnection.BusStop);
+      linija.BusStopsOnLines.forEach((BusStopLineConnection, index) => {
+          this.DrawBusStopOnMap(BusStopLineConnection.BusStop, linija.Id);
       });
     } else {
       console.log(linija.Id + " nema stanice");
@@ -180,23 +202,106 @@ export class HomeComponent implements OnInit{
 
   }
 
-  public DrawBusStopOnMap(busStop: BusStop) {
-    let marker = this.DrawMarkerOnMap(busStop.X, busStop.Y, busStop.Name + "|" + busStop.Address);
-    
-    if (busStop != null) {
-      this.markers[busStop.Id.toString()] = marker;
+  public RemoveLineFromMap(lineId: string) {
+    if (!(lineId in this.prikazaneLinije)) {
+      console.log("JAOOO " + lineId + " bolje ovo da ne vidim");
+      return;
     }
+
+    let linijaZaBrisanje = this.prikazaneLinije[lineId] as Line;
+    this.putanjePrikazanihLinija[lineId].setMap(null);
+    
+    linijaZaBrisanje.BusStopsOnLines.forEach(element => {
+      this.stanicePrikazaneNaMapi[element.BusStopId.toString() + "_" + lineId].setMap(null);
+    });
+
+    delete this.putanjePrikazanihLinija[lineId];
   }
 
-  public DrawMarkerOnMap(latX: number, lngY: number, title: string) {
-    let marker = new google.maps.Marker({
+  public DrawBusStopOnMap(busStop: BusStop, lineId: string = "") {
+    let markerIconPath = "../../assets/imgs/busStopMarker.png";
+
+    let marker = this.DrawMarkerOnMap(busStop.X, busStop.Y, busStop.Name + "|" + busStop.Address, markerIconPath);
+    let infoWindow = this.CreateBusStopInfoWindow(busStop, lineId);
+    marker.addListener('click', () => {
+      infoWindow.open(this.map, marker);
+    });
+
+    //kad se prikaze infowindow ovaj kod ce se izvrsiti
+    google.maps.event.addListenerOnce(infoWindow, 'domready', () => {
+      let btnsPrikaziLiniju = document.getElementsByClassName('btnDisplayLineFromInfoWindow');
+      
+      for(let i = 0; i < btnsPrikaziLiniju.length; i++) {
+        btnsPrikaziLiniju[i].addEventListener('click', (event) => {
+          event.stopPropagation();
+          this.DisplayLineOnMap(btnsPrikaziLiniju[i].getAttribute("lineId").toString());
+        });
+      }
+
+      let btnZatvoriLiniju = document.getElementsByClassName('btnZatvoriLiniju');
+      
+      for(let i = 0; i < btnZatvoriLiniju.length; i++) {
+        btnZatvoriLiniju[i].addEventListener('click', () => {
+          this.RemoveLineFromMap(btnZatvoriLiniju[i].getAttribute("lineId").toString());
+        });
+      }
+    });
+
+
+    this.stanicePrikazaneNaMapi[busStop.Id.toString() + "_" + lineId] = marker;
+  }
+
+  private CreateBusStopInfoWindow(busStop: BusStop, lineId:string = ""): google.maps.InfoWindow {
+    let ostaleLinije = busStop.Address.split(",");
+    let prikaziLinijeHTML = "";
+    ostaleLinije.forEach(idLinije => {
+      if (idLinije != lineId) {
+        prikaziLinijeHTML += "<button class='btnInfoWindow btnDisplayLineFromInfoWindow' lineId='"+idLinije+"'>Prikazi "+idLinije+"</button>";
+      }
+    });
+
+    let content = `
+    <div><b>`+busStop.Name+`</b></div>
+    <button class='btnInfoWindow btnZatvoriLiniju' lineId='`+lineId+`'>SKLONI LINIJU `+lineId+`</button>
+    <div>Linije koje staju na ovoj stanici:</div>
+    <div>`+busStop.Address+`</div>
+    `+prikaziLinijeHTML+`
+    `;
+
+    return this.CreateInfoWindow(content);
+  }
+
+  private CreateInfoWindow(content: string): google.maps.InfoWindow {
+    let infowindow = new google.maps.InfoWindow({
+      content: content
+    });
+    return infowindow;
+  }
+
+  private DrawMarkerOnMap(latX: number, lngY: number, title: string, customIcon:string = ""): google.maps.Marker {
+    let marker = null;
+    if (customIcon.trim().length > 0) {
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(latX, lngY),
+        map: this.map,
+        //title: title,
+        icon: customIcon,
+        //draggable: true //za admina
+      });
+    } else {
+      marker = new google.maps.Marker({
         position: new google.maps.LatLng(latX, lngY),
         map: this.map,
         title: title
-    });
+      });
+    }
 
     marker.setMap(this.map);
 
     return marker;
+  }
+
+  private RemoveMarkerFromMap(marker: google.maps.Marker) {
+    marker.setMap(null);
   }
 }

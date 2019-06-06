@@ -25,7 +25,7 @@ body {
   .square_btn:hover{
     background-color: transparent;
     border: transparent;
-    color: #4286f4;
+    color: #f7c859;
   }
   
   .square_btn:focus{
@@ -59,13 +59,13 @@ body {
   .square_btn_active:hover:before {
       top: -webkit-calc(100% - 3px);
       top: calc(100% - 3px);
-      background: #4286f4;
+      background: #f7c859;
   }
   
   .square_btn_active:hover{
     background-color: transparent;
     border: transparent;
-    color: #4286f4;
+    color: #f7c859;
   }
   
   .square_btn_active:focus{
@@ -109,4 +109,9 @@ body {
 .matButtonStyle {
   font-size: 1.1em;
   font-weight: bold;
+}
+
+.btnInfoWindow {
+  color:red;
+  background-color: greenyellow;
 }

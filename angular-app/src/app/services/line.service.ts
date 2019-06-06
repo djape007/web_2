@@ -11,7 +11,7 @@ export class LineService {
 
   constructor(private http: HttpClient) { }
 
-  public getLine(id: Guid): Observable<any>{
+  public getLine(id: string): Observable<any>{
     return this.http.get(`${this.api_route}/${id}`);
   }
 }

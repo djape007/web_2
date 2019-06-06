@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Timetable } from 'src/models/timetable';
 import { HomeComponent } from '../home/home.component';
 import { TimetableService } from '../services/timetable.service';
-import { LineService } from '../services/line.service';
 
 @Component({
   selector: 'app-timetable',
@@ -21,7 +20,7 @@ export class TimetableComponent implements OnInit {
   myForm: FormGroup;
 
   constructor(@Inject(forwardRef(() => HomeComponent)) private _parent: HomeComponent,
-     private _sevice: TimetableService,private _lineService: LineService, private _formBuilder: FormBuilder) { }
+     private _sevice: TimetableService, private _formBuilder: FormBuilder) { }
 
   ngOnInit() {
     this._parent.prikaziLeviMeni();
@@ -93,34 +92,10 @@ export class TimetableComponent implements OnInit {
         this.timetableJson.push(prikazJednogSata);
       }
     }
-
-    /* stari ispis
-    let startTime = selectedDayTimesJson[0].split(':')[0];
-    let jedanSat = ''; //06:05 06:15 06:30 06:45 06:57
-
-    for (let time of selectedDayTimesJson) {
-      if(time.split(':')[0] == startTime){
-        jedanSat = jedanSat.concat(`${time}\t`);
-      }
-      else{
-        startTime = time.split(':')[0];
-        this.timetableJson.push(jedanSat);
-        jedanSat = '';
-        jedanSat = jedanSat.concat(`${time}\t`);
-      }
-    }
-    this.timetableJson.push(jedanSat);*/
   }
 
   displayLineOnMap(lineId: any) {
-    this._lineService.getLine(lineId).subscribe(
-    (data) => {
-      console.log(data);
-      this._parent.DrawLineOnMap(data);
-    }, 
-    (error) => {
-      console.log(error);
-    })
+    this._parent.DisplayLineOnMap(lineId);
   }
   
   getPrigradski(): Array<Timetable>{
