@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from 'src/models/user';
+import { Guid } from 'guid-typescript';
 
 @Injectable({
   providedIn: 'root'
@@ -45,5 +46,13 @@ export class ProfileService {
 
   public changePassword(oldpass: string, newpass: string, reppass: string): Observable<any>{
     return this.http.post(`${this.api_route}/api/Users/ChangePassword`, `OldPassword=${oldpass}&NewPassword=${newpass}&ConfirmPassword=${reppass}`,  { "headers" : {'Content-type' : 'application/x-www-form-urlencoded'}});
+  }
+
+  public denyUser(userId: Guid): Observable<any>{
+    return this.http.put(`${this.api_route}/api/Users/Deny/${userId}`,null);
+  }
+
+  public verifyUser(userId: Guid): Observable<any>{
+    return this.http.put(`${this.api_route}/api/Users/Verify/${userId}`,null);
   }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProfileService } from '../services/profile.service';
 import { User } from 'src/models/user';
+import { Guid } from 'guid-typescript';
 
 @Component({
   selector: 'app-verify-user',
@@ -9,7 +10,7 @@ import { User } from 'src/models/user';
 })
 export class VerifyUserComponent implements OnInit {
 
-  users: Array<User> = new Array<User>();
+  users: Array<User>;
 
   constructor(private _service: ProfileService) { }
 
@@ -42,11 +43,27 @@ export class VerifyUserComponent implements OnInit {
     )
   }
 
-  deny(){
-
+  deny(userId: Guid){
+    this._service.denyUser(userId)
+    .subscribe(
+      data => {
+        this.getProcessingUsers();
+      },
+      err => {
+        console.log(err);
+      }
+    )
   }
 
-  verify(){
-
+  verify(userId: Guid){
+    this._service.verifyUser(userId)
+    .subscribe(
+      data => {
+        this.getProcessingUsers();
+      },
+      err => {
+        console.log(err);
+      }
+    )
   }
 }

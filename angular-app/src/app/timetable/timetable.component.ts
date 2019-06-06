@@ -38,8 +38,8 @@ export class TimetableComponent implements OnInit {
           this.timetables = data;
           this.timetables.forEach(x=> x.Line.DisplayName = `${x.Line.Id} ${x.Line.Direction}`)
           this.timetabletModel = this.getGradski();
-          this.btnDayClick('radni');
-          this.btnTypeClick('gradski');
+          //this.btnDayClick('radni');
+          //this.btnTypeClick('gradski');
         },
         err => {
           console.log(err);

@@ -1,5 +1,5 @@
-<div *ngIf="users" class="div-full-width">
-  <mat-expansion-panel *ngFor="let user of users">
+<div *ngIf="users;else message" class="div-full-width">
+  <mat-expansion-panel *ngFor="let user of users" style="margin-bottom: 5px;">
     <mat-expansion-panel-header>
       <mat-panel-title>
         {{user.Name}} {{user.Surname}}
@@ -15,7 +15,10 @@
         </tr>
         </table>
       </div>
-      <button style="float: left" mat-flat-button color="primary" class='matButtonStyle' (click)='verify()'>Prihvati</button>
-      <button style="float: right" mat-flat-button color="primary" class='matButtonStyle' (click)='deny()'>Odbaci</button>
+      <button style="float: left" mat-flat-button color="primary" class='matButtonStyle' (click)='verify(user.Id)'>Prihvati</button>
+      <button style="float: right" mat-flat-button color="primary" class='matButtonStyle' (click)='deny(user.Id)'>Odbaci</button>
   </mat-expansion-panel>
 </div>
+<ng-template #message>
+  <div style="margin-top: 20px; text-align:center" class="div-full-width">Nema korisnika koji cekaju na verifikaciju</div>
+</ng-template>
