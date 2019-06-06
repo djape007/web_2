@@ -119,7 +119,7 @@
             context.PriceHistories.Add(GodisnjaCenovnik1Cena);
             context.SaveChanges();
 
-            //DodajLinije(context);
+            DodajLinije(context);
             DodajRedVoznje(context, new DateTime(2019, 03, 05));
 
             //PUTANJE ZA SVAKU LINIJU; ucitava iz fajla
