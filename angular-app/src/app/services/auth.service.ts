@@ -42,8 +42,16 @@ export class AuthService {
   }
 
   logout(): void {
-    this.isLoggedIn = false;
-    localStorage.removeItem('token');
+    this.http.post(`${this.api_route}/api/Users/Logout`,null)
+      .subscribe(
+        data => {
+          this.isLoggedIn = false;
+          localStorage.removeItem('token');
+        },
+        err => {
+          console.log(err);
+        }
+      )
   } 
 
   getToken(): any{

@@ -217,6 +217,10 @@ namespace WebApp.Controllers
             userInDb.Status = "verified";
             UserManager.Update(userInDb);
 
+            string subject = "Status klijenta";
+            string body = "<p>Poštovani " + userInDb.Name + " " + userInDb.Surname + "</p><p>Vas zahtev je ODOBREN.</p><p><b>Vinko Klocna Prevoz</b></p>";
+            SendEmailConfig.Execute(userInDb.Email, subject, body);
+
             return Ok();
         }
 
@@ -237,6 +241,10 @@ namespace WebApp.Controllers
 
             userInDb.Status = "denied";
             UserManager.Update(userInDb);
+
+            string subject = "Status klijenta";
+            string body = "<p>Poštovani " + userInDb.Name + " " + userInDb.Surname + "</p><p>Vas zahtev je ODBIJEN.</p><p><b>Vinko Klocna Prevoz</b></p>";
+            SendEmailConfig.Execute(userInDb.Email, subject, body);
 
             return Ok();
         }
@@ -628,7 +636,7 @@ namespace WebApp.Controllers
             if(user.Status == "processing") {
                 string subject = "Status klijenta";
                 string body = "<p>Poštovani " + user.Name + " " + user.Surname + "</p><p>Vas status se verifikuje.</p><p><b>Vinko Klocna Prevoz</b></p>";
-                //SendEmailConfig.Execute(user.Email, subject, body);
+                SendEmailConfig.Execute(user.Email, subject, body);
             }
 
             return Ok(user);
