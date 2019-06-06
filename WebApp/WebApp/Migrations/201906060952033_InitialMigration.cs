@@ -14,18 +14,17 @@ namespace WebApp.Migrations
                         Id = c.String(nullable: false, maxLength: 128),
                         X = c.Double(nullable: false),
                         Y = c.Double(nullable: false),
-                        LineId = c.Guid(nullable: false),
+                        LineId = c.String(maxLength: 128),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Lines", t => t.LineId, cascadeDelete: true)
+                .ForeignKey("dbo.Lines", t => t.LineId)
                 .Index(t => t.LineId);
             
             CreateTable(
                 "dbo.Lines",
                 c => new
                     {
-                        Id = c.Guid(nullable: false),
-                        LineCode = c.String(),
+                        Id = c.String(nullable: false, maxLength: 128),
                         Direction = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
@@ -36,7 +35,7 @@ namespace WebApp.Migrations
                     {
                         Id = c.Guid(nullable: false),
                         BusStopId = c.Guid(nullable: false),
-                        LineId = c.Guid(nullable: false),
+                        LineId = c.String(nullable: false, maxLength: 128),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.BusStops", t => t.BusStopId, cascadeDelete: true)
@@ -64,10 +63,10 @@ namespace WebApp.Migrations
                         X = c.Double(nullable: false),
                         Y = c.Double(nullable: false),
                         SequenceNumber = c.Int(nullable: false),
-                        LineId = c.Guid(nullable: false),
+                        LineId = c.String(maxLength: 128),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Lines", t => t.LineId, cascadeDelete: true)
+                .ForeignKey("dbo.Lines", t => t.LineId)
                 .Index(t => t.LineId);
             
             CreateTable(
@@ -215,10 +214,10 @@ namespace WebApp.Migrations
                         Id = c.Guid(nullable: false),
                         Times = c.String(),
                         ValidFrom = c.DateTime(nullable: false),
-                        LineId = c.Guid(nullable: false),
+                        LineId = c.String(maxLength: 128),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Lines", t => t.LineId, cascadeDelete: true)
+                .ForeignKey("dbo.Lines", t => t.LineId)
                 .Index(t => t.LineId);
             
         }

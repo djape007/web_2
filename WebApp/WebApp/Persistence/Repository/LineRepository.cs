@@ -8,7 +8,7 @@ using WebApp.Models;
 
 namespace WebApp.Persistence.Repository
 {
-    public class LineRepository : Repository<Line, Guid>, ILineRepository
+    public class LineRepository : Repository<Line, string>, ILineRepository
     {
         public LineRepository(DbContext context) : base(context)
         {
@@ -19,7 +19,7 @@ namespace WebApp.Persistence.Repository
             return context.Set<Line>().Include("Buses").Include("BusStopsOnLines").Include("PointLinePaths").ToList();
         }
 
-        new public Line Get(Guid id)
+        new public Line Get(string id)
         {
             return context.Set<Line>().Include("Buses").Include("BusStopsOnLines").Include("BusStopsOnLines.BusStop").Include("PointLinePaths").FirstOrDefault(x => x.Id == id);
         }

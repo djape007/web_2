@@ -7,7 +7,7 @@ using WebApp.Models;
 
 namespace WebApp.Persistence.Repository
 {
-    public interface IBusRepository : IRepository<Models.Bus,string>
+    public interface IBusRepository : IRepository<Models.Bus, string>
     {
     }
 }

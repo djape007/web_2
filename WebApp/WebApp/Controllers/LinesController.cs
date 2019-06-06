@@ -30,7 +30,7 @@ namespace WebApp.Controllers
 
         // GET: api/Lines/5
         [ResponseType(typeof(Line))]
-        public IHttpActionResult GetLine(Guid id)
+        public IHttpActionResult GetLine(string id)
         {
             Line line = unitOfWork.Lines.Get(id);
             if (line == null)
@@ -43,7 +43,7 @@ namespace WebApp.Controllers
 
         // PUT: api/Lines/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutLine(Guid id, Line line)
+        public IHttpActionResult PutLine(string id, Line line)
         {
             if (!ModelState.IsValid || line == null)
             {
@@ -106,7 +106,7 @@ namespace WebApp.Controllers
 
         // DELETE: api/Lines/5
         [ResponseType(typeof(Line))]
-        public IHttpActionResult DeleteLine(Guid id)
+        public IHttpActionResult DeleteLine(string id)
         {
             Line line = unitOfWork.Lines.Get(id);
             if (line == null)
@@ -129,7 +129,7 @@ namespace WebApp.Controllers
             base.Dispose(disposing);
         }
 
-        private bool LineExists(Guid id)
+        private bool LineExists(string id)
         {
             return unitOfWork.Lines.Find(e => e.Id == id).Count() > 0;
         }

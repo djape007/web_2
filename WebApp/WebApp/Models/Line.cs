@@ -9,8 +9,7 @@ namespace WebApp.Models
     public class Line
     {
         [Key]
-        public Guid Id { get; set; }
-        public string LineCode { get; set; }
+        public string Id { get; set; }
         public string Direction { get; set; }
         public ICollection<Bus> Buses { get; set; }
         public ICollection<BusStopsOnLine> BusStopsOnLines { get; set; }

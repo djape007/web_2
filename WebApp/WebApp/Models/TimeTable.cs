@@ -12,7 +12,7 @@ namespace WebApp.Models
         public Guid Id { get; set; }
         public string Times { get; set; }
         public DateTime ValidFrom { get; set; }
-        public Guid LineId { get; set; }
+        public string LineId { get; set; }
         public Line Line { get; set; }
 
     }

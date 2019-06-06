@@ -15,7 +15,7 @@ namespace WebApp.Models
         public Guid BusStopId { get; set; }
         public BusStop BusStop { get; set; }
         [Required]
-        public Guid LineId { get; set; }
+        public string LineId { get; set; }
         public Line Line { get; set; }
 
     }

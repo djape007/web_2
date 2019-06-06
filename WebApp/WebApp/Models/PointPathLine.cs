@@ -13,7 +13,7 @@ namespace WebApp.Models
         public double X { get; set; }
         public double Y { get; set; }
         public int SequenceNumber { get; set; }
-        public Guid LineId { get; set; }
+        public string LineId { get; set; }
         public Line Line { get; set; }
 
     }
