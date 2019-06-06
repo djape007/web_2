@@ -36,7 +36,7 @@ export class TimetableComponent implements OnInit {
       .subscribe(
         data => {
           this.timetables = data;
-          this.timetables.forEach(x=> x.Line.DisplayName = `${x.Line.LineCode} ${x.Line.Direction}`)
+          this.timetables.forEach(x=> x.Line.DisplayName = `${x.Line.Id} ${x.Line.Direction}`)
           this.timetabletModel = this.getGradski();
           this.btnDayClick('radni');
           this.btnTypeClick('gradski');
@@ -59,7 +59,7 @@ export class TimetableComponent implements OnInit {
     }
 
     let selectedLineCode = this.f.line.value;
-    let selectedTimeTableObject = this.timetables.find(x => x.Line.LineCode == selectedLineCode);
+    let selectedTimeTableObject = this.timetables.find(x => x.Line.Id == selectedLineCode);
     this.selectedLineName = selectedTimeTableObject.Line.DisplayName;
 
     this.displayLineOnMap(selectedTimeTableObject.Line.Id);
@@ -126,23 +126,23 @@ export class TimetableComponent implements OnInit {
   getPrigradski(): Array<Timetable>{
     return this.timetables
     .filter(
-      x => (Number)(x.Line.LineCode.replace('A','').replace('B','')) > 20
+      x => (Number)(x.Line.Id.replace('A','').replace('B','')) > 20
     ).filter(
       x => x.Times.includes(this.picked_day)
     ).sort(
-      (x,y) => (Number)(x.Line.LineCode.replace('A','').replace('B','')) - (Number)(y.Line.LineCode.replace('A','').replace('B',''))
+      (x,y) => (Number)(x.Line.Id.replace('A','').replace('B','')) - (Number)(y.Line.Id.replace('A','').replace('B',''))
     );
   }
 
   getGradski(): Array<Timetable>{
     return this.timetables
     .filter(
-      x => (Number)(x.Line.LineCode.replace('A','').replace('B','')) < 20
+      x => (Number)(x.Line.Id.replace('A','').replace('B','')) < 20
     ).filter(
       x => x.Times.includes(this.picked_day)
     )
     .sort(
-      (x,y) => (Number)(x.Line.LineCode.replace('A','').replace('B','')) - (Number)(y.Line.LineCode.replace('A','').replace('B',''))
+      (x,y) => (Number)(x.Line.Id.replace('A','').replace('B','')) - (Number)(y.Line.Id.replace('A','').replace('B',''))
     );
   }
 

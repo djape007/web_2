@@ -143,7 +143,7 @@ export class HomeComponent implements OnInit{
 		let SelectedLineCoordinates = new Array<google.maps.LatLng>();
     
     if (linija.PointLinePaths.length == 0) {
-      console.log(linija.LineCode + " nema putanju");
+      console.log(linija.Id + " nema putanju");
       return;
     }
 
@@ -153,7 +153,7 @@ export class HomeComponent implements OnInit{
       SelectedLineCoordinates.push(new google.maps.LatLng(item.X,item.Y));	
 		});
     
-    let bojaLinije = "#"+linija.LineCode+linija.LineCode;
+    let bojaLinije = "#"+linija.Id+linija.Id;
 
     if (bojaLinije.length == 5) {
       bojaLinije += "55";
@@ -167,15 +167,15 @@ export class HomeComponent implements OnInit{
             strokeWeight: 4
     }
 		
-		this.polylines[linija.LineCode] = new google.maps.Polyline(polyOptions);
-    this.polylines[linija.LineCode].setMap(this.map);
+		this.polylines[linija.Id] = new google.maps.Polyline(polyOptions);
+    this.polylines[linija.Id].setMap(this.map);
     
     if (linija.BusStopsOnLines.length > 0) {
       linija.BusStopsOnLines.forEach(BusStopLineConnection => {
         this.DrawBusStopOnMap(BusStopLineConnection.BusStop);
       });
     } else {
-      console.log(linija.LineCode + " nema stanice");
+      console.log(linija.Id + " nema stanice");
     }
 
   }
