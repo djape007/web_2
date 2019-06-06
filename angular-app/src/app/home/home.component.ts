@@ -181,7 +181,7 @@ export class HomeComponent implements OnInit{
   }
 
   public DrawBusStopOnMap(busStop: BusStop) {
-    let marker = this.DrawMarkerOnMap(busStop.X, busStop.Y, busStop.Name);
+    let marker = this.DrawMarkerOnMap(busStop.X, busStop.Y, busStop.Name + "|" + busStop.Address);
     
     if (busStop != null) {
       this.markers[busStop.Id.toString()] = marker;

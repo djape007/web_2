@@ -133,7 +133,7 @@
 
         private void DodajAutobuskaStajalista(WebApp.Persistence.ApplicationDbContext context) {
             //TODO: PROMENI PUTANJU DO FAJLA
-            string text = System.IO.File.ReadAllText(@"C:\Users\e355-2015\Documents\GitHub\web_2\WebApp\WebApp\Migrations\busStops.csv");
+            string text = System.IO.File.ReadAllText(@"D:\My documents\GitHub\web_2\WebApp\WebApp\Migrations\busStops.csv");
             var redovi = text.Split('\n');
             for (int i = 0; i < redovi.Length; i++) {
                 if (redovi[i].Length < 5) {
@@ -170,7 +170,7 @@
 
         private void DodajPutanjeLinija(WebApp.Persistence.ApplicationDbContext context) {
             //TODO: PROMENI PUTANJU DO FAJLA
-            string text = System.IO.File.ReadAllText(@"C:\Users\e355-2015\Documents\GitHub\web_2\WebApp\WebApp\Migrations\pathsCoords.csv");
+            string text = System.IO.File.ReadAllText(@"D:\My documents\GitHub\web_2\WebApp\WebApp\Migrations\pathsCoords.csv");
             var redovi = text.Split('\n');
             for (int i = 0; i < redovi.Length; i++) {
                 if (redovi[i].Length < 5)
