@@ -35,6 +35,10 @@ export class ProfileService {
     return this.http.get(`${this.api_route}/api/Users/${id}`);
   }
 
+  public getProcessingUsers(): Observable<any>{
+    return this.http.get(`${this.api_route}/api/Users/ProcessingUsers`);
+  }
+
   public editUser(user: User, dobString: string): Observable<any>{
     return this.http.put(`${this.api_route}/api/Users/${user.Id}`, `Id=${user.Id}&DateOfBirth=${dobString}&Address=${user.Address}&Name=${user.Name}&Surname=${user.Surname}`,  { "headers" : {'Content-type' : 'application/x-www-form-urlencoded'}} );
   }

@@ -1,5 +1,5 @@
 <div *ngIf="user">
-  <form [formGroup]="myForm" novalidate (ngSubmit)="edit()" style='text-align: center;'>     
+  <form [formGroup]="myForm" novalidate (ngSubmit)="edit()" style='text-align: center; padding: 10px 0'>     
     <div class="form-group">
       <mat-form-field class="example-full-width">
         <input formControlName='name' matInput placeholder="Ime" matNativeControl required>
@@ -28,13 +28,17 @@
   </form>
 </div>
 <br>
-<div *ngIf="user">
-  <ul>
-    <li *ngFor="let imgsrc of getUserPhotos()"><a href="{{imgsrc}}" target="_blank"><img src="{{imgsrc}}" height="100px" width="50%"></a></li>
-  </ul>
+<div *ngIf="user && (user.Files!=null)">
+  <div class="div-horizontal">
+    <table>
+      <tr>
+        <td *ngFor="let imgsrc of getUserPhotos()"><a href="{{imgsrc}}" target="_blank"><img src="{{imgsrc}}" height="100px" width="auto"></a></td>
+      </tr>
+    </table>
+  </div>
 </div>
 <div *ngIf="user" class="text-center">
-  <form [formGroup]="passwordForm" novalidate (ngSubmit)="changePassword()" style='text-align: center;'>     
+  <form [formGroup]="passwordForm" novalidate (ngSubmit)="changePassword()" style='text-align: center; padding: 10px 0'>     
     <div class="form-group">
       <mat-form-field class="example-full-width">
         <input type="password" formControlName='old_password' matInput placeholder="Stara lozinka" matNativeControl required>
@@ -56,7 +60,7 @@
   </form>
 </div>
 <div *ngIf="user">
-  <div class="upload-file">
+  <div class="margin-10" style="padding: 10px 0">
     <input (change)="onFileChanged($event)" type="file" accept="image/png,image/jpeg,image/jpg,image/bmp">
     <img [src]="imgURL" style="margin-top: 5px" width="320" height="auto" *ngIf="imgURL">
     <br>
@@ -64,6 +68,3 @@
   </div>
 </div>
 <br>
-<div class="text-right">
-    <button mat-flat-button color="primary" class='matButtonStyle' (click)='logout()'>Odjava</button>
-</div>

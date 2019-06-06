@@ -1,7 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { User } from 'src/models/user';
-import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ProfileService } from '../services/profile.service';
 
@@ -22,7 +20,7 @@ export class EditUserComponent implements OnInit {
   selectedFile: File;
   imgURL: any;
 
-  constructor(private _service: ProfileService, private _auth: AuthService, private _router: Router, private formBuilder: FormBuilder) { }
+  constructor(private _service: ProfileService, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
     if(this.id != '')
@@ -95,11 +93,6 @@ export class EditUserComponent implements OnInit {
       )
   }
 
-  logout(){
-    this._auth.logout();
-    this._router.navigate(['/home/login']);
-  }
-
   onFileChanged(event) {
     this.selectedFile = event.target.files[0];
 
@@ -108,6 +101,7 @@ export class EditUserComponent implements OnInit {
     reader.onload = (_event) => { 
       this.imgURL = reader.result; 
     }
+
   }
 
   dodajSliku(){

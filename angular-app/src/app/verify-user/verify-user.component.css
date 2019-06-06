@@ -1,0 +1,13 @@
+.div-horizontal{
+    height: 110px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    margin-bottom: 10px;
+}
+
+.div-full-width{
+    margin-top: 10px;
+    margin-left: 10%;
+    width: 80%;
+}
+  

@@ -68,9 +68,17 @@ namespace WebApp.Controllers
             return UserManager.Users.ToList();
         }
 
+        [Route("ProcessingUsers")]
+        [Authorize(Roles = "Controller")]
+        [HttpGet]
+        public List<ApplicationUser> GetProcessingUsers()
+        {
+            return UserManager.Users.ToList().FindAll(x => x.Status == "processing");
+        }
+
         // GET: api/Users/5
         [ResponseType(typeof(ApplicationUser))]
-        [Authorize(Roles = "Admin, AppUser")]
+        [Authorize(Roles = "Admin, AppUser, Controller")]
         public IHttpActionResult GetUser(string id)
         {
             ApplicationUser user = UserManager.Users.ToList().Find(x => x.Id == id);

@@ -18,7 +18,8 @@ import { LeftMenuComponent } from './left-menu/left-menu.component';
 import { RightMenuComponent } from './right-menu/right-menu.component';
 import { TicketComponent } from './ticket/ticket.component';
 
-import { MatInputModule, MatButtonModule, MatSelectModule, MatIconModule, MatNativeDateModule, MatDatepickerModule, MatTableModule, MatSortModule } from '@angular/material';
+import {MatExpansionModule} from '@angular/material/expansion';
+import { MatInputModule, MatButtonModule, MatSelectModule, MatIconModule, MatNativeDateModule, MatDatepickerModule, MatTableModule, MatSortModule, MatFormFieldModule, MatRippleModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { ProfileComponent } from './profile/profile.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
@@ -52,7 +53,8 @@ import { VerifyUserComponent } from './verify-user/verify-user.component';
     MatDatepickerModule,
     MatNativeDateModule,
     MatTableModule,
-    MatSortModule
+    MatSortModule,
+    MatExpansionModule
   ],
   providers: [
     {
