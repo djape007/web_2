@@ -234,6 +234,7 @@ namespace WebApp.Controllers
         }
 
         [Route("UploadFiles")]
+        [ResponseType(typeof(string))]
         [HttpPost]
         public IHttpActionResult FileUpload() {
             var request = HttpContext.Current.Request;
@@ -276,7 +277,7 @@ namespace WebApp.Controllers
             userInDb.Status = "processing";
             UserManager.Update(userInDb);
 
-            return Ok();
+            return Ok(userInDb.Files);
         }
 
         // GET api/Account/ManageInfo?returnUrl=%2F&generateState=true
@@ -618,7 +619,7 @@ namespace WebApp.Controllers
 
             string subject = "Registracija";
             string body = "<p>Poštovani " + user.Name + " " + user.Surname + "</p><p>Uspešno ste se registrovali.</p><p><b>Vinko Klocna Prevoz</b></p>";
-            SendEmailConfig.Execute(user.Email, subject, body);
+            //SendEmailConfig.Execute(user.Email, subject, body);
 
             return Ok(user);
         }

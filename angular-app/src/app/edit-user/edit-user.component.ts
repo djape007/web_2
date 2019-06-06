@@ -51,6 +51,19 @@ export class EditUserComponent implements OnInit {
       )
   }
 
+  getUserPhotos(): Array<string>{
+    if(this.user.Files == '')
+      return;
+
+    let photos = new Array<string>();
+    let photoNames = this.user.Files.split(',');
+    photoNames.forEach(item => {
+      photos.push(`http://localhost:52295/imgs/users/${this.user.Id}/${item}`);
+    });
+
+    return photos;
+  }
+
   get f() { return this.myForm.controls; }
   get passf() { return this.passwordForm.controls; }
 
@@ -98,7 +111,20 @@ export class EditUserComponent implements OnInit {
   }
 
   dodajSliku(){
-    
+    if(!this.selectedFile)
+      return;
+
+    this._service.uploadPhoto(this.selectedFile)
+      .subscribe(
+        data => {
+          this.user.Files = data;
+          //this.selectedFile = null;
+          //this.imgURL = '';
+        },
+        err =>{
+          console.log(err);
+        }
+      )
   }
 
   edit(){

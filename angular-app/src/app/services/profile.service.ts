@@ -23,6 +23,14 @@ export class ProfileService {
     return this.http.post(`${this.api_route}/api/users/register`, formData)
   }
 
+  public uploadPhoto(file: File): Observable<any>{
+    var formData = new FormData();
+    if(file != null)
+      formData.append("0", file, file.name);
+      
+    return this.http.post(`${this.api_route}/api/users/UploadFiles`, formData)
+  }
+
   public getUser(id: string): Observable<any>{
     return this.http.get(`${this.api_route}/api/Users/${id}`);
   }

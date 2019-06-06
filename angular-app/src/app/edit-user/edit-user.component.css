@@ -28,3 +28,23 @@
     margin-bottom: 5px;
     margin-left: 40px;
   }
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    height: 100px;
+    overflow: auto;
+    margin-left: 10%;
+    margin-right: 10%;
+    width: 80%;
+  }
+
+  li {
+    display: inline;
+  }
+  
+  a {
+    display: inline;
+  }
+  

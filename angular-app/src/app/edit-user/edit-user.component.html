@@ -27,6 +27,12 @@
     <button mat-flat-button color="primary" class='matButtonStyle' type="submit">Izmeni</button>
   </form>
 </div>
+<br>
+<div *ngIf="user">
+  <ul>
+    <li *ngFor="let imgsrc of getUserPhotos()"><a href="{{imgsrc}}" target="_blank"><img src="{{imgsrc}}" height="100px" width="50%"></a></li>
+  </ul>
+</div>
 <div *ngIf="user" class="text-center">
   <form [formGroup]="passwordForm" novalidate (ngSubmit)="changePassword()" style='text-align: center;'>     
     <div class="form-group">
