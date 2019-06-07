@@ -88,7 +88,7 @@ export class TimetableComponent implements OnInit {
   getTimesJson(timetable: Timetable, pickedDay: string): any{
     let timesJson = JSON.parse(timetable.Times);
     let selectedDayTimesJson = new Array<string>();
-    if(pickedDay == "Radni_dan")
+    if(pickedDay == "Radni dan")
       selectedDayTimesJson = timesJson['Radni_dan'];
     else if(pickedDay == "Subota")
       selectedDayTimesJson = timesJson['Subota'];
@@ -108,18 +108,14 @@ export class TimetableComponent implements OnInit {
         polasciPoSatima[satMinut[0]].push(satMinut[1]);
       });
     
-    for (let sat = 0; sat < 24; sat++) {
-      let satStr = sat.toString().padStart(2, '0');
+    for (let sat = 4; sat < 24+4; sat++) {
+      let satStr = (sat % 24).toString().padStart(2, '0');
       if (satStr in polasciPoSatima) {
         let prikazJednogSata = satStr+"|" + polasciPoSatima[satStr].join(",");
         timetableJson.push(prikazJednogSata);
       }
     }
 
-    if(timetableJson[0] == "00|00"){
-      let zeroH = timetableJson.shift();
-      timetableJson.push(zeroH);
-    }
     return timetableJson;
   }
 

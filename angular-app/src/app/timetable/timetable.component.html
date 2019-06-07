@@ -30,11 +30,12 @@
       </mat-expansion-panel-header>
       <div>
         <div style="margin-left: 5px;">
-          <button mat-flat-button color="primary" class='matButtonStyle btn-w-32' (click)="setSelectedDay(timetable, 'Radni_dan')">Radni</button>
+          <button mat-flat-button color="primary" class='matButtonStyle btn-w-32' (click)="setSelectedDay(timetable, 'Radni dan')">Radni</button>
           <button mat-flat-button color="primary" class='matButtonStyle btn-w-32' (click)="setSelectedDay(timetable, 'Subota')">Subota</button>
           <button mat-flat-button color="primary" class='matButtonStyle btn-w-32' (click)="setSelectedDay(timetable, 'Nedelja')">Nedelja</button>
         </div>
         <div *ngIf="timetable.SelectedDay" class="times">
+          <p>{{timetable.SelectedDay}}</p>
           <div *ngFor="let satMinute of getTimesJson(timetable, timetable.SelectedDay)">
             <b class='timetableJedanSat'>
               {{ satMinute.split("|")[0] }}H</b>
