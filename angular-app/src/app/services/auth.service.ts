@@ -45,13 +45,14 @@ export class AuthService {
     this.http.post(`${this.api_route}/api/Users/Logout`,null)
       .subscribe(
         data => {
-          this.isLoggedIn = false;
-          localStorage.removeItem('token');
         },
         err => {
           console.log(err);
         }
-      )
+      );
+      
+    this.isLoggedIn = false;
+    localStorage.removeItem('token');
   } 
 
   getToken(): any{
