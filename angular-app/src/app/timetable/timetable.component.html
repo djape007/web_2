@@ -1,41 +1,3 @@
-<!--STARO RESENJE-->
-<!-- <div>
-  <h1>RED VOŽNJE</h1>
-  <div class="daySelector-container">
-      <button (click)='btnDayClick("radni")' id='radni' class="square_btn">Radni dan</button>
-      <button (click)='btnDayClick("subota")' id='subota' class="square_btn">Subota</button>
-      <button (click)='btnDayClick("nedelja")' id='nedelja' class="square_btn">Nedelja</button>
-  </div>
-  <br>
-  <div class="prigradskiSelector-container">
-    <button (click)='btnTypeClick("gradski")' id='gradski' class="square_btn">Gradski</button>
-    <button (click)='btnTypeClick("prigradski")' id='prigradski' class="square_btn">Prigradski</button>
-  </div>
-  <br>
-  <form [formGroup]="myForm" novalidate (ngSubmit)="save()" style='text-align: center;'>
-    <div class="form-group">
-      <input type="text" id="day" formControlName="day" hidden>
-      <input type="text" id="type" formControlName="type" hidden>
-      <mat-form-field>
-        <mat-label>Izaberi liniju</mat-label>
-        <mat-select formControlName="line" required disableOptionCentering>
-          <mat-option *ngFor="let timetable of timetabletModel" [value]="timetable.Line.Id">{{ timetable.Line.DisplayName }}</mat-option>
-        </mat-select>
-        <mat-error *ngIf="myForm.controls['type'].errors && myForm.controls['type'].errors['required']">Izabrate liniju</mat-error>
-      </mat-form-field>
-    </div>
-    <button mat-flat-button color="primary" type="submit" class="btnPrikaziRedVoznje matButtonStyle">Prikaži</button>
-  </form>
-  <br>
-  <h3 *ngIf="selectedLineName.length > 0" class='selectedLineName'>{{selectedLineName}}</h3>
-  <div class="times">
-      <div *ngFor="let satMinute of timetableJson">
-        <b class='timetableJedanSat'>
-          {{ satMinute.split("|")[0] }}H</b>
-        <span class='timetableMinut' *ngFor="let minut of satMinute.split('|')[1].split(',')">{{ minut }}m</span>
-      </div>
-  </div>
-</div> -->
 <div *ngIf="dataSource">
   <h1>AUTOBUSKE LINIJE</h1>
   <mat-form-field class='ticketsFilter'>
@@ -67,12 +29,17 @@
         </mat-panel-description>
       </mat-expansion-panel-header>
       <div>
-        <div class="times">
-            <div *ngFor="let satMinute of getTimesJson(timetable,'Radni_dan')">
-              <b class='timetableJedanSat'>
-                {{ satMinute.split("|")[0] }}H</b>
-              <span class='timetableMinut' *ngFor="let minut of satMinute.split('|')[1].split(',')">{{ minut }}m</span>
-            </div>
+        <div style="margin-left: 5px;">
+          <button mat-flat-button color="primary" class='matButtonStyle btn-w-32' (click)="setSelectedDay(timetable, 'Radni_dan')">Radni</button>
+          <button mat-flat-button color="primary" class='matButtonStyle btn-w-32' (click)="setSelectedDay(timetable, 'Subota')">Subota</button>
+          <button mat-flat-button color="primary" class='matButtonStyle btn-w-32' (click)="setSelectedDay(timetable, 'Nedelja')">Nedelja</button>
+        </div>
+        <div *ngIf="timetable.SelectedDay" class="times">
+          <div *ngFor="let satMinute of getTimesJson(timetable, timetable.SelectedDay)">
+            <b class='timetableJedanSat'>
+              {{ satMinute.split("|")[0] }}H</b>
+            <span class='timetableMinut' *ngFor="let minut of satMinute.split('|')[1].split(',')">{{ minut }}m</span>
+          </div>
         </div>
       </div>
     </mat-expansion-panel>
