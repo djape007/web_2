@@ -2,7 +2,6 @@ import { Component, OnInit, forwardRef, Inject, ViewChild } from '@angular/core'
 import { HomeComponent } from '../home/home.component';
 import { TicketService } from '../services/ticket.service';
 import { SoldTicket } from 'src/models/sold-ticket';
-import { MatTableDataSource, MatSort } from '@angular/material';
 
 @Component({
   selector: 'app-check-ticket',
@@ -18,6 +17,7 @@ export class CheckTicketComponent implements OnInit {
   foundTicket: any;
   message: string = "";
   isError:boolean = false;
+  displayTicketData:boolean = true;
 
   ngOnInit() {
     this._parent.prikaziDesniMeni();
@@ -33,27 +33,32 @@ export class CheckTicketComponent implements OnInit {
       data => {
         if (data == "valid") {
           this.DisplayMessage("Karta je validna",false);
+        } else if (data == "expired") {
+          this.DisplayMessage("Karta je istekla", true);
+        }
+
+        if (this.displayTicketData) {
           this._ticketService.getTicket(this.ticketId).subscribe(
             data2 => {
               this.foundTicket = data2;
             },
             error2 => {
-              this.DisplayMessage(error2, true);
+              this.DisplayMessage(error2.error.Message, true);
             }
-          )
+          );
         } else {
-          this.DisplayMessage("adsadsad",false);
+          this.foundTicket = null;
         }
       },
       error => {
-        this.DisplayMessage(error, true);
+        this.DisplayMessage(error.error.Message, true);
       }
     )
   }
 
   DisplayMessage(msg:string, isError:boolean) {
     if (msg == null) {
-      this.message = "poruka je null";
+      this.message = "poruka je null :(";
       this.isError = true;
     } else {
       this.message = msg;

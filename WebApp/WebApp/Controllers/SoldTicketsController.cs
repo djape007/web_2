@@ -258,8 +258,16 @@ namespace WebApp.Controllers
         // GET: api/SoldTickets/Valid/5
         [Route("api/SoldTickets/Valid/{id}")]
         [HttpGet]
-        public IHttpActionResult IsSoldTicketValid(Guid id) {
-            SoldTicket soldTicket = unitOfWork.SoldTickets.Find(x=>x.Id == id).FirstOrDefault();
+        public IHttpActionResult IsSoldTicketValid(string id) {
+            Guid ticketId = Guid.Empty;
+
+            try {
+                ticketId = Guid.Parse(id);
+            } catch {
+                return BadRequest("ID karte nije ispravnog formata");
+            }
+
+            SoldTicket soldTicket = unitOfWork.SoldTickets.Find(x=>x.Id == ticketId).FirstOrDefault();
 
             if (soldTicket == null) {
                 return BadRequest("Karta ne postoji");

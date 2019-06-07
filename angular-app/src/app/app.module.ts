@@ -19,7 +19,7 @@ import { RightMenuComponent } from './right-menu/right-menu.component';
 import { TicketComponent } from './ticket/ticket.component';
 
 import {MatExpansionModule} from '@angular/material/expansion';
-import { MatInputModule, MatButtonModule, MatSelectModule, MatIconModule, MatNativeDateModule, MatDatepickerModule, MatTableModule, MatSortModule, MatFormFieldModule, MatRippleModule } from '@angular/material';
+import { MatInputModule, MatButtonModule, MatSelectModule, MatIconModule, MatNativeDateModule, MatDatepickerModule, MatTableModule, MatSortModule, MatFormFieldModule, MatRippleModule, MatCheckboxModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { ProfileComponent } from './profile/profile.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
@@ -58,7 +58,8 @@ import { BoughtTicketsComponent } from './bought-tickets/bought-tickets.componen
     MatNativeDateModule,
     MatTableModule,
     MatSortModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatCheckboxModule
   ],
   providers: [
     {

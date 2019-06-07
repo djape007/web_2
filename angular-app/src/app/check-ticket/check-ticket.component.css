@@ -12,10 +12,16 @@
 }
 
 .msg {
+    font-size: 1.4em;
     color: white;
     margin-left: 10%;
 }
 
 .errorMsg {
-    color: red;
+    color: rgb(190, 18, 18);
+}
+
+.mat-checkbox {
+    margin-left: 20px;
+    font-size: 1.1em;
 }
