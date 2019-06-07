@@ -115,3 +115,7 @@ body {
   color:red;
   background-color: greenyellow;
 }
+
+.mat-expansion-panel {
+  border-radius: 0 !important;
+}
