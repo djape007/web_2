@@ -19,7 +19,7 @@
   </div>
   <br>
   <div *ngIf="selectedRowElements && selectedRowElements.length != 0">
-    <mat-expansion-panel *ngFor="let timetable of selectedRowElements">
+    <mat-expansion-panel [expanded]=true *ngFor="let timetable of selectedRowElements">
       <mat-expansion-panel-header>
         <mat-panel-title>
           {{timetable.LineId}}
