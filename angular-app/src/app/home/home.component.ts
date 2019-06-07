@@ -226,7 +226,7 @@ export class HomeComponent implements OnInit{
     });
 
     //kad se prikaze infowindow ovaj kod ce se izvrsiti
-    google.maps.event.addListenerOnce(infoWindow, 'domready', () => {
+    /*google.maps.event.addListenerOnce(infoWindow, 'domready', () => {
       let btnsPrikaziLiniju = document.getElementsByClassName('btnDisplayLineFromInfoWindow');
       
       for(let i = 0; i < btnsPrikaziLiniju.length; i++) {
@@ -235,32 +235,21 @@ export class HomeComponent implements OnInit{
           this.DisplayLineOnMap(btnsPrikaziLiniju[i].getAttribute("lineId").toString());
         });
       }
-
-      let btnZatvoriLiniju = document.getElementsByClassName('btnZatvoriLiniju');
-      
-      for(let i = 0; i < btnZatvoriLiniju.length; i++) {
-        btnZatvoriLiniju[i].addEventListener('click', () => {
-          this.RemoveLineFromMap(btnZatvoriLiniju[i].getAttribute("lineId").toString());
-        });
-      }
-    });
-
-
+    });*/
     this.stanicePrikazaneNaMapi[busStop.Id.toString() + "_" + lineId] = marker;
   }
 
   private CreateBusStopInfoWindow(busStop: BusStop, lineId:string = ""): google.maps.InfoWindow {
     let ostaleLinije = busStop.Address.split(",");
     let prikaziLinijeHTML = "";
-    ostaleLinije.forEach(idLinije => {
+    /*ostaleLinije.forEach(idLinije => {
       if (idLinije != lineId) {
         prikaziLinijeHTML += "<button class='btnInfoWindow btnDisplayLineFromInfoWindow' lineId='"+idLinije+"'>Prikazi "+idLinije+"</button>";
       }
-    });
+    });*/
 
     let content = `
     <div><b>`+busStop.Name+`</b></div>
-    <button class='btnInfoWindow btnZatvoriLiniju' lineId='`+lineId+`'>SKLONI LINIJU `+lineId+`</button>
     <div>Linije koje staju na ovoj stanici:</div>
     <div>`+busStop.Address+`</div>
     `+prikaziLinijeHTML+`
