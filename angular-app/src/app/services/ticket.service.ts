@@ -38,4 +38,8 @@ export class TicketService {
   public getTicket(id: string): Observable<any> {
     return this.http.get(`${this.api_route}/SoldTickets/${id}`);
   }
+
+  public getUserTickets(): Observable<any> {
+    return this.http.get(`${this.api_route}/SoldTickets/GetUserTickets`);
+  }
 }
