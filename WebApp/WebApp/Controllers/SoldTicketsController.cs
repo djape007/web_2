@@ -247,6 +247,15 @@ namespace WebApp.Controllers
         }
 
         // GET: api/SoldTickets/Valid/5
+        [Route("api/SoldTickets/GetAllValid")]
+        [HttpGet]
+        [Authorize(Roles = "Controller")]
+        public IEnumerable<SoldTicket> GetAllSoldValidTickets()
+        {
+            return unitOfWork.SoldTickets.GetAll().Where(x => x.Expires >= DateTime.Now);
+        }
+
+        // GET: api/SoldTickets/Valid/5
         [Route("api/SoldTickets/Valid/{id}")]
         [HttpGet]
         public IHttpActionResult IsSoldTicketValid(Guid id) {
