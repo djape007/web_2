@@ -73,6 +73,14 @@
                 userManager.AddToRole(user.Id, "AppUser");
             }
 
+            if (!context.Users.Any(u => u.UserName == "controller@yahoo.com"))
+            {
+                var user = new ApplicationUser() { Id = "controller", UserName = "controller@yahoo.com", Email = "controller@yahoo.com", Name = "Milios", Surname = "David", PasswordHash = ApplicationUser.HashPassword("Controller123!"), DateOfBirth = new DateTime(1997, 1, 2, 23, 22, 10) };
+                userManager.Create(user);
+                userManager.AddToRole(user.Id, "Controller");
+            }
+
+            /*
             //empty database
             //Update-Database –TargetMigration: $InitialDatabase
             //redosled je kritican :D
@@ -126,7 +134,7 @@
             DodajPutanjeLinija(context);
 
             //DODAVANJE STAJALISTA
-            DodajAutobuskaStajalista(context);
+            DodajAutobuskaStajalista(context);*/
         }
 
         #region PomocneMetodeZaSetvu
