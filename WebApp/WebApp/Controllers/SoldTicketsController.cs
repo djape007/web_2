@@ -246,6 +246,30 @@ namespace WebApp.Controllers
             return Ok(soldTicket);
         }
 
+        // GET: api/SoldTickets/5
+        [ResponseType(typeof(SoldTicket))]
+        [Route("api/SoldTickets/GetUserTickets")]
+        [HttpGet]
+        [Authorize(Roles = "AppUser")]
+        public IEnumerable<SoldTicket> GetUserTickets() {
+            var userId = User.Identity.GetUserId();
+
+            var userFromDb = unitOfWork.Users.Get(userId);
+
+            if (userFromDb == null) {
+                return new List<SoldTicket>();
+            }
+            
+            //ako je korisnik kupio 20 karata, da se ne salju podaci o korisniku uz svaku kartu jer nema potrebe
+            var nadjeneKarte = unitOfWork.SoldTickets.GetAllWithoutUser().Where(x => x.UserId == userId);
+            //ovo sam dodao jer ovaj red iznad ne radi kako treba :(
+            foreach(var karta in nadjeneKarte) {
+                karta.User = null;
+            }
+
+            return nadjeneKarte;
+        }
+
         // GET: api/SoldTickets/Valid/5
         [Route("api/SoldTickets/GetAllValid")]
         [HttpGet]

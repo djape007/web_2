@@ -8,5 +8,6 @@ namespace WebApp.Persistence.Repository
 {
     public interface ISoldTicketRepository : IRepository<Models.SoldTicket, Guid>
     {
+        IEnumerable<Models.SoldTicket> GetAllWithoutUser();
     }
 }
