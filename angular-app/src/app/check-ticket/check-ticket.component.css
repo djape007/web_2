@@ -2,35 +2,20 @@
     color:white;
 }
 
-table {
-    width: 100%;
-}
-
-.content {
-    max-height: 360px;
-    overflow-y: auto;
-}
-
-.ticketsFilter {
+.ticketIdSearch {
     margin-left: 10%;
     width: 80%;
 }
 
-.highlight{
-    background: #fac344;
-    font-weight: bold;
+.btnProveriKartu {
+    margin-left: 10%;
 }
 
-.highlight td {
-    color: black;
+.msg {
+    color: white;
+    margin-left: 10%;
 }
 
-.mat-row:hover {
-    background-color:#fac344;
-    cursor: pointer;
-}
-
-.mat-row:hover td {
-    color: black;
-    font-weight: bold;
+.errorMsg {
+    color: red;
 }

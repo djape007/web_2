@@ -31,7 +31,11 @@ export class TicketService {
     return this.http.post(`${this.api_route}/SoldTickets/BuyAnonymous`,'');
   }
 
-  public getAllSoldValidTickets(): Observable<any> {
-    return this.http.get(`${this.api_route}/SoldTickets/GetAllValid`);
+  public isTicketValid(id: string): Observable<any> {
+    return this.http.get(`${this.api_route}/SoldTickets/Valid/${id}`);
+  }
+
+  public getTicket(id: string): Observable<any> {
+    return this.http.get(`${this.api_route}/SoldTickets/${id}`);
   }
 }

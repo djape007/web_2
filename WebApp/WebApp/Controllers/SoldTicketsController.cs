@@ -259,10 +259,10 @@ namespace WebApp.Controllers
         [Route("api/SoldTickets/Valid/{id}")]
         [HttpGet]
         public IHttpActionResult IsSoldTicketValid(Guid id) {
-            SoldTicket soldTicket = unitOfWork.SoldTickets.Get(id);
+            SoldTicket soldTicket = unitOfWork.SoldTickets.Find(x=>x.Id == id).FirstOrDefault();
 
             if (soldTicket == null) {
-                return NotFound();
+                return BadRequest("Karta ne postoji");
             }
 
             if (soldTicket.Expires >= DateTime.Now) {

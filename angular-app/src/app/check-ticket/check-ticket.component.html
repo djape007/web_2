@@ -1,43 +1,37 @@
-<h2>Prikaz validnih karata</h2>
-<mat-form-field class='ticketsFilter'>
-    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-</mat-form-field>
-<div class="content">
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-    <ng-container matColumnDef="Id">
-      <th mat-header-cell *matHeaderCellDef> ID karte </th>
-      <td mat-cell *matCellDef="let element"> {{element.Id}} </td>
-    </ng-container>
-      
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'highlight': selectedRowIndex == row.Id}" (click)="selectTicket(row)"></tr>
-  </table>
+<h2>Validacija autobuske karte</h2>
+<div>
+  <mat-form-field class='ticketIdSearch'>
+      <input matInput placeholder="ID Karte" [(ngModel)]="ticketId">
+  </mat-form-field>
+  <button mat-flat-button color="primary" class='matButtonStyle btnProveriKartu' (click)='checkTicket()'>Proveri kartu</button>
+  <p *ngIf="message.length > 0" class='msg' [ngClass]="{'errorMsg': isError}">{{message}}</p>
 </div>
-<div *ngIf="selectedRowElement != null">
+<!-- PRIKAZUJE PODATKE KARTE -->
+<div *ngIf="foundTicket != null">
   <h3 style='margin:0px; margin-left: 10px; margin-top: 15px;'>Detalji izabrane karte</h3>
   <table style='border-spacing: 10px;'>
     <tr>
-      <td><b>Id</b></td><td style='font-size: 0.88em'>{{ selectedRowElement.Id }}</td>
+      <td><b>Id</b></td><td style='font-size: 0.88em'>{{ foundTicket.Id }}</td>
     </tr>
     <tr>
-      <td><b>Tip</b></td><td>{{ selectedRowElement.Type }}</td>
+      <td><b>Tip</b></td><td>{{ foundTicket.Type }}</td>
     </tr>
     <tr>
-      <td><b>Cena</b></td><td>{{ selectedRowElement.Price }}rsd</td>
+      <td><b>Cena</b></td><td>{{ foundTicket.Price }}rsd</td>
     </tr>
     <tr>
-      <td><b>Broj<br>koriscenja</b></td><td>{{ selectedRowElement.Usages }}</td>
+      <td><b>Broj<br>koriscenja</b></td><td>{{ foundTicket.Usages }}</td>
     </tr>
     <tr>
-      <td><b>Datum<br>kupovine</b></td><td>{{ selectedRowElement.DateOfPurchase | date: 'dd/MM/yyyy HH:mm' }}</td>
+      <td><b>Datum<br>kupovine</b></td><td>{{ foundTicket.DateOfPurchase | date: 'dd/MM/yyyy HH:mm' }}</td>
     </tr>
     <tr>
-      <td><b>Vazi do</b></td><td>{{ selectedRowElement.Expires | date: 'dd/MM/yyyy HH:mm' }}</td>
+      <td><b>Vazi do</b></td><td>{{ foundTicket.Expires | date: 'dd/MM/yyyy HH:mm' }}</td>
     </tr>
     <tr>
       <td><b>Kupac</b></td>
-      <td *ngIf="selectedRowElement.User.Name != null">{{ selectedRowElement.User.Name }} {{selectedRowElement.User.Surname}}</td>
-      <td *ngIf="selectedRowElement.User.Name == null">karta je kupljena bez naloga</td>
+      <td *ngIf="foundTicket.User.Name != null">{{ foundTicket.User.Name }} {{foundTicket.User.Surname}}</td>
+      <td *ngIf="foundTicket.User.Name == null">karta je kupljena bez naloga</td>
     </tr>
   </table>
 </div>

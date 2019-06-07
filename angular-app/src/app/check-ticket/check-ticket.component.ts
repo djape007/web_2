@@ -14,35 +14,51 @@ export class CheckTicketComponent implements OnInit {
   constructor(@Inject(forwardRef(() => HomeComponent)) private _parent: HomeComponent, private _ticketService: TicketService) { }
   validSoldTickets: Array<SoldTicket>;
 
-  selectedRowIndex: number = -1;
-  selectedRowElement: any;
-  displayedColumns: string[] = ['Id'];
-  dataSource = new MatTableDataSource();
+  ticketId: string = "";
+  foundTicket: any;
+  message: string = "";
+  isError:boolean = false;
 
   ngOnInit() {
     this._parent.prikaziDesniMeni();
-    this.getAllSoldValidTickets();
   }
 
-  getAllSoldValidTickets() {
-    this._ticketService.getAllSoldValidTickets().subscribe(
+  checkTicket() {
+    if (this.ticketId.trim().length < 35) {
+      this.DisplayMessage("ID karte nije ispravan",true);
+      return;
+    }
+
+    this._ticketService.isTicketValid(this.ticketId).subscribe(
       data => {
-        this.validSoldTickets = data;
-        this.dataSource = new MatTableDataSource(this.validSoldTickets);
+        if (data == "valid") {
+          this.DisplayMessage("Karta je validna",false);
+          this._ticketService.getTicket(this.ticketId).subscribe(
+            data2 => {
+              this.foundTicket = data2;
+            },
+            error2 => {
+              this.DisplayMessage(error2, true);
+            }
+          )
+        } else {
+          this.DisplayMessage("adsadsad",false);
+        }
       },
       error => {
-        console.log(error);
+        this.DisplayMessage(error, true);
       }
-    );
+    )
   }
 
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
-  selectTicket(row: any){
-    this.selectedRowIndex = row.Id;
-    this.selectedRowElement = row;
+  DisplayMessage(msg:string, isError:boolean) {
+    if (msg == null) {
+      this.message = "poruka je null";
+      this.isError = true;
+    } else {
+      this.message = msg;
+      this.isError = isError;
+    }
   }
 
 }
