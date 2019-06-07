@@ -1,3 +1,7 @@
+:host {
+    color: white;
+}
+
 .div-horizontal{
     height: 110px;
     overflow-x: auto;

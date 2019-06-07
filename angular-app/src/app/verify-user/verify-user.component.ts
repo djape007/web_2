@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, forwardRef } from '@angular/core';
 import { ProfileService } from '../services/profile.service';
 import { User } from 'src/models/user';
 import { Guid } from 'guid-typescript';
+import { HomeComponent } from '../home/home.component';
 
 @Component({
   selector: 'app-verify-user',
@@ -12,10 +13,11 @@ export class VerifyUserComponent implements OnInit {
 
   users: Array<User>;
 
-  constructor(private _service: ProfileService) { }
+  constructor(private _service: ProfileService, @Inject(forwardRef(() => HomeComponent)) private _parent: HomeComponent) { }
 
   ngOnInit() {
     this.getProcessingUsers();
+    this._parent.prikaziDesniMeni();
   }
 
   getUserPhotos(user: User): Array<string>{

@@ -1,14 +1,6 @@
 <div>
-  <div *ngIf="role == 'AppUser'">
-    <app-edit-user [id]="id"></app-edit-user>
-  </div>
-  <div *ngIf="role == 'Admin'">
-    <app-edit-user [id]="id"></app-edit-user>
-  </div>
-  <div *ngIf="role == 'Controller'">
-    <!-- <app-edit-user [id]="id"></app-edit-user> -->
-    <app-verify-user></app-verify-user>
-  </div>
+  <h2>Profil</h2>
+  <app-edit-user [id]="id"></app-edit-user>
   <div class="logout">
     <button mat-flat-button color="primary" class='matButtonStyle' (click)='logout()'>Odjava</button>
   </div>

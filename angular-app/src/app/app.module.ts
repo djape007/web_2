@@ -24,6 +24,8 @@ import { FormsModule } from '@angular/forms';
 import { ProfileComponent } from './profile/profile.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
 import { VerifyUserComponent } from './verify-user/verify-user.component';
+import { CheckTicketComponent } from './check-ticket/check-ticket.component';
+import { BoughtTicketsComponent } from './bought-tickets/bought-tickets.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,9 @@ import { VerifyUserComponent } from './verify-user/verify-user.component';
     TicketComponent,
     ProfileComponent,
     EditUserComponent,
-    VerifyUserComponent
+    VerifyUserComponent,
+    CheckTicketComponent,
+    BoughtTicketsComponent
   ],
   imports: [
     BrowserModule,

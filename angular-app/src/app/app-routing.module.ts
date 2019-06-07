@@ -8,6 +8,9 @@ import { LeftMenuComponent } from './left-menu/left-menu.component';
 import { TicketComponent } from './ticket/ticket.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AuthGuard } from './services/auth.guard';
+import { VerifyUserComponent } from './verify-user/verify-user.component';
+import { CheckTicketComponent } from './check-ticket/check-ticket.component';
+import { BoughtTicketsComponent } from './bought-tickets/bought-tickets.component';
 
 const routes: Routes = [
   {
@@ -19,6 +22,21 @@ const routes: Routes = [
     path: 'home',
     component: HomeComponent,
     children: [
+      {
+        path: 'bought-tickets',
+        redirectTo: '/home/(rightRouter:kupkart)',
+        pathMatch: 'prefix',
+      },
+      {
+        path: 'verification',
+        redirectTo: '/home/(rightRouter:ver)',
+        pathMatch: 'prefix',
+      },
+      {
+        path: 'check-ticket',
+        redirectTo: '/home/(rightRouter:chtick)',
+        pathMatch: 'prefix',
+      },
       {
         path: 'timetable',
         redirectTo: '/home/(leftRouter:tt)',
@@ -67,6 +85,24 @@ const routes: Routes = [
       {
         path: 'prof',
         component: ProfileComponent,
+        outlet: 'rightRouter',
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'ver',
+        component: VerifyUserComponent,
+        outlet: 'rightRouter',
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'kupkart',
+        component: BoughtTicketsComponent,
+        outlet: 'rightRouter',
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'chtick',
+        component: CheckTicketComponent,
         outlet: 'rightRouter',
         canActivate: [AuthGuard]
       },

@@ -6,8 +6,6 @@ import { Line } from 'src/models/line';
 import { BusStop } from 'src/models/bus-stop';
 import { AuthService } from '../services/auth.service';
 import { LineService } from '../services/line.service';
-import { timeout } from 'q';
-import { timeInterval } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',

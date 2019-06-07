@@ -24,7 +24,7 @@
   <div style="margin-top: 20px; text-align:center" class="div-full-width">Nema korisnika koji cekaju na verifikaciju</div>
 </ng-template>
 
-<div class="div-full-width">
+<div *ngIf="users && users !== undefined && users.length != 0;" class="div-full-width">
   <mat-form-field class='ticketsFilter'>
     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
   </mat-form-field>
