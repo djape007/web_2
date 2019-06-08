@@ -88,7 +88,7 @@ class BusStop():
         self.naziv = naziv
 
     def GetPosition(self):
-        return (X,Y)
+        return (self.X,self.Y)
 
     @staticmethod
     def BusStopsOnLinesToBusStop(BusStopsOnLinesList):
@@ -185,6 +185,7 @@ class Bus():
             yield self.GetPosition()
 
     def CheckForBusStop(self):
+        #simulacija zaustavljanja autobusa na stanici
         pass
 
     def GetPosition(self):
@@ -322,6 +323,7 @@ def Main():
     #ispod ne menjati nista
     updateBusPositionInterval = 0.1 #sec, povecanjem ovoga se smanjuje preciznost buseva da se krecu tacno po liniji
 
+    getLines = []
     config = LoadConfig()
     if not config is None:
         print("config.json je ucitan")
@@ -331,12 +333,19 @@ def Main():
         global baseUrl
         baseUrl = config['baseUrl']
         global sortReverse
-        reverseLines = config['reverseLines']
-
+        sortReverse = config['reverseLines']
+        getLines = config['simulateLines']
 
     Bus.updateBusPositionInterval = updateBusPositionInterval
     updateBusPositionInterval *= (1 / simulationSpeed)
-    Line.GetAllLinesWithBusesFromServer()
+    
+    if len(getLines) > 0:
+        print("Radim simulaciju za sledece linije: " + ",".join(getLines))
+        for lineCode in getLines:
+            Line.GetLine(lineCode)
+    else:
+        Line.GetAllLinesWithBusesFromServer()
+
     print("Linije su preuzete, incijalizacija putanja")
 
     #postavim svakom busu putanju po kojoj ce da vozi
