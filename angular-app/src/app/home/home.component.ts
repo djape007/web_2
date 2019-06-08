@@ -6,6 +6,8 @@ import { Line } from 'src/models/line';
 import { BusStop } from 'src/models/bus-stop';
 import { AuthService } from '../services/auth.service';
 import { LineService } from '../services/line.service';
+import { Bus } from 'src/models/bus';
+import { BusService } from '../services/bus.service';
 
 @Component({
   selector: 'app-home',
@@ -21,10 +23,12 @@ export class HomeComponent implements OnInit{
   putanjePrikazanihLinija: Array<any> = new Array<any>();
   stanicePrikazaneNaMapi: Array<any> = new Array<any>();
   prikazaneLinije: Array<any> = new Array<any>(); //lineId => Line objekat
+  prikazaniAutobusi: Array<any> = new Array<any>();
 
   public displayedPanel: string = 'none';
 
-  constructor(private _router: Router, private _auth: AuthService,private _lineService: LineService) { }
+  constructor(private _router: Router, private _auth: AuthService,private _lineService: LineService,
+    private _busService: BusService) { }
 
   ngOnInit(): void {
     this._router.events.subscribe(event => {
@@ -158,6 +162,9 @@ export class HomeComponent implements OnInit{
       return;
     }
 
+    //samo da nacrta autobuse kad se linija prikaze
+    this.UpdateBusPositions();
+
 		let SelectedLineCoordinates = new Array<google.maps.LatLng>();
     
     if (linija.PointLinePaths.length == 0) {
@@ -213,11 +220,15 @@ export class HomeComponent implements OnInit{
       this.stanicePrikazaneNaMapi[element.BusStopId.toString() + "_" + lineId].setMap(null);
     });
 
+    linijaZaBrisanje.Buses.forEach(element => {
+      this.RemoveBusFromMap(element);
+    });
     delete this.putanjePrikazanihLinija[lineId];
+    delete this.prikazaneLinije[lineId]
   }
 
   public DrawBusStopOnMap(busStop: BusStop, lineId: string = "") {
-    let markerIconPath = "../../assets/imgs/busStopMarker.png";
+    let markerIconPath = "../../assets/imgs/busStopMarker_mini.png";
 
     let marker = this.DrawMarkerOnMap(busStop.X, busStop.Y, busStop.Name + "|" + busStop.Address, markerIconPath);
     let infoWindow = this.CreateBusStopInfoWindow(busStop, lineId);
@@ -290,5 +301,44 @@ export class HomeComponent implements OnInit{
 
   private RemoveMarkerFromMap(marker: google.maps.Marker) {
     marker.setMap(null);
+  }
+
+  public UpdateBusPositions() {
+    this._busService.getBusesWithLine().subscribe(
+      data => {
+        data.forEach(element => {
+          this.DrawBusOnMap(element);
+        });
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
+  private DrawBusOnMap(bus:Bus) {
+    if (bus.LineId in this.prikazaneLinije) {
+      if (bus.Id in this.prikazaniAutobusi) {
+        this.prikazaniAutobusi[bus.Id].setTitle(bus.Id + "|" + bus.LineId);
+        this.prikazaniAutobusi[bus.Id].setZIndex(120);
+        this.prikazaniAutobusi[bus.Id].setPosition(
+          new google.maps.LatLng(bus.X, bus.Y)
+        );
+      } else {
+        let markerIconPath = "../../assets/imgs/busMarker.png";
+        let busMarker = this.DrawMarkerOnMap(bus.X, bus.Y, bus.Id + "|" + bus.LineId, markerIconPath) as google.maps.Marker;
+        busMarker.setZIndex(120);
+        this.prikazaniAutobusi[bus.Id] = busMarker;
+      }
+    } else if (bus.Id in this.prikazaniAutobusi) {
+      this.RemoveBusFromMap(bus);
+    }
+  }
+
+  private RemoveBusFromMap(bus:Bus) {
+    if (bus.Id in this.prikazaniAutobusi) {
+      this.prikazaniAutobusi[bus.Id].setMap(null);
+      delete this.prikazaniAutobusi[bus.Id];
+    }
   }
 }

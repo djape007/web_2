@@ -5,7 +5,7 @@ export class Bus {
     public Id: string;
     public X: number;
     public Y: number;
-    public LineId: Guid;
+    public LineId: string;
     public Line: Line;
     //this.id = Guid.create();
 }
