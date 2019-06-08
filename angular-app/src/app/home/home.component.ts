@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, Input } from '@angular/core';
+import { Component, ViewChild, OnInit, Input, AfterViewInit } from '@angular/core';
 import {} from 'googlemaps';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Router, RoutesRecognized } from '@angular/router';
@@ -15,7 +15,7 @@ import { BusService } from '../services/bus.service';
   styleUrls: ['./home.component.css']
 })
 
-export class HomeComponent implements OnInit{
+export class HomeComponent implements OnInit, AfterViewInit{
   @ViewChild('map') mapElement: any;
   @ViewChild('leftPanel') leftPanelComponent: any;
   @ViewChild('rightPanel') rightPanelComponent: any;
@@ -31,6 +31,11 @@ export class HomeComponent implements OnInit{
 
   constructor(private _router: Router, private _auth: AuthService,private _lineService: LineService,
     private _busService: BusService) { }
+
+
+  ngAfterViewInit(): void {
+    this.poll();
+  }
 
   ngOnInit(): void {
     this._router.events.subscribe(event => {
@@ -342,5 +347,17 @@ export class HomeComponent implements OnInit{
       this.prikazaniAutobusi[bus.Id].setMap(null);
       delete this.prikazaniAutobusi[bus.Id];
     }
+  }
+
+  async poll() {
+      while (true) {
+        // code to poll server and update models and view ...
+        this.UpdateBusPositions();
+      await this.sleep(2000);
+    }
+  }
+
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 }
