@@ -39,7 +39,7 @@ export class TimetableComponent implements OnInit {
     )
   }
 
-  selectLine(row: any, $event: any){
+  selectLine(row: any){
     this.selectedRowIndex = row.Index;
     if(row.Selected)
     {
@@ -65,11 +65,9 @@ export class TimetableComponent implements OnInit {
 
   createDataSource(data: any): any{
     var retVal = new Array();
-    var index = -1;
     for(let item of data){
       retVal.push({
         Selected: false,
-        Index : ++index,
         Id : item.LineId,
         Direction : item.Line.Direction,
         LineNumber : (Number)(item.LineId.replace('A','').replace('B','').replace('A','').replace('B',''))
