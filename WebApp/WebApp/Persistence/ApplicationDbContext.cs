@@ -29,6 +29,7 @@ namespace WebApp.Persistence
             : base("DefaultConnection", throwIfV1Schema: false)
         {
             this.Configuration.LazyLoadingEnabled = true;
+            base.Database.CommandTimeout = 120;
         }
 
         public static ApplicationDbContext Create()
