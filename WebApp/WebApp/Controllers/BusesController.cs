@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
+using System.Text;
 using System.Web.Http;
+using System.Web.Http.Controllers;
 using System.Web.Http.Description;
 using WebApp.Models;
 using WebApp.Persistence;
@@ -26,6 +26,13 @@ namespace WebApp.Controllers
         {
             return unitOfWork.Buses.GetAll();
         }
+        
+        [Route("api/Buses/WithLine")]
+        [HttpGet]
+        [AllowAnonymous]
+        public IEnumerable<Bus> GetBusesWithLine() {
+            return unitOfWork.Buses.GetAll().Where(x => x.LineId != null);
+        }
 
         // GET: api/Buses/5
         [ResponseType(typeof(Bus))]
@@ -39,6 +46,41 @@ namespace WebApp.Controllers
 
             return Ok(bus);
         }
+
+        [ResponseType(typeof(void))]
+        [Route("api/Buses/UpdatePosition")]
+        [HttpPost]
+        [AllowAnonymous]
+        //public IHttpActionResult UpdateBusesPosition([ModelBinder(typeof(BusPosition))]BusPosition busevi) {
+        public IHttpActionResult UpdateBusesPosition() {
+            var request = System.Web.HttpContext.Current.Request;
+            string data = GetDocumentContents(request);
+            
+            foreach(string busData in data.Split('|')) {
+                //busData => NS335XY,45.45453,19.345435,12A
+                var busDataArray = busData.Split(',');
+                Bus bus = unitOfWork.Buses.Get(busDataArray[0]);
+
+                bus.X = double.Parse(busDataArray[1]);
+                bus.Y = double.Parse(busDataArray[2]);
+                bus.LineId = busDataArray[3];
+                unitOfWork.Buses.Update(bus);
+            }
+            unitOfWork.Complete();
+
+            return Ok();
+        }
+
+        private string GetDocumentContents(System.Web.HttpRequest Request) {
+            string documentContents;
+            using (Stream receiveStream = Request.InputStream) {
+                using (StreamReader readStream = new StreamReader(receiveStream, Encoding.UTF8)) {
+                    documentContents = readStream.ReadToEnd();
+                }
+            }
+            return documentContents;
+        }
+
         // PUT: api/Buses/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutBus(string id, Bus bus)

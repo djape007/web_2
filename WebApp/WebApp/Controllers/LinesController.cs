@@ -28,6 +28,14 @@ namespace WebApp.Controllers
             return unitOfWork.Lines.GetAll();
         }
 
+        // GET: api/Lines/WithBuses
+        [Route("api/Lines/WithBuses")]
+        [HttpGet]
+        [AllowAnonymous]
+        public IEnumerable<Line> GetLinesWithBuses() {
+            return unitOfWork.Lines.GetAll().Where(x=> x.Buses.Count > 0);
+        }
+
         // GET: api/Lines/5
         [ResponseType(typeof(Line))]
         public IHttpActionResult GetLine(string id)
