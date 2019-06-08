@@ -123,6 +123,11 @@ class Bus():
     firstStart = True
     speed = 1 #km/h
     updateBusPositionInterval = 0.5 #sec
+    timer = 0
+    lastBusStop = None
+    minTimeOnBusStop = 5
+    maxTimeOnBusStop = 13
+    waitTimeOnNextBusStop = -1
 
     def __init__(self, Id,X,Y,OnLine):
         self.X = X
@@ -173,7 +178,23 @@ class Bus():
             stepLength = (Bus.speed * 1000 / 3600) / Bus.updateBusPositionInterval #u metrima koliko ce autobus preci tokom jednog intervala updateovanja
             self.iterator = GlobeNavigation.MoveAlongRoute(self.path[pocetnaTacka:], stepLength)
         
-        newPosition = next(self.iterator, None)
+        busStop = self.CheckForBusStop()
+
+        if not busStop is None:
+            if self.waitTimeOnNextBusStop == -1:
+                self.waitTimeOnNextBusStop = random.randint(Bus.minTimeOnBusStop, Bus.maxTimeOnBusStop)
+
+            while self.timer < self.waitTimeOnNextBusStop:
+                self.timer += self.updateBusPositionInterval
+                self.SetPosition(busStop.GetPosition())
+                yield self.GetPosition()
+            
+            self.waitTimeOnNextBusStop = -1
+            self.lastBusStop = busStop
+            self.timer = 0
+            newPosition = self.GetPosition()
+        else:
+            newPosition = next(self.iterator, None)
 
         if newPosition is None:
             self.iterator = None
@@ -186,7 +207,13 @@ class Bus():
 
     def CheckForBusStop(self):
         #simulacija zaustavljanja autobusa na stanici
-        pass
+        for stanica in Line.allLinesCache[self.OnLine].busStops:
+            if GlobeNavigation.Distance(self.GetPosition(), stanica.GetPosition()) <= 16:
+                if stanica == self.lastBusStop:
+                    return None
+                return stanica
+        
+        return None
 
     def GetPosition(self):
         return (self.X, self.Y)
@@ -354,6 +381,8 @@ def Main():
             bus.SetPath(line.path)
     print("Simulacija pocinje :D")
     timer = 0
+
+    #glavni loop simulacije
     while True:
         for bus in list(Bus.allBusesCache.values()):
             p = next(bus.Move(), None)
