@@ -25,6 +25,8 @@ export class HomeComponent implements OnInit{
   prikazaneLinije: Array<any> = new Array<any>(); //lineId => Line objekat
   prikazaniAutobusi: Array<any> = new Array<any>();
 
+  prikaziSveBuseve: boolean; //ovo je forfun, treba obrisati posle
+
   public displayedPanel: string = 'none';
 
   constructor(private _router: Router, private _auth: AuthService,private _lineService: LineService,
@@ -317,7 +319,7 @@ export class HomeComponent implements OnInit{
   }
 
   private DrawBusOnMap(bus:Bus) {
-    if (bus.LineId in this.prikazaneLinije) {
+    if ((bus.LineId in this.prikazaneLinije) || this.prikaziSveBuseve) {
       if (bus.Id in this.prikazaniAutobusi) {
         this.prikazaniAutobusi[bus.Id].setTitle(bus.Id + "|" + bus.LineId);
         this.prikazaniAutobusi[bus.Id].setZIndex(120);

@@ -19,6 +19,7 @@
         </ul>
     </nav>
     <button style='position: absolute; top: 10px; left: 10px; z-index: 200;' (click)='UpdateBusPositions()'>Updateuj buseve</button>
+    <div style='position: absolute; top: 10px; left: 120px; z-index: 200;'><input type='checkbox' [(ngModel)]='prikaziSveBuseve'/>Prikazi sve buseve</div>
     <div id='mapOverlay' (click)='NavigateToMap()' class='map-no-overlay'></div>
     <div class='logo-holder'>
         <img src='../../assets/imgs/logo_2.png'>
