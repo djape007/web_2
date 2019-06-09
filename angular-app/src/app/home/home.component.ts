@@ -240,6 +240,26 @@ export class HomeComponent implements OnInit, AfterViewInit{
     let marker = this.DrawMarkerOnMap(busStop.X, busStop.Y, busStop.Name + "|" + busStop.Address, markerIconPath);
     let infoWindow = this.CreateBusStopInfoWindow(busStop, lineId);
     marker.addListener('click', () => {
+      //DEO ZA NAJBLIZI BUS JOS TREBA DORADITI AKO JE MOGUCE
+      // var timeString = 'Trenutno nema autobusa koji treba da stignu.';
+      // var timesInSec = this.calculateTimesForArrivingBuses(busStop,lineId);
+      
+      // if(timesInSec.length != 0){
+      //   var sortedtimes = timesInSec.sort((x,y)=> (Number)(x) - (Number)(y));
+      //   var closestTime = sortedtimes[0];
+      //   var minutes = Math.floor((Number)(closestTime) / 60);
+      //   var seconds = Math.round((Number)(closestTime) % 60);
+      //   timeString = `<div>Autobus stize za <b>${minutes} min : ${seconds} sec<b></div>`;
+      // }
+
+      // let prikaziLinijeHTML = "";
+      // let content = `
+      // <div><b>`+busStop.Name+`</b></div>
+      // <div>Linije koje staju na ovoj stanici:</div>
+      // <div>`+busStop.Address+`</div>
+      // `+prikaziLinijeHTML+`
+      // `;
+      // infoWindow.setContent(`${content}${timeString}`);
       infoWindow.open(this.map, marker);
     });
 
@@ -265,7 +285,6 @@ export class HomeComponent implements OnInit, AfterViewInit{
         prikaziLinijeHTML += "<button class='btnInfoWindow btnDisplayLineFromInfoWindow' lineId='"+idLinije+"'>Prikazi "+idLinije+"</button>";
       }
     });*/
-
     let content = `
     <div><b>`+busStop.Name+`</b></div>
     <div>Linije koje staju na ovoj stanici:</div>
@@ -359,5 +378,56 @@ export class HomeComponent implements OnInit, AfterViewInit{
 
   sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  calculateTimeInSecs(stationLat : number, stationLng : number, busLat : number, busLng : number) : number {
+    var stationLocation = new google.maps.LatLng(stationLat, stationLng);
+    var busLocatioon = new google.maps.LatLng(busLat, busLng);
+    var distance = google.maps.geometry.spherical.computeDistanceBetween(stationLocation, busLocatioon);
+    var speedKm_h = 50;
+    var speedM_s = speedKm_h*(1000/3600);
+    var time = distance/speedM_s;
+    return time;
+  }
+
+  calculateTimesForArrivingBuses(busStop: BusStop, lineId: string){
+    var timesInSec = new Array<Number>();
+    var distanceStationArr = new Array<any>();
+    var linija = this.prikazaneLinije[lineId];
+    linija.PointLinePaths.forEach(element => {
+      const pointLocation = new google.maps.LatLng(element.X, element.Y);
+      const busLocatioon = new google.maps.LatLng(busStop.X, busStop.Y);
+      const dist = google.maps.geometry.spherical.computeDistanceBetween(pointLocation, busLocatioon);
+      distanceStationArr.push({'dist' : dist, 'point' : element});
+    });
+    var sortedStationDist = distanceStationArr.sort((x,y)=> (Number)(x.dist) - (Number)(y.dist));
+    var closestStationPoint = sortedStationDist[0];
+    
+    linija.Buses.forEach(element => {
+      var bus = this.prikazaniAutobusi[element.Id]
+      var distanceBusArr = new Array<any>();
+      linija.PointLinePaths.forEach(element => {
+        const pointLocation = new google.maps.LatLng(element.X, element.Y);
+        const busLocatioon = new google.maps.LatLng(bus.position.lat(), bus.position.lng());
+        const dist = google.maps.geometry.spherical.computeDistanceBetween(pointLocation, busLocatioon);
+        distanceBusArr.push({'dist' : dist, 'point' : element});
+      });
+      var sortedBusDist = distanceBusArr.sort((x,y)=> (Number)(x.dist) - (Number)(y.dist));
+      var closestBusPoint = sortedBusDist[0];
+      if(linija.Id.includes("AA") || linija.Id.includes("A")){
+        if(closestBusPoint.point.SequenceNumber >= closestStationPoint.point.SequenceNumber)
+          timesInSec.push(this.calculateTimeInSecs(busStop.X, busStop.Y, bus.position.lat(), bus.position.lng()));
+      }
+      else if(linija.Id.includes("BB") || linija.Id.includes("B")){
+        if(closestBusPoint.point.SequenceNumber <= closestStationPoint.point.SequenceNumber)
+          timesInSec.push(this.calculateTimeInSecs(busStop.X, busStop.Y, bus.position.lat(), bus.position.lng()));
+      }
+    });
+    
+    return timesInSec;
+  }
+
+  getPrikazaneLinije(): Array<any>{
+    return this.prikazaneLinije;
   }
 }

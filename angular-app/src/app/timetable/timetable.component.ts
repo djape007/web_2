@@ -31,7 +31,7 @@ export class TimetableComponent implements OnInit {
     .subscribe(
       data => {
         this.timetables = data;
-        this.dataSource = new MatTableDataSource(this.createDataSource(data));
+        this.dataSource = new MatTableDataSource(this.createDataSource(data, this._parent.getPrikazaneLinije()));
       },
       err => {
         console.log(err);
@@ -63,15 +63,22 @@ export class TimetableComponent implements OnInit {
     this._parent.RemoveLineFromMap(lineId);
   }
 
-  createDataSource(data: any): any{
+  createDataSource(data: any, prikazaneLinije: any[]): any{
     var retVal = new Array();
     for(let item of data){
-      retVal.push({
+      var pushVal = {
         Selected: false,
         Id : item.LineId,
         Direction : item.Line.Direction,
         LineNumber : (Number)(item.LineId.replace('A','').replace('B','').replace('A','').replace('B',''))
-      })
+      };
+
+      if(prikazaneLinije[pushVal.Id]){
+        pushVal.Selected = true;
+        this.selectedRowElements.push(this.timetables.find(x => x.LineId == pushVal.Id));
+      }
+
+      retVal.push(pushVal);      
     }
     return retVal.sort((x,y) => x.LineNumber - y.LineNumber);
   }
