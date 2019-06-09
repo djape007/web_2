@@ -332,7 +332,7 @@ export class HomeComponent implements OnInit, AfterViewInit{
         if(linija.Buses.find(x => x.Id == bus.Id) == null){
           linija.Buses.push(bus);
         }
-        this.prikazaniAutobusi[bus.Id].setTitle(`<b>bus.Id<b>`);
+        this.prikazaniAutobusi[bus.Id].setTitle(bus.Id);
         this.prikazaniAutobusi[bus.Id].setZIndex(120);
         this.prikazaniAutobusi[bus.Id].setPosition(
           new google.maps.LatLng(bus.X, bus.Y)
