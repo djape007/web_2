@@ -380,10 +380,24 @@ export class HomeComponent implements OnInit, AfterViewInit{
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  calculateTimeInSecs(stationLat : number, stationLng : number, busLat : number, busLng : number) : number {
+  calculateTimeInSecs(stationLat: number, stationLng: number, busLat: number, busLng: number, betweenPoints: Array<any>) : number {
+    var path = new Array<google.maps.LatLng>();
+    betweenPoints.forEach(element => {
+      path.push(new google.maps.LatLng(element.X, element.Y));
+    });
+    var len = path.length;
     var stationLocation = new google.maps.LatLng(stationLat, stationLng);
     var busLocatioon = new google.maps.LatLng(busLat, busLng);
-    var distance = google.maps.geometry.spherical.computeDistanceBetween(stationLocation, busLocatioon);
+    path[0] = busLocatioon;
+    path[len-1] = stationLocation; 
+    var polyline = new google.maps.Polyline({
+      path: path,
+      // strokeColor: "#ff0000",
+      // strokeOpacity: 0.6,
+      // strokeWeight: 5
+    });
+    var distance = google.maps.geometry.spherical.computeLength(polyline.getPath());
+    //polyline.setMap(this.map);
     var speedKm_h = 50;
     var speedM_s = speedKm_h*(1000/3600);
     var time = distance/speedM_s;
@@ -416,12 +430,19 @@ export class HomeComponent implements OnInit, AfterViewInit{
       var closestBusPoint = sortedBusDist[0];
       if(linija.Id == "22B" || linija.Id == "7A" || linija.Id == "8A" || linija.Id == "4A" 
       || linija.Id == "9A" || linija.Id == "17A" || linija.Id == "23B" ){
-        if(closestBusPoint.point.SequenceNumber >= closestStationPoint.point.SequenceNumber)
-          timesInSec.push(this.calculateTimeInSecs(busStop.X, busStop.Y, bus.position.lat(), bus.position.lng()));
+        if(closestBusPoint.point.SequenceNumber >= closestStationPoint.point.SequenceNumber){
+          var betweenPoints : Array<any> = linija.PointLinePaths.filter(x => x.SequenceNumber <= closestBusPoint.point.SequenceNumber
+            && x.SequenceNumber >= closestStationPoint.point.SequenceNumber);
+          var betweenPointsReversed = betweenPoints.reverse();
+          timesInSec.push(this.calculateTimeInSecs(busStop.X, busStop.Y, bus.position.lat(), bus.position.lng(), betweenPointsReversed));
+        }
       }
       else {
-        if(closestBusPoint.point.SequenceNumber <= closestStationPoint.point.SequenceNumber)
-          timesInSec.push(this.calculateTimeInSecs(busStop.X, busStop.Y, bus.position.lat(), bus.position.lng()));
+        if(closestBusPoint.point.SequenceNumber <= closestStationPoint.point.SequenceNumber){
+          var betweenPoints : Array<any> = linija.PointLinePaths.filter(x => x.SequenceNumber >= closestBusPoint.point.SequenceNumber
+            && x.SequenceNumber <= closestStationPoint.point.SequenceNumber);
+          timesInSec.push(this.calculateTimeInSecs(busStop.X, busStop.Y, bus.position.lat(), bus.position.lng(), betweenPoints));
+        }
       }
     });
     
