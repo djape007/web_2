@@ -241,25 +241,25 @@ export class HomeComponent implements OnInit, AfterViewInit{
     let infoWindow = this.CreateBusStopInfoWindow(busStop, lineId);
     marker.addListener('click', () => {
       //DEO ZA NAJBLIZI BUS JOS TREBA DORADITI AKO JE MOGUCE
-      // var timeString = 'Trenutno nema autobusa koji treba da stignu.';
-      // var timesInSec = this.calculateTimesForArrivingBuses(busStop,lineId);
+      var timeString = 'Trenutno nema autobusa koji treba da stignu.';
+      var timesInSec = this.calculateTimesForArrivingBuses(busStop,lineId);
       
-      // if(timesInSec.length != 0){
-      //   var sortedtimes = timesInSec.sort((x,y)=> (Number)(x) - (Number)(y));
-      //   var closestTime = sortedtimes[0];
-      //   var minutes = Math.floor((Number)(closestTime) / 60);
-      //   var seconds = Math.round((Number)(closestTime) % 60);
-      //   timeString = `<div>Autobus stize za <b>${minutes} min : ${seconds} sec<b></div>`;
-      // }
+      if(timesInSec.length != 0){
+        var sortedtimes = timesInSec.sort((x,y)=> (Number)(x) - (Number)(y));
+        var closestTime = sortedtimes[0];
+        var minutes = Math.floor((Number)(closestTime) / 60);
+        var seconds = Math.round((Number)(closestTime) % 60);
+        timeString = `<div>Autobus stize za <b>${minutes} min : ${seconds} sec<b></div>`;
+      }
 
-      // let prikaziLinijeHTML = "";
-      // let content = `
-      // <div><b>`+busStop.Name+`</b></div>
-      // <div>Linije koje staju na ovoj stanici:</div>
-      // <div>`+busStop.Address+`</div>
-      // `+prikaziLinijeHTML+`
-      // `;
-      // infoWindow.setContent(`${content}${timeString}`);
+      let prikaziLinijeHTML = "";
+      let content = `
+      <div><b>`+busStop.Name+`</b></div>
+      <div>Linije koje staju na ovoj stanici:</div>
+      <div>`+busStop.Address+`</div>
+      `+prikaziLinijeHTML+`
+      `;
+      infoWindow.setContent(`${content}${timeString}`);
       infoWindow.open(this.map, marker);
     });
 
@@ -414,11 +414,12 @@ export class HomeComponent implements OnInit, AfterViewInit{
       });
       var sortedBusDist = distanceBusArr.sort((x,y)=> (Number)(x.dist) - (Number)(y.dist));
       var closestBusPoint = sortedBusDist[0];
-      if(linija.Id.includes("AA") || linija.Id.includes("A")){
+      if(linija.Id == "22B" || linija.Id == "7A" || linija.Id == "8A" || linija.Id == "4A" 
+      || linija.Id == "9A" || linija.Id == "17A" || linija.Id == "23B" ){
         if(closestBusPoint.point.SequenceNumber >= closestStationPoint.point.SequenceNumber)
           timesInSec.push(this.calculateTimeInSecs(busStop.X, busStop.Y, bus.position.lat(), bus.position.lng()));
       }
-      else if(linija.Id.includes("BB") || linija.Id.includes("B")){
+      else {
         if(closestBusPoint.point.SequenceNumber <= closestStationPoint.point.SequenceNumber)
           timesInSec.push(this.calculateTimeInSecs(busStop.X, busStop.Y, bus.position.lat(), bus.position.lng()));
       }
