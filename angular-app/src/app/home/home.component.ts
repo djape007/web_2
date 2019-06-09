@@ -345,6 +345,10 @@ export class HomeComponent implements OnInit, AfterViewInit{
   private DrawBusOnMap(bus:Bus) {
     if ((bus.LineId in this.prikazaneLinije) || this.prikaziSveBuseve) {
       if (bus.Id in this.prikazaniAutobusi) {
+        var linija = this.prikazaneLinije[bus.LineId];
+        if(linija.Buses.find(x => x.Id == bus.Id) == null){
+          linija.Buses.push(bus);
+        }
         this.prikazaniAutobusi[bus.Id].setTitle(bus.Id + "|" + bus.LineId);
         this.prikazaniAutobusi[bus.Id].setZIndex(120);
         this.prikazaniAutobusi[bus.Id].setPosition(
