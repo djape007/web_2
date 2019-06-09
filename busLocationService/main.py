@@ -9,7 +9,7 @@ R = 6356000 #precnik zemlje u metrima, tako da su sva rastojanja u metrima
 baseUrl = "http://localhost:52295/api/"
 
 #kod ovih linija je sekvenca tacaka pogresno napisana
-sortReverse = ['22B']
+sortReverse = []
 
 class GlobeNavigation():
     #svi proracuni su u radijanima!
@@ -362,6 +362,8 @@ def Main():
         global sortReverse
         sortReverse = config['reverseLines']
         getLines = config['simulateLines']
+        Bus.minTimeOnBusStop = config['minBusStopTime']
+        Bus.maxTimeOnBusStop = config['maxBusStopTime']
 
     Bus.updateBusPositionInterval = updateBusPositionInterval
     updateBusPositionInterval *= (1 / simulationSpeed)

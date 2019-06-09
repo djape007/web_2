@@ -1,8 +1,10 @@
 {
 	"simulationSpeed": 1,
 	"busSpeed": 50,
-	"updateServerInterval": 1,
+	"updateServerInterval": 0.8,
 	"baseUrl": "http://localhost:52295/api/",
+	"minBusStopTime": 5,
+	"maxBusStopTime": 13,
 	"reverseLines": [
 		"22B",
 		"7A",
