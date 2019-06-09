@@ -241,7 +241,7 @@ export class HomeComponent implements OnInit, AfterViewInit{
     let markerIconPath = "../../assets/imgs/busStopMarker_mini.png";
 
     let marker = this.DrawMarkerOnMap(busStop.X, busStop.Y, busStop.Name + "|" + busStop.Address, markerIconPath);
-    let infoWindow = this.CreateBusStopInfoWindow(busStop, lineId);
+    let infoWindow = new google.maps.InfoWindow();
     marker.addListener('click', () => {
       //DEO ZA NAJBLIZI BUS JOS TREBA DORADITI AKO JE MOGUCE
       var timeString = 'Trenutno nema autobusa koji treba da stignu.';
@@ -256,12 +256,10 @@ export class HomeComponent implements OnInit, AfterViewInit{
       }
 
       let prikaziLinijeHTML = "";
-      let content = `
-      <div><b>`+busStop.Name+`</b></div>
-      <div>Linije koje staju na ovoj stanici:</div>
-      <div>`+busStop.Address+`</div>
-      `+prikaziLinijeHTML+`
-      `;
+      let content =
+        `<div><b>${busStop.Name}</b></div>
+        <div>${busStop.Address}</div>
+        ${prikaziLinijeHTML}`;
       infoWindow.setContent(`${content}${timeString}`);
       infoWindow.open(this.map, marker);
     });
@@ -278,24 +276,6 @@ export class HomeComponent implements OnInit, AfterViewInit{
       }
     });*/
     this.stanicePrikazaneNaMapi[busStop.Id.toString() + "_" + lineId] = marker;
-  }
-
-  private CreateBusStopInfoWindow(busStop: BusStop, lineId:string = ""): google.maps.InfoWindow {
-    let ostaleLinije = busStop.Address.split(",");
-    let prikaziLinijeHTML = "";
-    /*ostaleLinije.forEach(idLinije => {
-      if (idLinije != lineId) {
-        prikaziLinijeHTML += "<button class='btnInfoWindow btnDisplayLineFromInfoWindow' lineId='"+idLinije+"'>Prikazi "+idLinije+"</button>";
-      }
-    });*/
-    let content = `
-    <div><b>`+busStop.Name+`</b></div>
-    <div>Linije koje staju na ovoj stanici:</div>
-    <div>`+busStop.Address+`</div>
-    `+prikaziLinijeHTML+`
-    `;
-
-    return this.CreateInfoWindow(content);
   }
 
   private CreateInfoWindow(content: string): google.maps.InfoWindow {
@@ -352,7 +332,7 @@ export class HomeComponent implements OnInit, AfterViewInit{
         if(linija.Buses.find(x => x.Id == bus.Id) == null){
           linija.Buses.push(bus);
         }
-        this.prikazaniAutobusi[bus.Id].setTitle(bus.Id + "|" + bus.LineId);
+        this.prikazaniAutobusi[bus.Id].setTitle(`<b>bus.Id<b>`);
         this.prikazaniAutobusi[bus.Id].setZIndex(120);
         this.prikazaniAutobusi[bus.Id].setPosition(
           new google.maps.LatLng(bus.X, bus.Y)
@@ -361,6 +341,14 @@ export class HomeComponent implements OnInit, AfterViewInit{
         let markerIconPath = "../../assets/imgs/busMarker.png";
         let busMarker = this.DrawMarkerOnMap(bus.X, bus.Y, bus.Id + "|" + bus.LineId, markerIconPath) as google.maps.Marker;
         busMarker.setZIndex(120);
+        busMarker.addListener('click', () => {
+          let content =
+            `<div>Registracija: <b>${bus.Id}</b></div>
+            <div>Trenutna linija: ${bus.LineId}</div>`;
+          var infoWindow = new google.maps.InfoWindow();
+          infoWindow.setContent(content);
+          infoWindow.open(this.map, busMarker);
+        });
         this.prikazaniAutobusi[bus.Id] = busMarker;
       }
     } else if (bus.Id in this.prikazaniAutobusi) {
