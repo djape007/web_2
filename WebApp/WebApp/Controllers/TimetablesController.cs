@@ -43,6 +43,7 @@ namespace WebApp.Controllers
 
         // PUT: api/Timetables/5
         [ResponseType(typeof(void))]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult PutTimetable(Guid id, Timetable timetable)
         {
             if (!ModelState.IsValid || timetable == null)
@@ -55,7 +56,12 @@ namespace WebApp.Controllers
                 return BadRequest();
             }
 
-            unitOfWork.TimeTables.Update(timetable);
+            Timetable db_timetable = unitOfWork.TimeTables.Get(timetable.Id);
+            if (db_timetable == null)
+                return NotFound();
+
+            db_timetable.Times = timetable.Times;
+            unitOfWork.TimeTables.Update(db_timetable);
 
             try
             {

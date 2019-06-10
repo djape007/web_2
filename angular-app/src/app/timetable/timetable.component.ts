@@ -116,6 +116,7 @@ export class TimetableComponent implements OnInit {
     for (let sat = 4; sat < 24+4; sat++) {
       let satStr = (sat % 24).toString().padStart(2, '0');
       if (satStr in polasciPoSatima) {
+        polasciPoSatima[satStr] = polasciPoSatima[satStr].sort((x,y) => (Number)(x) - (Number)(y));
         let prikazJednogSata = satStr+"|" + polasciPoSatima[satStr].join(",");
         timetableJson.push(prikazJednogSata);
       }

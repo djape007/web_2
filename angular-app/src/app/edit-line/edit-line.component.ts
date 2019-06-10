@@ -79,7 +79,7 @@ export class EditLineComponent implements OnInit {
 
     let timesJson = JSON.parse(timetable.Times);
     let selectedDayTimesJson = new Array<string>();
-    if(pickedDay == "Radni dan"){
+    if(pickedDay == "Radni_dan"){
       selectedDayTimesJson = timesJson['Radni_dan'];
       this.selectedDay = "Radni_dan";
     }
@@ -108,6 +108,7 @@ export class EditLineComponent implements OnInit {
     for (let sat = 4; sat < 24+4; sat++) {
       let satStr = (sat % 24).toString().padStart(2, '0');
       if (satStr in polasciPoSatima) {
+        polasciPoSatima[satStr] = polasciPoSatima[satStr].sort((x,y) => (Number)(x) - (Number)(y));
         let prikazJednogSata = satStr+"|" + polasciPoSatima[satStr].join(",");
         timetableJson.push(prikazJednogSata);
       }
@@ -122,27 +123,57 @@ export class EditLineComponent implements OnInit {
       return;
     }
 
-    //provera da li hoce da doda vec postojeci H:M
-    // this.timetableJson.forEach(element => {
-    //   var splitVal = element.split('|')[0];
-    //   if(splitVal[0] == this.f.hour.value){
-    //     var minutes = splitVal[1].split(',');
-    //     minutes.forEach(element => {
-    //       if(element == this.f.minute.value)
-    //         return;
-    //     });
-    //   }
-    // });
+    var timetable = this.timetables.find(x => x.LineId.toString() == this.selectedRowIndex);
+    if(timetable == null)
+      return;
+
+    let timesJson = JSON.parse(timetable.Times);
+    let selectedDayTimesJson = new Array<string>();
+    selectedDayTimesJson = timesJson[this.selectedDay];
 
     var time = `${this.f.hour.value}:${this.f.minute.value}`;
-    var lastTime = `${time},`;
+    if(selectedDayTimesJson.includes(time))
+      return;
+    
+    selectedDayTimesJson.push(time);
+    timetable.Times = JSON.stringify(timesJson);
 
+    this.editTimetable(timetable);
   }
 
   removeTime(){
     if (this.timeForm.invalid) {
       return;
     }
-    console.log('remove');
+    
+    var timetable = this.timetables.find(x => x.LineId.toString() == this.selectedRowIndex);
+    if(timetable == null)
+      return;
+
+    let timesJson = JSON.parse(timetable.Times);
+    let selectedDayTimesJson = new Array<string>();
+    selectedDayTimesJson = timesJson[this.selectedDay];
+
+    var time = `${this.f.hour.value}:${this.f.minute.value}`;
+    if(!selectedDayTimesJson.includes(time))
+      return;
+    
+    var index = selectedDayTimesJson.indexOf(time);
+    selectedDayTimesJson.splice(index,1);
+    timetable.Times = JSON.stringify(timesJson);
+
+    this.editTimetable(timetable);
+  }
+
+  editTimetable(timetable: Timetable){
+    this._timetablesevice.editTimetable(timetable)
+    .subscribe(
+      data => {
+        this.getAllTimetables();
+        this.getTimesJson(this.selectedRowIndex,this.selectedDay);
+      },
+      err => {
+        console.log(err);
+      });
   }
 }
