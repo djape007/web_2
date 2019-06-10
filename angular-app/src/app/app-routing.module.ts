@@ -11,6 +11,7 @@ import { AuthGuard } from './services/auth.guard';
 import { VerifyUserComponent } from './verify-user/verify-user.component';
 import { CheckTicketComponent } from './check-ticket/check-ticket.component';
 import { BoughtTicketsComponent } from './bought-tickets/bought-tickets.component';
+import { RoleGuard } from './services/role.guard';
 
 const routes: Routes = [
   {
@@ -92,19 +93,22 @@ const routes: Routes = [
         path: 'ver',
         component: VerifyUserComponent,
         outlet: 'rightRouter',
-        canActivate: [AuthGuard]
+        canActivate: [RoleGuard], 
+        data: { expectedRole: 'Controller'}
       },
       {
         path: 'kupkart',
         component: BoughtTicketsComponent,
         outlet: 'rightRouter',
-        canActivate: [AuthGuard]
+        canActivate: [RoleGuard], 
+        data: { expectedRole: 'AppUser'}
       },
       {
         path: 'chtick',
         component: CheckTicketComponent,
         outlet: 'rightRouter',
-        canActivate: [AuthGuard]
+        canActivate: [RoleGuard], 
+        data: { expectedRole: 'Controller'}
       },
     ]
   }
