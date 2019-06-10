@@ -64,3 +64,15 @@ table {
   width: 32%;
   margin: 1px;
 }
+
+.btn-left-w-33{
+  width: 33%;
+  margin-left: 15%;
+  margin-right: 2%;
+}
+
+.btn-right-w-33{
+  width: 33%;
+  margin-right: 15%;
+  margin-left: 2%;
+}

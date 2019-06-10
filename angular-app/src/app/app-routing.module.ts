@@ -12,6 +12,7 @@ import { VerifyUserComponent } from './verify-user/verify-user.component';
 import { CheckTicketComponent } from './check-ticket/check-ticket.component';
 import { BoughtTicketsComponent } from './bought-tickets/bought-tickets.component';
 import { RoleGuard } from './services/role.guard';
+import { EditLineComponent } from './edit-line/edit-line.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,11 @@ const routes: Routes = [
     path: 'home',
     component: HomeComponent,
     children: [
+      {
+        path: 'edit-lines',
+        redirectTo: '/home/(rightRouter:izmlinije)',
+        pathMatch: 'prefix',
+      },
       {
         path: 'bought-tickets',
         redirectTo: '/home/(rightRouter:kupkart)',
@@ -109,6 +115,13 @@ const routes: Routes = [
         outlet: 'rightRouter',
         canActivate: [RoleGuard], 
         data: { expectedRole: 'Controller'}
+      },
+      {
+        path: 'izmlinije',
+        component: EditLineComponent,
+        outlet: 'rightRouter',
+        canActivate: [RoleGuard], 
+        data: { expectedRole: 'Admin'}
       },
     ]
   }

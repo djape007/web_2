@@ -92,7 +92,7 @@ namespace WebApp.Controllers
 
         // PUT: api/Users/5
         [ResponseType(typeof(void))]
-        [Authorize(Roles = "Admin, AppUser")]
+        [Authorize(Roles = "Admin, AppUser, Controller")]
         public async Task<IHttpActionResult> PutUser(string id, ApplicationUser user)
         {
             if (!ModelState.IsValid || user == null)

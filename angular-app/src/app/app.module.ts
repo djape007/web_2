@@ -26,6 +26,7 @@ import { EditUserComponent } from './edit-user/edit-user.component';
 import { VerifyUserComponent } from './verify-user/verify-user.component';
 import { CheckTicketComponent } from './check-ticket/check-ticket.component';
 import { BoughtTicketsComponent } from './bought-tickets/bought-tickets.component';
+import { EditLineComponent } from './edit-line/edit-line.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { BoughtTicketsComponent } from './bought-tickets/bought-tickets.componen
     EditUserComponent,
     VerifyUserComponent,
     CheckTicketComponent,
-    BoughtTicketsComponent
+    BoughtTicketsComponent,
+    EditLineComponent
   ],
   imports: [
     BrowserModule,
