@@ -53,6 +53,7 @@ export class EditLineComponent implements OnInit {
     if(this.lineForm.invalid)
       return;
 
+    this.newLine = false;
     var lineId = this.f.lineId.value;
     this._lineService.getLine(lineId)
       .subscribe(

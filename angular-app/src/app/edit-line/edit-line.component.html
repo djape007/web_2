@@ -12,10 +12,10 @@
 </form>
 <div *ngIf="line && line.PointLinePaths">
   <p style="text-align: center;margin-top:10px;">Linija {{line.Id}}</p>
-  <div *ngIf="line.PointLinePaths.lenght > 0" class="points">
-    <mat-form-field class='ticketsFilter'>
-      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
-    </mat-form-field>
+  <mat-form-field *ngIf="line.PointLinePaths.length > 0" class='ticketsFilter'>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+  </mat-form-field>
+  <div *ngIf="line.PointLinePaths.length > 0" class="points">
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
       <ng-container matColumnDef="SequenceNumber">
         <th mat-header-cell *matHeaderCellDef> Broj </th>
