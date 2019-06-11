@@ -243,7 +243,6 @@ export class HomeComponent implements OnInit, AfterViewInit{
     let marker = this.DrawMarkerOnMap(busStop.X, busStop.Y, busStop.Name + "|" + busStop.Address, markerIconPath);
     let infoWindow = new google.maps.InfoWindow();
     marker.addListener('click', () => {
-      //DEO ZA NAJBLIZI BUS JOS TREBA DORADITI AKO JE MOGUCE
       var timeString = 'Trenutno nema autobusa koji treba da stignu.';
       var timesInSec = this.calculateTimesForArrivingBuses(busStop,lineId);
       
@@ -446,5 +445,16 @@ export class HomeComponent implements OnInit, AfterViewInit{
 
   getPrikazaneLinije(): Array<any>{
     return this.prikazaneLinije;
+  }
+
+  drawPoint(path: google.maps.LatLng[]){
+    var polyline = new google.maps.Polyline({
+      path: path,
+      strokeColor: "#ff0000",
+      strokeOpacity: 1,
+      strokeWeight: 8,
+    });
+    //var distance = google.maps.geometry.spherical.computeLength(polyline.getPath());
+    polyline.setMap(this.map);
   }
 }

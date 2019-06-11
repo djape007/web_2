@@ -6,6 +6,6 @@ export class PointPathLine {
     public X: number;
     public Y: number;
     public SequenceNumber: number;
-    public LineId: Guid;
+    public LineId: string;
     public Line: Line;
 }
