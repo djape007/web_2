@@ -4,7 +4,6 @@ import { HomeComponent } from './home/home.component';
 import { TimetableComponent } from './timetable/timetable.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { LeftMenuComponent } from './left-menu/left-menu.component';
 import { TicketComponent } from './ticket/ticket.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AuthGuard } from './services/auth.guard';
@@ -12,7 +11,7 @@ import { VerifyUserComponent } from './verify-user/verify-user.component';
 import { CheckTicketComponent } from './check-ticket/check-ticket.component';
 import { BoughtTicketsComponent } from './bought-tickets/bought-tickets.component';
 import { RoleGuard } from './services/role.guard';
-import { EditLineComponent } from './edit-line/edit-line.component';
+import { EditTimetableComponent } from './edit-timetable/edit-timetable.component';
 
 const routes: Routes = [
   {
@@ -25,8 +24,8 @@ const routes: Routes = [
     component: HomeComponent,
     children: [
       {
-        path: 'edit-lines',
-        redirectTo: '/home/(rightRouter:izmlinije)',
+        path: 'edit-timetables',
+        redirectTo: '/home/(rightRouter:izmtimetable)',
         pathMatch: 'prefix',
       },
       {
@@ -117,8 +116,8 @@ const routes: Routes = [
         data: { expectedRole: 'Controller'}
       },
       {
-        path: 'izmlinije',
-        component: EditLineComponent,
+        path: 'izmtimetable',
+        component: EditTimetableComponent,
         outlet: 'rightRouter',
         canActivate: [RoleGuard], 
         data: { expectedRole: 'Admin'}

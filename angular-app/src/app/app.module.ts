@@ -27,6 +27,7 @@ import { VerifyUserComponent } from './verify-user/verify-user.component';
 import { CheckTicketComponent } from './check-ticket/check-ticket.component';
 import { BoughtTicketsComponent } from './bought-tickets/bought-tickets.component';
 import { EditLineComponent } from './edit-line/edit-line.component';
+import { EditTimetableComponent } from './edit-timetable/edit-timetable.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { EditLineComponent } from './edit-line/edit-line.component';
     VerifyUserComponent,
     CheckTicketComponent,
     BoughtTicketsComponent,
-    EditLineComponent
+    EditLineComponent,
+    EditTimetableComponent
   ],
   imports: [
     BrowserModule,
