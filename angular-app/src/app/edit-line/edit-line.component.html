@@ -1,6 +1,7 @@
 <div *ngIf="dataSource">
   <h1>Linije</h1>
-  <button mat-flat-button color="primary" class='matButtonStyle' style="margin-left: 10%;" (click)="addNewBtnClick()">Dodaj novi</button>
+  <button mat-flat-button color="primary" class='matButtonStyle' style="margin-left: 10%;" (click)="addNewBtnClick()">Dodaj</button>
+  <button *ngIf="!newTimetable && selectedRowIndex" mat-flat-button color="primary" class='matButtonStyle' style="float: right; margin-right: 10%;" (click)="deleteBtnClick()">Obrisi</button>
   <mat-form-field class='ticketsFilter'>
       <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
   </mat-form-field>
@@ -20,13 +21,15 @@
   </div>
   <div *ngIf="selectedRowIndex">
     <div style="margin-left: 5px;">
-      <!-- <p class="text-center">{{timetables.find(x=> x.Id == selectedRowIndex)}}</p> -->
       <button mat-flat-button color="primary" class='matButtonStyle btn-w-32' (click)="getTimesJson(selectedRowIndex, 'Radni_dan')">Radni</button>
       <button mat-flat-button color="primary" class='matButtonStyle btn-w-32' (click)="getTimesJson(selectedRowIndex, 'Subota')">Subota</button>
       <button mat-flat-button color="primary" class='matButtonStyle btn-w-32' (click)="getTimesJson(selectedRowIndex, 'Nedelja')">Nedelja</button>
     </div>
     <div *ngIf="timetableJson" class="times">
-      <p style="text-align: center;">Red voznje</p>
+      <p *ngIf="selectedDay == 'Radni_dan'; else notRadniDan" style="text-align: center;">Radni dan</p>
+      <ng-template #notRadniDan>
+        <p style="text-align: center;">{{selectedDay}}</p>
+      </ng-template>
       <div *ngFor="let satMinute of timetableJson">
         <b class='timetableJedanSat'>
           {{ satMinute.split("|")[0] }}H</b>
@@ -35,20 +38,22 @@
       <form [formGroup]="timeForm" novalidate style='text-align: center;'>     
         <div class="form-group">
           <mat-form-field class="div-left-half-width">
-            <input formControlName='hour' matInput placeholder="Sat" required>
+            <input (focusout)='hourIsNotNumber()' formControlName='hour' matInput placeholder="Sat" required>
             <mat-error *ngIf="timeForm.controls['hour'].errors && timeForm.controls['hour'].errors['required']">Obavezno polje</mat-error>
             <mat-error *ngIf="timeForm.controls['hour'].errors && timeForm.controls['hour'].errors['min']">Sat ne moze biti manji od 0</mat-error>
             <mat-error *ngIf="timeForm.controls['hour'].errors && timeForm.controls['hour'].errors['max']">Sat ne moze biti veci od 23</mat-error>
             <mat-error *ngIf="timeForm.controls['hour'].errors && timeForm.controls['hour'].errors['maxlength']">Duzina mora biti 2 karaktera</mat-error>
             <mat-error *ngIf="timeForm.controls['hour'].errors && timeForm.controls['hour'].errors['minlength']">Duzina mora biti 2 karaktera</mat-error>
+            <mat-error *ngIf="timeForm.controls['hour'].errors && timeForm.controls['hour'].errors['notnumber']">Mora biti broj</mat-error>
           </mat-form-field>
           <mat-form-field class="div-right-half-width">
-            <input formControlName='minute' matInput placeholder="Minut" required>
+            <input (focusout)='minuteIsNotNumber()' formControlName='minute' matInput placeholder="Minut" required>
             <mat-error *ngIf="timeForm.controls['minute'].errors && timeForm.controls['minute'].errors['required']">Obavezno polje</mat-error>
             <mat-error *ngIf="timeForm.controls['minute'].errors && timeForm.controls['minute'].errors['min']">Minut ne moze biti manji od 0</mat-error>
             <mat-error *ngIf="timeForm.controls['minute'].errors && timeForm.controls['minute'].errors['max']">Minut ne moze biti veci od 59</mat-error>
             <mat-error *ngIf="timeForm.controls['minute'].errors && timeForm.controls['minute'].errors['maxlength']">Duzina mora biti 2 karaktera</mat-error>
             <mat-error *ngIf="timeForm.controls['minute'].errors && timeForm.controls['minute'].errors['minlength']">Duzina mora biti 2 karaktera</mat-error>
+            <mat-error *ngIf="timeForm.controls['minute'].errors && timeForm.controls['minute'].errors['notnumber']">Mora biti broj</mat-error>
           </mat-form-field>
         </div>
         <button mat-flat-button color="primary" type="submit" name="addbtn" class='matButtonStyle btn-left-w-33' (click)='addTime()'>Dodaj vreme</button>

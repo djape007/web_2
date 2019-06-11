@@ -118,6 +118,7 @@ namespace WebApp.Controllers
 
         // DELETE: api/Timetables/5
         [ResponseType(typeof(Timetable))]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult DeleteTimetable(Guid id)
         {
             Timetable timetable = unitOfWork.TimeTables.Get(id);

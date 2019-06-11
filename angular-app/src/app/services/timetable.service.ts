@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Timetable } from 'src/models/timetable';
+import { Guid } from 'guid-typescript';
 
 @Injectable({
   providedIn: 'root'
@@ -21,5 +22,9 @@ export class TimetableService {
 
   public addTimetable(timetable: Timetable): Observable<any>{
     return this.http.post(`${this.api_route}`, `Id=${timetable.Id}&Times=${timetable.Times}&LineId=${timetable.LineId}`, { "headers" : {'Content-type' : 'application/x-www-form-urlencoded'}} );
+  }
+
+  public deleteTimetable(timetableId: Guid): Observable<any>{
+    return this.http.delete(`${this.api_route}/${timetableId}`);
   }
 }

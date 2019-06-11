@@ -226,6 +226,18 @@ export class EditLineComponent implements OnInit {
     this.newTimetable.Times = JSON.stringify({"Radni_dan": [], "Subota": [], "Nedelja": []});
   }
 
+  minuteIsNotNumber(){
+    var val = this.f.minute.value;
+    if(isNaN(val))
+      this.f.minute.setErrors({'notnumber': true});
+  }
+
+  hourIsNotNumber(){
+    var val = this.f.hour.value;
+    if(isNaN(val))
+      this.f.hour.setErrors({'notnumber': true});
+  }
+
   addTimetable(){
     if (this.lineForm.invalid) {
       return;
@@ -244,5 +256,22 @@ export class EditLineComponent implements OnInit {
       err => {
         console.log(err);
       });
+  }
+
+  deleteBtnClick(){
+    var timetable = this.timetables.find(x => x.Id == this.selectedRowIndex);
+    if(timetable == null){
+      return;
+    }
+
+    this._timetablesevice.deleteTimetable(timetable.Id)
+    .subscribe(
+      data => {
+        this.getAllTimetables();
+      },
+      err => {
+        console.log(err);
+      });
+    
   }
 }
