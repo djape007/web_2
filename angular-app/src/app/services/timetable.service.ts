@@ -16,6 +16,10 @@ export class TimetableService {
   }
 
   public editTimetable(timetable: Timetable): Observable<any>{
-    return this.http.put(`${this.api_route}/${timetable.Id}`, `Id=${timetable.Id}&Times=${timetable.Times}`,  { "headers" : {'Content-type' : 'application/x-www-form-urlencoded'}} );
+    return this.http.put(`${this.api_route}/${timetable.Id}`, `Id=${timetable.Id}&Times=${timetable.Times}&LineId=${timetable.LineId}`,  { "headers" : {'Content-type' : 'application/x-www-form-urlencoded'}} );
+  }
+
+  public addTimetable(timetable: Timetable): Observable<any>{
+    return this.http.post(`${this.api_route}`, `Id=${timetable.Id}&Times=${timetable.Times}&LineId=${timetable.LineId}`, { "headers" : {'Content-type' : 'application/x-www-form-urlencoded'}} );
   }
 }

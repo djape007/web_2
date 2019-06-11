@@ -1,5 +1,6 @@
 <div *ngIf="dataSource">
   <h1>Linije</h1>
+  <button mat-flat-button color="primary" class='matButtonStyle' style="margin-left: 10%;" (click)="addNewBtnClick()">Dodaj novi</button>
   <mat-form-field class='ticketsFilter'>
       <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
   </mat-form-field>
@@ -14,17 +15,18 @@
         <td mat-cell *matCellDef="let element"> {{element.Direction}} </td>
       </ng-container>  
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'highlight': selectedRowIndex == row.Id}" (click)="selectLine(row)"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'highlight': selectedRowIndex == row.TimetableId}" (click)="selectLine(row)"></tr>
     </table>
   </div>
   <div *ngIf="selectedRowIndex">
     <div style="margin-left: 5px;">
-      <p class="text-center">{{selectedRowIndex}}</p>
+      <!-- <p class="text-center">{{timetables.find(x=> x.Id == selectedRowIndex)}}</p> -->
       <button mat-flat-button color="primary" class='matButtonStyle btn-w-32' (click)="getTimesJson(selectedRowIndex, 'Radni_dan')">Radni</button>
       <button mat-flat-button color="primary" class='matButtonStyle btn-w-32' (click)="getTimesJson(selectedRowIndex, 'Subota')">Subota</button>
       <button mat-flat-button color="primary" class='matButtonStyle btn-w-32' (click)="getTimesJson(selectedRowIndex, 'Nedelja')">Nedelja</button>
     </div>
     <div *ngIf="timetableJson" class="times">
+      <p style="text-align: center;">Red voznje</p>
       <div *ngFor="let satMinute of timetableJson">
         <b class='timetableJedanSat'>
           {{ satMinute.split("|")[0] }}H</b>
@@ -49,9 +51,19 @@
             <mat-error *ngIf="timeForm.controls['minute'].errors && timeForm.controls['minute'].errors['minlength']">Duzina mora biti 2 karaktera</mat-error>
           </mat-form-field>
         </div>
-        <button mat-flat-button color="primary" type="submit" name="addbtn" class='matButtonStyle btn-left-w-33' (click)='addTime()'>Dodaj</button>
-        <button mat-flat-button color="primary" type="submit" name="delbtn" class='matButtonStyle btn-right-w-33' (click)="removeTime()">Obrisi</button>
+        <button mat-flat-button color="primary" type="submit" name="addbtn" class='matButtonStyle btn-left-w-33' (click)='addTime()'>Dodaj vreme</button>
+        <button mat-flat-button color="primary" type="submit" name="delbtn" class='matButtonStyle btn-right-w-33' (click)="removeTime()">Obrisi vreme</button>
       </form>
-    </div>
+      <form [formGroup]="lineForm" novalidate style='text-align: center;'>
+        <div class="form-group">
+          <mat-form-field class="div-full-width">
+            <input formControlName='lineId' matInput placeholder="Linija" required>
+            <mat-error *ngIf="lineForm.controls['lineId'].errors && lineForm.controls['lineId'].errors['required']">Obavezno polje</mat-error>
+          </mat-form-field>
+        </div>
+        <button *ngIf="!newTimetable" mat-flat-button color="primary" type="submit" style="margin-top: 10px;" name="saveBtn" class='matButtonStyle' (click)="editTimetable()">Sacuvaj promene</button>
+        <button *ngIf="newTimetable" mat-flat-button color="primary" type="submit" style="margin-top: 10px;" name="saveBtn" class='matButtonStyle' (click)="addTimetable()">Sacuvaj promene</button>
+      </form>
+      </div>
   </div>
 </div>

@@ -61,6 +61,7 @@ namespace WebApp.Controllers
                 return NotFound();
 
             db_timetable.Times = timetable.Times;
+            db_timetable.LineId = timetable.LineId;
             unitOfWork.TimeTables.Update(db_timetable);
 
             try
@@ -84,13 +85,16 @@ namespace WebApp.Controllers
 
         // POST: api/Timetables
         [ResponseType(typeof(Timetable))]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult PostTimetable(Timetable timetable)
         {
             if (!ModelState.IsValid || timetable == null)
             {
                 return BadRequest(ModelState);
             }
-            
+
+            timetable.ValidFrom = DateTime.Now;
+
             unitOfWork.TimeTables.Add(timetable);
 
             try

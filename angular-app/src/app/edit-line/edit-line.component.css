@@ -44,8 +44,9 @@
   
   .div-full-width{
     margin-top: 10px;
-    margin-left: 10%;
     width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
   }
 
   .div-left-half-width{
@@ -79,6 +80,7 @@
   .btn-w-32{
     width: 32%;
     margin: 1px;
+    margin-top: 10px;
   }
 
   .text-center{

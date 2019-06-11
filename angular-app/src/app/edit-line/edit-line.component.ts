@@ -5,6 +5,7 @@ import { MatTableDataSource } from '@angular/material';
 import { Timetable } from '../../models/timetable';
 import { LineService } from '../services/line.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Guid } from 'guid-typescript';
 
 @Component({
   selector: 'app-edit-line',
@@ -16,12 +17,15 @@ export class EditLineComponent implements OnInit {
   dataSource = new MatTableDataSource();
   displayedColumns: string[] = ['Id', 'Direction'];
 
-  selectedRowIndex: string;
+  selectedRowIndex: Guid;
   timetables: Array<Timetable>;
   selectedDay: string;
 
   timetableJson: Array<string>;
   timeForm: FormGroup;
+  lineForm: FormGroup;
+  newTimetable: Timetable;
+  oldTimes: string;
 
   constructor(@Inject(forwardRef(() => HomeComponent)) private _parent: HomeComponent,
      private _timetablesevice: TimetableService, private _lineService: LineService, private formBuilder: FormBuilder) { }
@@ -32,6 +36,9 @@ export class EditLineComponent implements OnInit {
     this.timeForm = this.formBuilder.group({
       hour: ['', Validators.compose([Validators.required, Validators.max(23), Validators.min(0),, Validators.minLength(2), Validators.maxLength(2)])],
       minute: ['', Validators.compose([Validators.required, Validators.max(59), Validators.min(0), Validators.minLength(2), Validators.maxLength(2)])]
+    });
+    this.lineForm = this.formBuilder.group({
+      lineId: ['', Validators.required]
     });
   }
 
@@ -54,7 +61,8 @@ export class EditLineComponent implements OnInit {
       var pushVal = {
         Id : item.LineId,
         Direction : item.Line.Direction,
-        LineNumber : (Number)(item.LineId.replace('A','').replace('B','').replace('A','').replace('B',''))
+        LineNumber : (Number)(item.LineId.replace('A','').replace('B','').replace('A','').replace('B','')),
+        TimetableId: item.Id
       };
 
       retVal.push(pushVal);      
@@ -67,15 +75,29 @@ export class EditLineComponent implements OnInit {
   }
 
   selectLine(row: any){
-    this.selectedRowIndex = row.Id;
+    if(this.oldTimes){
+      var timetable = this.timetables.find(x => x.Id == this.selectedRowIndex);
+      if(timetable != null)
+        timetable.Times = this.oldTimes;
+    }
+
+    this.selectedRowIndex = row.TimetableId;
+    var timetable = this.timetables.find(x => x.Id == this.selectedRowIndex);
+    this.oldTimes = timetable.Times.toString();
+
     this.timetableJson = null;
     this.selectedDay = null;
+    this.newTimetable = null;
   }
 
-  getTimesJson(lineId: string, pickedDay: string){
-    var timetable = this.timetables.find(x => x.LineId.toString() == lineId);
-    if(timetable == null)
-      return;
+  getTimesJson(timetableId: Guid, pickedDay: string){
+    var timetable = this.timetables.find(x => x.Id == timetableId);
+    if(timetable == null){
+      if(this.newTimetable == null)
+        return;
+      else
+        timetable = this.newTimetable;
+    }
 
     let timesJson = JSON.parse(timetable.Times);
     let selectedDayTimesJson = new Array<string>();
@@ -114,18 +136,24 @@ export class EditLineComponent implements OnInit {
       }
     }
     this.timetableJson = timetableJson;
+    this.linef.lineId.setValue(timetable.LineId);
   }
 
   get f() { return this.timeForm.controls; }
+  get linef() { return this.lineForm.controls; }
 
   addTime(){
     if (this.timeForm.invalid) {
       return;
     }
 
-    var timetable = this.timetables.find(x => x.LineId.toString() == this.selectedRowIndex);
-    if(timetable == null)
-      return;
+    var timetable = this.timetables.find(x => x.Id == this.selectedRowIndex);
+    if(timetable == null){
+      if(this.newTimetable == null)
+        return;
+      else
+        timetable = this.newTimetable;
+    }
 
     let timesJson = JSON.parse(timetable.Times);
     let selectedDayTimesJson = new Array<string>();
@@ -137,8 +165,7 @@ export class EditLineComponent implements OnInit {
     
     selectedDayTimesJson.push(time);
     timetable.Times = JSON.stringify(timesJson);
-
-    this.editTimetable(timetable);
+    this.getTimesJson(this.selectedRowIndex,this.selectedDay);
   }
 
   removeTime(){
@@ -146,9 +173,13 @@ export class EditLineComponent implements OnInit {
       return;
     }
     
-    var timetable = this.timetables.find(x => x.LineId.toString() == this.selectedRowIndex);
-    if(timetable == null)
-      return;
+    var timetable = this.timetables.find(x => x.Id == this.selectedRowIndex);
+    if(timetable == null){
+      if(this.newTimetable == null)
+        return;
+      else
+        timetable = this.newTimetable;
+    }
 
     let timesJson = JSON.parse(timetable.Times);
     let selectedDayTimesJson = new Array<string>();
@@ -161,16 +192,54 @@ export class EditLineComponent implements OnInit {
     var index = selectedDayTimesJson.indexOf(time);
     selectedDayTimesJson.splice(index,1);
     timetable.Times = JSON.stringify(timesJson);
-
-    this.editTimetable(timetable);
+    this.getTimesJson(this.selectedRowIndex,this.selectedDay);
   }
 
   editTimetable(timetable: Timetable){
+    if (this.lineForm.invalid) {
+      return;
+    }
+
+    var timetable = this.timetables.find(x => x.Id == this.selectedRowIndex);
+    if(timetable == null)
+      return;
+
+    timetable.LineId = this.linef.lineId.value;
+    
     this._timetablesevice.editTimetable(timetable)
     .subscribe(
       data => {
         this.getAllTimetables();
         this.getTimesJson(this.selectedRowIndex,this.selectedDay);
+        this.oldTimes = null;
+      },
+      err => {
+        console.log(err);
+      });
+  }
+
+  addNewBtnClick(){
+    this.selectedRowIndex = Guid.create();
+    this.timetableJson = null;
+    this.newTimetable = new Timetable();
+    this.newTimetable.Id = this.selectedRowIndex;
+    this.newTimetable.Times = JSON.stringify({"Radni_dan": [], "Subota": [], "Nedelja": []});
+  }
+
+  addTimetable(){
+    if (this.lineForm.invalid) {
+      return;
+    }
+
+    this.newTimetable.LineId = this.linef.lineId.value;
+    
+    this._timetablesevice.addTimetable(this.newTimetable)
+    .subscribe(
+      data => {
+        this.getAllTimetables();
+        this.getTimesJson(this.selectedRowIndex,this.selectedDay);
+        this.oldTimes = null;
+        this.newTimetable = null;
       },
       err => {
         console.log(err);
