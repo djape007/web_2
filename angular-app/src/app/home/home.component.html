@@ -16,6 +16,7 @@
             <li *ngIf="_auth.getRole() == 'Controller'"><a class="nav-link2" routerLink="/home/check-ticket" routerLinkActive="active">PROVERA KARTE</a></li>
             <li *ngIf="_auth.getRole() == 'AppUser'"><a class="nav-link2" routerLink="/home/bought-tickets" routerLinkActive="active">KUPLJENE KARTE</a></li>
             <li *ngIf="_auth.getRole() == 'Admin'"><a class="nav-link2" routerLink="/home/edit-timetables" routerLinkActive="active">IZMENI POLASKE</a></li>
+            <li *ngIf="_auth.getRole() == 'Admin'"><a class="nav-link2" routerLink="/home/edit-lines" routerLinkActive="active">IZMENI LINIJE</a></li>
             <li><a class="nav-link2" routerLink="/home/profile" routerLinkActive="active">PROFIL</a></li>
         </ul>
     </nav>

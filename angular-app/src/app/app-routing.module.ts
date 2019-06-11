@@ -12,6 +12,7 @@ import { CheckTicketComponent } from './check-ticket/check-ticket.component';
 import { BoughtTicketsComponent } from './bought-tickets/bought-tickets.component';
 import { RoleGuard } from './services/role.guard';
 import { EditTimetableComponent } from './edit-timetable/edit-timetable.component';
+import { EditLineComponent } from './edit-line/edit-line.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,11 @@ const routes: Routes = [
     path: 'home',
     component: HomeComponent,
     children: [
+      {
+        path: 'edit-lines',
+        redirectTo: '/home/(rightRouter:izmlinije)',
+        pathMatch: 'prefix',
+      },
       {
         path: 'edit-timetables',
         redirectTo: '/home/(rightRouter:izmtimetable)',
@@ -118,6 +124,13 @@ const routes: Routes = [
       {
         path: 'izmtimetable',
         component: EditTimetableComponent,
+        outlet: 'rightRouter',
+        canActivate: [RoleGuard], 
+        data: { expectedRole: 'Admin'}
+      },
+      {
+        path: 'izmlinije',
+        component: EditLineComponent,
         outlet: 'rightRouter',
         canActivate: [RoleGuard], 
         data: { expectedRole: 'Admin'}

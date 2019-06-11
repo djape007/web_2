@@ -1,3 +1,16 @@
-<p>
-  Edit-line Works
-</p>
+<h1>Linije</h1>
+<button mat-flat-button color="primary" class='matButtonStyle' style="margin-left: 10%;" (click)="addNewBtnClick()">Dodaj</button>
+<form [formGroup]="lineForm" novalidate style='text-align: center;'>
+  <div class="form-group">
+    <mat-form-field class="div-full-width">
+      <input formControlName='lineId' matInput placeholder="Linija" required>
+      <mat-error *ngIf="lineForm.controls['lineId'].errors && lineForm.controls['lineId'].errors['required']">Obavezno polje</mat-error>
+    </mat-form-field>
+  </div>
+  <button mat-flat-button color="primary" type="submit" style="margin-top: 10px;" name="editBtn" class='matButtonStyle btn-left-w-33' (click)="editBtnClick()">Izmeni</button>
+  <button mat-flat-button color="primary" type="submit" style="margin-top: 10px;" name="delBtn" class='matButtonStyle btn-right-w-33' (click)="deleteBtnClick()">Obrisi</button>
+</form>
+<div *ngIf="line && line.BusStopsOnLines">
+
+</div>
+

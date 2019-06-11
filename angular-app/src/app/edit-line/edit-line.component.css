@@ -1,0 +1,24 @@
+:host{
+    color: white;
+}
+
+.btn-left-w-33{
+    width: 33%;
+    margin-left: 10%;
+    margin-right: 7%;
+    margin-top: 10px;
+  }
+  
+  .btn-right-w-33{
+    width: 33%;
+    margin-right: 10%;
+    margin-left: 7%;
+    margin-top: 10px;
+  }
+
+  .div-full-width{
+    margin-top: 10px;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+  }
