@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.SignalR;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.IO;
@@ -6,19 +7,19 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web.Http;
-using System.Web.Http.Controllers;
 using System.Web.Http.Description;
 using WebApp.Models;
-using WebApp.Persistence;
 using WebApp.Persistence.UnitOfWork;
 
 namespace WebApp.Controllers
 {
     public class BusesController : ApiController {
         private IUnitOfWork unitOfWork;
+        private Hubs.BusesPositionsHub hub;
 
-        public BusesController(IUnitOfWork unitOfWork) {
+        public BusesController(IUnitOfWork unitOfWork, Hubs.BusesPositionsHub hub) {
             this.unitOfWork = unitOfWork;
+            this.hub = hub;
         }
 
         // GET: api/Buses
@@ -55,8 +56,14 @@ namespace WebApp.Controllers
         public IHttpActionResult UpdateBusesPosition() {
             var request = System.Web.HttpContext.Current.Request;
             string data = GetDocumentContents(request);
-            
-            foreach(string busData in data.Split('|')) {
+
+            //SLANJE NA WEBSOCKET
+            var hubContext = GlobalHost.ConnectionManager.GetHubContext<Hubs.BusesPositionsHub>();
+            hubContext.Clients.All.newPositions(data);//odma saljem svim klijentima koji slusaju na WS
+            //pa nek oni sami parsiraju podatke. 
+            //u sustini, ovo ispod ni nije potrebno
+
+            foreach (string busData in data.Split('|')) {
                 //busData => NS335XY,45.45453,19.345435,12A
                 var busDataArray = busData.Split(',');
                 Bus bus = unitOfWork.Buses.Get(busDataArray[0]);
