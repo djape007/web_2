@@ -3,8 +3,6 @@ import { HomeComponent } from '../home/home.component';
 import { LineService } from '../services/line.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Line } from 'src/models/line';
-import { forEach } from '@angular/router/src/utils/collection';
-import { BusStop } from 'src/models/bus-stop';
 import { MatTableDataSource } from '@angular/material';
 import { PointPathLine } from 'src/models/point-path-line';
 import { Guid } from 'guid-typescript';
@@ -258,15 +256,6 @@ export class EditLineComponent implements OnInit {
 
   selectRow(row: any){
     this.selectedRowIndex = row.SequenceNumber;
-
-    // var point = this.line.PointLinePaths.find(x => x.Id == row.Id);
-    // if(point==null)
-    //   return;
-
-    // var latLngArr = new Array<google.maps.LatLng>();
-    // latLngArr.push(new google.maps.LatLng(point.X,point.Y));
-    // latLngArr.push(new google.maps.LatLng(point.X,point.Y));
-    // this._parent.drawPoint(latLngArr);
   }
 
   deleteLine(){

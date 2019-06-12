@@ -55,7 +55,10 @@ namespace WebApp.Controllers
                 return BadRequest();
             }
 
-            unitOfWork.Pricelists.Update(pricelist);
+            Pricelist db_pricelist = unitOfWork.Pricelists.Get(id);
+            db_pricelist.From = pricelist.From;
+            db_pricelist.To = pricelist.To;
+            unitOfWork.Pricelists.Update(db_pricelist);
 
             try
             {

@@ -28,6 +28,7 @@ import { CheckTicketComponent } from './check-ticket/check-ticket.component';
 import { BoughtTicketsComponent } from './bought-tickets/bought-tickets.component';
 import { EditLineComponent } from './edit-line/edit-line.component';
 import { EditTimetableComponent } from './edit-timetable/edit-timetable.component';
+import { EditPricelistComponent } from './edit-pricelist/edit-pricelist.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { EditTimetableComponent } from './edit-timetable/edit-timetable.componen
     CheckTicketComponent,
     BoughtTicketsComponent,
     EditLineComponent,
-    EditTimetableComponent
+    EditTimetableComponent,
+    EditPricelistComponent
   ],
   imports: [
     BrowserModule,

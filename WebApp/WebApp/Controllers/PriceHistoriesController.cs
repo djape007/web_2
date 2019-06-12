@@ -30,6 +30,14 @@ namespace WebApp.Controllers
         {
             return unitOfWork.PriceHistories.GetAll().Where(x => x.Pricelist.From < DateTime.Now && x.Pricelist.To > DateTime.Now);
         }
+
+        [Route("api/PriceHistories/Pricelist/{pricelistId}")]
+        [HttpGet]
+        [ResponseType(typeof(ICollection<PriceHistory>))]
+        public IEnumerable<PriceHistory> GetSelectedPricelistPriceHistories(Guid pricelistId)
+        {
+            return unitOfWork.PriceHistories.GetAll().Where(x => x.PricelistId == pricelistId);
+        }
         // GET: api/PriceHistories
         public IEnumerable<PriceHistory> GetPriceHistories()
         {
@@ -51,6 +59,7 @@ namespace WebApp.Controllers
 
         // PUT: api/PriceHistories/5
         [ResponseType(typeof(void))]
+        [HttpPut]
         public IHttpActionResult PutPriceHistory(Guid id, PriceHistory priceHistory)
         {
             if (!ModelState.IsValid || priceHistory == null)
@@ -65,7 +74,9 @@ namespace WebApp.Controllers
 
             try
             {
-                unitOfWork.PriceHistories.Update(priceHistory);
+                PriceHistory db_pricehistory = unitOfWork.PriceHistories.Get(id);
+                db_pricehistory.Price = priceHistory.Price;
+                unitOfWork.PriceHistories.Update(db_pricehistory);
                 unitOfWork.Complete();
             }
             catch (DbUpdateConcurrencyException)
