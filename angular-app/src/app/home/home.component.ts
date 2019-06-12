@@ -1,6 +1,5 @@
-import { Component, ViewChild, OnInit, Input, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, OnInit, Input, NgZone } from '@angular/core';
 import {} from 'googlemaps';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Router, RoutesRecognized } from '@angular/router';
 import { Line } from 'src/models/line';
 import { BusStop } from 'src/models/bus-stop';
@@ -15,7 +14,7 @@ import { BusService } from '../services/bus.service';
   styleUrls: ['./home.component.css']
 })
 
-export class HomeComponent implements OnInit, AfterViewInit{
+export class HomeComponent implements OnInit {
   @ViewChild('map') mapElement: any;
   @ViewChild('leftPanel') leftPanelComponent: any;
   @ViewChild('rightPanel') rightPanelComponent: any;
@@ -24,18 +23,12 @@ export class HomeComponent implements OnInit, AfterViewInit{
   stanicePrikazaneNaMapi: Array<any> = new Array<any>();
   prikazaneLinije: Array<any> = new Array<any>(); //lineId => Line objekat
   prikazaniAutobusi: Array<any> = new Array<any>();
-
-  prikaziSveBuseve: boolean; //ovo je forfun, treba obrisati posle
+  isConnectedWS: Boolean = false;
 
   public displayedPanel: string = 'none';
 
   constructor(private _router: Router, private _auth: AuthService,private _lineService: LineService,
-    private _busService: BusService) { }
-
-
-  ngAfterViewInit(): void {
-    this.poll();
-  }
+    private _busService: BusService,private ngZone: NgZone) { }
 
   ngOnInit(): void {
     this._router.events.subscribe(event => {
@@ -46,7 +39,29 @@ export class HomeComponent implements OnInit, AfterViewInit{
     });
 
     this.InitMap();
+    this.ConnectWS();
  }
+
+private ConnectWS() {
+  this.checkConnection();
+  this.subscribeForBusPositions();
+}
+
+private checkConnection(){
+  this._busService.startConnection().subscribe(e => {
+    this.isConnectedWS = e;
+  });
+}
+
+private subscribeForBusPositions () {
+  this._busService.registerBusesLocations().subscribe(
+    data => {
+      data.forEach(bus => {
+        this.DrawBusOnMap(bus);
+      });
+    }
+  )
+}
 
  private InitMap() {
   const mapProperties = {
@@ -156,6 +171,12 @@ export class HomeComponent implements OnInit, AfterViewInit{
   }
 
   public DisplayLineOnMap(lineId: string) {
+    if (! this.isConnectedWS) {
+      //this.ConnectWS();
+      //ne radi. poveze se, ali server ne vraca podatke
+      //a kad je gore u OnInit onda sve radi i server vraca podatke
+    }
+
     this._lineService.getLine(lineId).subscribe(
       (data) => {
         console.log(data);
@@ -171,9 +192,6 @@ export class HomeComponent implements OnInit, AfterViewInit{
       console.log("Linija je vec nacrtana");
       return;
     }
-
-    //samo da nacrta autobuse kad se linija prikaze
-    this.UpdateBusPositions();
 
 		let SelectedLineCoordinates = new Array<google.maps.LatLng>();
     
@@ -263,17 +281,6 @@ export class HomeComponent implements OnInit, AfterViewInit{
       infoWindow.open(this.map, marker);
     });
 
-    //kad se prikaze infowindow ovaj kod ce se izvrsiti
-    /*google.maps.event.addListenerOnce(infoWindow, 'domready', () => {
-      let btnsPrikaziLiniju = document.getElementsByClassName('btnDisplayLineFromInfoWindow');
-      
-      for(let i = 0; i < btnsPrikaziLiniju.length; i++) {
-        btnsPrikaziLiniju[i].addEventListener('click', (event) => {
-          event.stopPropagation();
-          this.DisplayLineOnMap(btnsPrikaziLiniju[i].getAttribute("lineId").toString());
-        });
-      }
-    });*/
     this.stanicePrikazaneNaMapi[busStop.Id.toString() + "_" + lineId] = marker;
   }
 
@@ -311,21 +318,8 @@ export class HomeComponent implements OnInit, AfterViewInit{
     marker.setMap(null);
   }
 
-  public UpdateBusPositions() {
-    this._busService.getBusesWithLine().subscribe(
-      data => {
-        data.forEach(element => {
-          this.DrawBusOnMap(element);
-        });
-      },
-      error => {
-        console.log(error);
-      }
-    )
-  }
-
   private DrawBusOnMap(bus:Bus) {
-    if ((bus.LineId in this.prikazaneLinije) || this.prikaziSveBuseve) {
+    if ((bus.LineId in this.prikazaneLinije)) {
       if (bus.Id in this.prikazaniAutobusi) {
         var linija = this.prikazaneLinije[bus.LineId];
         if(linija.Buses.find(x => x.Id == bus.Id) == null){
@@ -359,14 +353,6 @@ export class HomeComponent implements OnInit, AfterViewInit{
     if (bus.Id in this.prikazaniAutobusi) {
       this.prikazaniAutobusi[bus.Id].setMap(null);
       delete this.prikazaniAutobusi[bus.Id];
-    }
-  }
-
-  async poll() {
-      while (true) {
-        // code to poll server and update models and view ...
-        this.UpdateBusPositions();
-      await this.sleep(2000);
     }
   }
 
