@@ -8,6 +8,7 @@ import { BusStop } from 'src/models/bus-stop';
 import { MatTableDataSource } from '@angular/material';
 import { PointPathLine } from 'src/models/point-path-line';
 import { Guid } from 'guid-typescript';
+import { PointService } from '../services/point.service';
 
 @Component({
   selector: 'app-edit-line',
@@ -15,28 +16,31 @@ import { Guid } from 'guid-typescript';
   styleUrls: ['./edit-line.component.css']
 })
 export class EditLineComponent implements OnInit {
-
+  getLineForm: FormGroup;
   lineForm: FormGroup;
+  pointForm: FormGroup;
+
   line: Line;
+  newLine: Line;
 
   dataSource = new MatTableDataSource();
   displayedColumns: string[] = ['SequenceNumber', 'X', 'Y'];
 
   selectedRowIndex: Number;
-  newPoint: PointPathLine;
-
-  pointForm: FormGroup;
-
-  newLine: boolean = false;
 
   constructor(@Inject(forwardRef(() => HomeComponent)) private _parent: HomeComponent, private _lineService: LineService,
-  private formBuilder: FormBuilder) { }
+  private formBuilder: FormBuilder, private _pointService: PointService) { }
 
   ngOnInit() {
     this._parent.prikaziDesniMeni();
 
-    this.lineForm = this.formBuilder.group({
+    this.getLineForm = this.formBuilder.group({
       lineId: ['', Validators.required]
+    });
+
+    this.lineForm = this.formBuilder.group({
+      lineId: ['', Validators.required],
+      direction: ['', Validators.required]
     });
 
     this.pointForm = this.formBuilder.group({
@@ -46,29 +50,41 @@ export class EditLineComponent implements OnInit {
     });
   }
 
-  get f() { return this.lineForm.controls; }
+  get getLinef() { return this.getLineForm.controls; }
+  get linef() { return this.lineForm.controls; }
   get pointf() { return this.pointForm.controls; }
 
-  editBtnClick(){
-    if(this.lineForm.invalid)
+  addNewLineBtnClick(){
+    this.line = null;
+    this.newLine = new Line();
+    this.newLine.Id = '';
+    this.newLine.Direction = '';
+    this.newLine.PointLinePaths = new Array<PointPathLine>();
+    this.dataSource = new MatTableDataSource(this.createDataSource(this.newLine.PointLinePaths));
+
+    this.linef.lineId.setValue(this.newLine.Id);
+    this.linef.direction.setValue(this.newLine.Direction);
+  }
+
+  editLineBtnClick(){
+    if(this.getLineForm.invalid)
       return;
 
-    this.newLine = false;
-    var lineId = this.f.lineId.value;
+    this.newLine = null;
+
+    var lineId = this.getLinef.lineId.value;
     this._lineService.getLine(lineId)
       .subscribe(
         data => {
           this.line = data;
           this.dataSource = new MatTableDataSource(this.createDataSource(this.line.PointLinePaths));
+          this.linef.lineId.setValue(this.line.Id);
+          this.linef.direction.setValue(this.line.Direction);
         },
         err => {
           console.log(err);
         }
       )
-  }
-
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   createDataSource(data: any): any{
@@ -80,31 +96,61 @@ export class EditLineComponent implements OnInit {
         Y : item.Y,
         SequenceNumber : item.SequenceNumber
       };
-
       retVal.push(pushVal);      
     }
     return retVal.sort((x,y) => x.SequenceNumber - y.SequenceNumber);
   }
 
-  selectRow(row: any){
-    this.selectedRowIndex = row.SequenceNumber;
-    this.newPoint = null;
-    this.newLine = false;
-    // var point = this.line.PointLinePaths.find(x => x.Id == row.Id);
-    // if(point==null)
-    //   return;
-
-    // var latLngArr = new Array<google.maps.LatLng>();
-    // latLngArr.push(new google.maps.LatLng(point.X,point.Y));
-    // latLngArr.push(new google.maps.LatLng(point.X,point.Y));
-    // this._parent.drawPoint(latLngArr);
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  addNewBtnClick(){
-    this.newPoint = new PointPathLine();
-    this.newPoint.Id = Guid.create();
-    this.newPoint.LineId = this.line.Id;
-    this.selectedRowIndex = null;
+  editLine(){
+    if(this.lineForm.invalid)
+      return;
+
+    this.line.Id = this.linef.lineId.value;
+    this.line.Direction = this.linef.direction.value;
+
+    this._lineService.editLine(this.line)
+      .subscribe(
+        data => {
+          this.line = null;
+        },
+        err => {
+          console.log(err);
+        }
+      )
+  } 
+
+  addLine(){
+    if(this.lineForm.invalid)
+      return;
+
+    this.newLine.Id = this.linef.lineId.value;
+    this.newLine.Direction = this.linef.direction.value;
+
+    this.newLine.PointLinePaths.forEach(element => {
+      element.LineId = this.newLine.Id;
+    });
+    this._lineService.addLine(this.newLine)
+      .subscribe(
+        data => {
+          this.newLine.PointLinePaths.forEach(element => {
+            this._pointService.addPoint(element)
+              .subscribe(
+                data => {
+                },
+                err => {
+                }
+              )
+          });
+          this.newLine = null;
+        },
+        err => {
+
+        }
+      )
   }
 
   xIsNotNumber(){
@@ -125,32 +171,119 @@ export class EditLineComponent implements OnInit {
       this.pointf.y.setErrors({'notnumber': true});
   }
 
-  editLine(){
+  addPoint(){
     if(this.pointForm.invalid)
       return;
 
-    //pozvati api za kreiranje novog pointa
-   }
+    var point = new PointPathLine();
+    point.Id = Guid.create();
+    point.X = this.pointf.x.value;
+    point.Y = this.pointf.y.value;
+    point.SequenceNumber = this.pointf.seq.value;
+    if(point.SequenceNumber <= 0)
+      point.SequenceNumber = 1;
+
+    if(this.line){
+      point.LineId = this.line.Id;
+      this._pointService.addPoint(point)
+        .subscribe(
+          data => {
+            this._lineService.getLine(this.line.Id)
+              .subscribe(data => {
+                this.line = data;
+                this.dataSource = new MatTableDataSource(this.createDataSource(this.line.PointLinePaths));
+              },
+              err => {
+                console.log(err);
+              }
+            )
+          },
+          err => {
+            console.log(err);
+          }
+        )
+    }else if(this.newLine){
+      if (this.newLine.PointLinePaths.find(x => x.SequenceNumber == point.SequenceNumber)){
+        this.newLine.PointLinePaths.filter(x => x.SequenceNumber >= point.SequenceNumber).forEach(x => ++x.SequenceNumber);
+        this.newLine.PointLinePaths.push(point);
+      }
+      else{
+        var maxSeqNum = 1;
+        if(this.newLine.PointLinePaths.length > 0){
+          var sorted =  this.newLine.PointLinePaths.sort((x,y) => x.SequenceNumber - y.SequenceNumber);
+          maxSeqNum = sorted[sorted.length-1].SequenceNumber;
+          maxSeqNum++;
+        }
+
+        if(point.SequenceNumber > maxSeqNum)
+          point.SequenceNumber = maxSeqNum;
+
+        this.newLine.PointLinePaths.push(point);
+      }
+      this.dataSource = new MatTableDataSource(this.createDataSource(this.newLine.PointLinePaths));
+    }
+  }
 
   deletePoint(){
-    var point = this.line.PointLinePaths.find(x => x.SequenceNumber == this.selectedRowIndex);
-    if(point==null)
-       return;
+    if(this.line){
+      var point = this.line.PointLinePaths.find(x => x.SequenceNumber == this.selectedRowIndex);
+      this._pointService.deletePoint(point)
+        .subscribe(
+          data => {
+            this._lineService.getLine(this.line.Id)
+              .subscribe(data => {
+                this.line = data;
+                this.dataSource = new MatTableDataSource(this.createDataSource(this.line.PointLinePaths));
+              },
+              err => {
+                console.log(err);
+              }
+            )
+          },
+          err => {
+            console.log(err);
+          }
+        )
+    }else if(this.newLine){
+      var point = this.newLine.PointLinePaths.find(x => x.SequenceNumber == this.selectedRowIndex);
+      if(point==null)
+        return;
 
-    //pozvati api za brisanje pointa
+      this.newLine.PointLinePaths.filter(x => x.SequenceNumber > point.SequenceNumber).forEach(x => --x.SequenceNumber);
+      var index = this.newLine.PointLinePaths.findIndex(x => x.Id == point.Id);
+      this.newLine.PointLinePaths.splice(index, 1);
+      this.dataSource = new MatTableDataSource(this.createDataSource(this.newLine.PointLinePaths));
+    }
   }
 
-  addNewLineBtnClick(){
-    this.line = new Line();
-    this.line.Id = this.f.lineId.value;
-    this.line.PointLinePaths = new Array<PointPathLine>();
-    this.newLine = true;
+  selectRow(row: any){
+    this.selectedRowIndex = row.SequenceNumber;
+
+    // var point = this.line.PointLinePaths.find(x => x.Id == row.Id);
+    // if(point==null)
+    //   return;
+
+    // var latLngArr = new Array<google.maps.LatLng>();
+    // latLngArr.push(new google.maps.LatLng(point.X,point.Y));
+    // latLngArr.push(new google.maps.LatLng(point.X,point.Y));
+    // this._parent.drawPoint(latLngArr);
   }
 
-  addLine(){
-    if(this.lineForm.invalid || this.pointForm.invalid)
+  deleteLine(){
+    if(this.getLineForm.invalid)
       return;
 
-    //pozvati api za kreiranje linije
+    var lineId = this.getLinef.lineId.value;
+
+    this._lineService.deleteLine(lineId)
+      .subscribe(
+        data => {
+
+        },
+        err => {
+          console.log(err);
+        }
+      )
   }
+
 }

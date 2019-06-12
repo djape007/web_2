@@ -24,8 +24,9 @@
   }
 
   .points{
-    height: 200px;
-    overflow-y: scroll;
+    height: auto;
+    max-height: 200px;
+    overflow-y: auto;
   }
 
   .ticketsFilter {
@@ -55,4 +56,10 @@
   .mat-row:hover td {
     color: black;
     font-weight: bold;
+  }
+
+  .lineHeader{
+      width: 100%;
+      text-align: center;
+      margin-top: 10px;
   }

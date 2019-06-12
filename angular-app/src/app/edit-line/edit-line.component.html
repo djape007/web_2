@@ -1,62 +1,74 @@
 <h1>Linije</h1>
 <button mat-flat-button color="primary" class='matButtonStyle btn-left-w-33' style="margin-left: 10%;" (click)="addNewLineBtnClick()">Kreiraj</button>
-<form [formGroup]="lineForm" novalidate style='text-align: center;'>
+<form [formGroup]="getLineForm" novalidate style='text-align: center;'>
   <div class="form-group">
     <mat-form-field class="div-full-width">
       <input formControlName='lineId' matInput placeholder="Linija" required>
-      <mat-error *ngIf="lineForm.controls['lineId'].errors && lineForm.controls['lineId'].errors['required']">Obavezno polje</mat-error>
+      <mat-error *ngIf="getLineForm.controls['lineId'].errors && getLineForm.controls['lineId'].errors['required']">Obavezno polje</mat-error>
     </mat-form-field>
   </div>
-  <button mat-flat-button color="primary" type="submit" style="margin-top: 10px;" name="editBtn" class='matButtonStyle btn-left-w-33' (click)="editBtnClick()">Izmeni</button>
-  <button mat-flat-button color="primary" type="submit" style="margin-top: 10px;" name="delBtn" class='matButtonStyle btn-right-w-33' (click)="deleteBtnClick()">Obrisi</button>
+  <button mat-flat-button color="primary" type="submit" style="margin-top: 10px;" name="editBtn" class='matButtonStyle btn-left-w-33' (click)="editLineBtnClick()">Izmeni</button>
+  <button mat-flat-button color="primary" type="submit" style="margin-top: 10px;" name="editBtn" class='matButtonStyle btn-right-w-33' (click)="deleteLine()">Obrisi</button>
 </form>
-<div *ngIf="line && line.PointLinePaths">
-  <p style="text-align: center;margin-top:10px;">Linija {{line.Id}}</p>
-  <mat-form-field *ngIf="line.PointLinePaths.length > 0" class='ticketsFilter'>
+<div *ngIf="line || newLine"> 
+  <mat-form-field class='ticketsFilter'>
     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
   </mat-form-field>
-  <div *ngIf="line.PointLinePaths.length > 0" class="points">
-    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-      <ng-container matColumnDef="SequenceNumber">
-        <th mat-header-cell *matHeaderCellDef> Broj </th>
-        <td mat-cell *matCellDef="let element"> {{element.SequenceNumber}} </td>
-      </ng-container>
-      <ng-container matColumnDef="X">
-        <th mat-header-cell *matHeaderCellDef> Lat </th>
-        <td mat-cell *matCellDef="let element"> {{element.X}} </td>
-      </ng-container>  
-      <ng-container matColumnDef="Y">
-        <th mat-header-cell *matHeaderCellDef> Lng </th>
-        <td mat-cell *matCellDef="let element"> {{element.Y}} </td>
-      </ng-container> 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'highlight': selectedRowIndex == row.SequenceNumber}" (click)="selectRow(row)"></tr>
-    </table>
-  </div>
-  <button mat-flat-button color="primary" class='matButtonStyle' style="margin-left: 10%; margin-top: 10px;" (click)="addNewBtnClick()">Kreiraj tacku</button>
-  <button *ngIf="selectedRowIndex" mat-flat-button color="primary" class='matButtonStyle' style="float: right; margin-right: 10%; margin-top: 10px;" (click)="deletePoint()">Obrisi tacku</button>
-  <div *ngIf="newPoint">
-    <form [formGroup]="pointForm" novalidate style='text-align: center;'>     
-      <div class="form-group">
-        <mat-form-field class="div-full-width">
-          <input (focusout)='xIsNotNumber()' formControlName='x' matInput placeholder="X" required>
-          <mat-error *ngIf="pointForm.controls['x'].errors && pointForm.controls['x'].errors['required']">Obavezno polje</mat-error>
-          <mat-error *ngIf="pointForm.controls['x'].errors && pointForm.controls['x'].errors['notnumber']">Mora biti broj</mat-error>
-        </mat-form-field>
-        <mat-form-field class="div-full-width">
-          <input (focusout)='yIsNotNumber()' formControlName='y' matInput placeholder="Y" required>
-          <mat-error *ngIf="pointForm.controls['y'].errors && pointForm.controls['y'].errors['required']">Obavezno polje</mat-error>
-          <mat-error *ngIf="pointForm.controls['y'].errors && pointForm.controls['y'].errors['notnumber']">Mora biti broj</mat-error>
-        </mat-form-field>
-        <mat-form-field class="div-full-width">
-            <input (focusout)='seqIsNotNumber()' formControlName='seq' matInput placeholder="SequenceNumber" required>
-            <mat-error *ngIf="pointForm.controls['seq'].errors && pointForm.controls['seq'].errors['required']">Obavezno polje</mat-error>
-            <mat-error *ngIf="pointForm.controls['seq'].errors && pointForm.controls['seq'].errors['notnumber']">Mora biti broj</mat-error>
-          </mat-form-field>
-      </div>
-      <button *ngIf="!newLine" mat-flat-button color="primary" type="submit" name="editbtn" class='matButtonStyle' (click)='editLine()'>Sacuvaj izmene</button>
-      <button *ngIf="newLine" mat-flat-button color="primary" type="submit" name="addbtn" class='matButtonStyle' (click)='addLine()'>Sacuvaj izmene</button>
-    </form>
-  </div>
 </div>
-
+<div *ngIf="line || newLine" class="points">
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+    <ng-container matColumnDef="SequenceNumber">
+      <th mat-header-cell *matHeaderCellDef> Broj </th>
+      <td mat-cell *matCellDef="let element"> {{element.SequenceNumber}} </td>
+    </ng-container>
+    <ng-container matColumnDef="X">
+      <th mat-header-cell *matHeaderCellDef> Lat </th>
+      <td mat-cell *matCellDef="let element"> {{element.X}} </td>
+    </ng-container>  
+    <ng-container matColumnDef="Y">
+      <th mat-header-cell *matHeaderCellDef> Lng </th>
+      <td mat-cell *matCellDef="let element"> {{element.Y}} </td>
+    </ng-container> 
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'highlight': selectedRowIndex == row.SequenceNumber}" (click)="selectRow(row)"></tr>
+  </table>
+</div>
+<div *ngIf="line || newLine" style="text-align: center">
+  <button *ngIf="selectedRowIndex" style="margin-top:10px;" mat-flat-button color="primary" class='matButtonStyle' (click)='deletePoint()'>Obrisi koordinatu</button>
+  <form [formGroup]="pointForm" novalidate style='text-align: center;'>     
+    <div class="form-group">
+      <mat-form-field class="div-full-width">
+        <input (focusout)='xIsNotNumber()' formControlName='x' matInput placeholder="X" required>
+        <mat-error *ngIf="pointForm.controls['x'].errors && pointForm.controls['x'].errors['required']">Obavezno polje</mat-error>
+        <mat-error *ngIf="pointForm.controls['x'].errors && pointForm.controls['x'].errors['notnumber']">Mora biti broj</mat-error>
+      </mat-form-field>
+      <mat-form-field class="div-full-width">
+        <input (focusout)='yIsNotNumber()' formControlName='y' matInput placeholder="Y" required>
+        <mat-error *ngIf="pointForm.controls['y'].errors && pointForm.controls['y'].errors['required']">Obavezno polje</mat-error>
+        <mat-error *ngIf="pointForm.controls['y'].errors && pointForm.controls['y'].errors['notnumber']">Mora biti broj</mat-error>
+      </mat-form-field>
+      <mat-form-field class="div-full-width">
+          <input (focusout)='seqIsNotNumber()' formControlName='seq' matInput placeholder="SequenceNumber" required>
+          <mat-error *ngIf="pointForm.controls['seq'].errors && pointForm.controls['seq'].errors['required']">Obavezno polje</mat-error>
+          <mat-error *ngIf="pointForm.controls['seq'].errors && pointForm.controls['seq'].errors['notnumber']">Mora biti broj</mat-error>
+        </mat-form-field>
+    </div>
+    <button mat-flat-button color="primary" type="submit" class='matButtonStyle' (click)='addPoint()'>Dodaj koordinatu</button>
+  </form>
+</div>
+<div *ngIf="line || newLine" >
+  <form [formGroup]="lineForm" novalidate style='text-align: center;'>
+    <div class="form-group">
+      <mat-form-field *ngIf="newLine" class="div-full-width">
+        <input formControlName='lineId' matInput placeholder="Linija" required>
+        <mat-error *ngIf="lineForm.controls['lineId'].errors && lineForm.controls['lineId'].errors['required']">Obavezno polje</mat-error>
+      </mat-form-field>
+      <mat-form-field class="div-full-width">
+        <input formControlName='direction' matInput placeholder="Naziv" required>
+        <mat-error *ngIf="lineForm.controls['direction'].errors && lineForm.controls['direction'].errors['required']">Obavezno polje</mat-error>
+      </mat-form-field>
+    </div>
+    <button *ngIf="line" mat-flat-button color="primary" type="submit" name="editbtn" class='matButtonStyle' (click)='editLine()'>Sacuvaj linuju</button>
+    <button *ngIf="newLine" mat-flat-button color="primary" type="submit" name="addbtn" class='matButtonStyle' (click)='addLine()'>Sacuvaj linuju</button>
+  </form>
+</div>

@@ -17,6 +17,14 @@ export class LineService {
   }
 
   public editLine(line: Line): Observable<any>{
-    return this.http.put(`${this.api_route}/${line.Id}`, `Id=${line.Id}&Direction=${line.Direction}&PointLinePaths=${line.PointLinePaths}`,  { "headers" : {'Content-type' : 'application/x-www-form-urlencoded'}} );
+    return this.http.put(`${this.api_route}/${line.Id}`, `Id=${line.Id}&Direction=${line.Direction}`,  { "headers" : {'Content-type' : 'application/x-www-form-urlencoded'}} );
+  }
+
+  public addLine(line: Line): Observable<any>{
+    return this.http.post(`${this.api_route}`, `Id=${line.Id}&Direction=${line.Direction}`,  { "headers" : {'Content-type' : 'application/x-www-form-urlencoded'}} );
+  }
+
+  public deleteLine(lineId: string) :Observable<any>{
+    return this.http.delete(`${this.api_route}/${lineId}`);
   }
 }

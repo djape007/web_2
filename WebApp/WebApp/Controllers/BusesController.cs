@@ -63,7 +63,8 @@ namespace WebApp.Controllers
             //pa nek oni sami parsiraju podatke. 
             //u sustini, ovo ispod ni nije potrebno
 
-            foreach (string busData in data.Split('|')) {
+            foreach (string busData in data.Split('|'))
+            {
                 //busData => NS335XY,45.45453,19.345435,12A
                 var busDataArray = busData.Split(',');
                 Bus bus = unitOfWork.Buses.Get(busDataArray[0]);

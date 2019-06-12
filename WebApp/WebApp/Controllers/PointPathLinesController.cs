@@ -87,6 +87,31 @@ namespace WebApp.Controllers
 
             try
             {
+                Line line = unitOfWork.Lines.Get(pointPathLine.LineId);
+                if (line != null && line.PointLinePaths.Count > 0)
+                {
+                    if(pointPathLine.SequenceNumber <= 0)
+                    {
+                        pointPathLine.SequenceNumber = 1;
+                    }
+                    if(line.PointLinePaths.FirstOrDefault(x => x.SequenceNumber == pointPathLine.SequenceNumber) != null)
+                    {
+                        line.PointLinePaths.Where(x => x.SequenceNumber >= pointPathLine.SequenceNumber).ToList().ForEach(x => ++x.SequenceNumber);
+                    }
+                    else
+                    {
+                        int maxSeqNum = 1;
+                        try
+                        {
+                            maxSeqNum = line.PointLinePaths.Max(x => x.SequenceNumber);
+                            maxSeqNum++;
+                        }
+                        catch { }
+
+                        if (pointPathLine.SequenceNumber > maxSeqNum)
+                            pointPathLine.SequenceNumber = maxSeqNum;
+                    }
+                }
                 unitOfWork.PointPathLines.Add(pointPathLine);
                 unitOfWork.Complete();
             }
@@ -113,6 +138,12 @@ namespace WebApp.Controllers
             if (pointPathLine == null)
             {
                 return NotFound();
+            }
+
+            Line line = unitOfWork.Lines.Get(pointPathLine.LineId);
+            if (line != null)
+            {
+                line.PointLinePaths.Where(x => x.SequenceNumber > pointPathLine.SequenceNumber).ToList().ForEach(x => --x.SequenceNumber);
             }
 
             unitOfWork.PointPathLines.Remove(pointPathLine);

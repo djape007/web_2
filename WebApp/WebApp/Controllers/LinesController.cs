@@ -65,7 +65,10 @@ namespace WebApp.Controllers
 
             try
             {
-                unitOfWork.Lines.Update(line);
+                Line db_line = unitOfWork.Lines.Get(id);
+                //db_line.Id = line.Id;
+                db_line.Direction = line.Direction;
+                unitOfWork.Lines.Update(db_line);
                 unitOfWork.Complete();
             }
             catch (DbUpdateConcurrencyException)
