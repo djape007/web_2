@@ -6,6 +6,7 @@ import { Timetable } from '../../models/timetable';
 import { LineService } from '../services/line.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Guid } from 'guid-typescript';
+import { sha256 } from 'js-sha256';
 
 @Component({
   selector: 'app-edit-timetable',
@@ -48,6 +49,10 @@ export class EditTimetableComponent implements OnInit {
       data => {
         this.timetables = data;
         this.dataSource = new MatTableDataSource(this.createDataSource(data));
+        this.timetables.forEach(element => {
+          var rawValue = `${element.Id}${element.LineId}${element.Times}`;
+          element['etag'] = sha256(rawValue);
+        });
       },
       err => {
         console.log(err);
@@ -98,6 +103,7 @@ export class EditTimetableComponent implements OnInit {
       else
         timetable = this.newTimetable;
     }
+
 
     let timesJson = JSON.parse(timetable.Times);
     let selectedDayTimesJson = new Array<string>();
@@ -210,8 +216,12 @@ export class EditTimetableComponent implements OnInit {
     .subscribe(
       data => {
         this.getAllTimetables();
-        this.getTimesJson(this.selectedRowIndex,this.selectedDay);
+        this.selectedRowIndex = null;
+        //this.getTimesJson(this.selectedRowIndex,this.selectedDay);
         this.oldTimes = null;
+        this.timetableJson = null;
+        this.selectedDay = null;
+        this.newTimetable = null;
       },
       err => {
         console.log(err);

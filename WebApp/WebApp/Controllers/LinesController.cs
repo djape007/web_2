@@ -59,6 +59,7 @@ namespace WebApp.Controllers
 
         // PUT: api/Lines/5
         [ResponseType(typeof(void))]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult PutLine(string id, Line line)
         {
             if (!ModelState.IsValid || line == null)
@@ -105,6 +106,7 @@ namespace WebApp.Controllers
 
         // POST: api/Lines
         [ResponseType(typeof(Line))]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult PostLine(Line line)
         {
             if (!ModelState.IsValid || line == null)
@@ -134,6 +136,7 @@ namespace WebApp.Controllers
 
         // DELETE: api/Lines/5
         [ResponseType(typeof(Line))]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult DeleteLine(string id)
         {
             Line line = unitOfWork.Lines.Get(id);
@@ -179,6 +182,5 @@ namespace WebApp.Controllers
                 return builder.ToString();
             }
         }
-
     }
 }
