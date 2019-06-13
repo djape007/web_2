@@ -48,10 +48,10 @@
         <mat-error *ngIf="pointForm.controls['y'].errors && pointForm.controls['y'].errors['notnumber']">Mora biti broj</mat-error>
       </mat-form-field>
       <mat-form-field class="div-full-width">
-          <input (focusout)='seqIsNotNumber()' formControlName='seq' matInput placeholder="SequenceNumber" required>
-          <mat-error *ngIf="pointForm.controls['seq'].errors && pointForm.controls['seq'].errors['required']">Obavezno polje</mat-error>
-          <mat-error *ngIf="pointForm.controls['seq'].errors && pointForm.controls['seq'].errors['notnumber']">Mora biti broj</mat-error>
-        </mat-form-field>
+        <input (focusout)='seqIsNotNumber()' formControlName='seq' matInput placeholder="SequenceNumber" required>
+        <mat-error *ngIf="pointForm.controls['seq'].errors && pointForm.controls['seq'].errors['required']">Obavezno polje</mat-error>
+        <mat-error *ngIf="pointForm.controls['seq'].errors && pointForm.controls['seq'].errors['notnumber']">Mora biti broj</mat-error>
+      </mat-form-field>
     </div>
     <button mat-flat-button color="primary" type="submit" class='matButtonStyle' (click)='addPoint()'>Dodaj koordinatu</button>
   </form>

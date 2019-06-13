@@ -44,6 +44,7 @@ namespace WebApp.Controllers
 
         // PUT: api/PointPathLines/5
         [ResponseType(typeof(void))]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult PutPointPathLine(Guid id, PointPathLine pointPathLine)
         {
             if (!ModelState.IsValid || pointPathLine == null)
@@ -78,6 +79,7 @@ namespace WebApp.Controllers
 
         // POST: api/PointPathLines
         [ResponseType(typeof(PointPathLine))]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult PostPointPathLine(PointPathLine pointPathLine)
         {
             if (!ModelState.IsValid || pointPathLine == null)
@@ -132,6 +134,7 @@ namespace WebApp.Controllers
 
         // DELETE: api/PointPathLines/5
         [ResponseType(typeof(PointPathLine))]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult DeletePointPathLine(Guid id)
         {
             PointPathLine pointPathLine = unitOfWork.PointPathLines.Get(id);

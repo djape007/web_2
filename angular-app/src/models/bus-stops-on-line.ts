@@ -6,6 +6,6 @@ export class BusStopsOnLine {
     public Id: Guid;
     public BusStopId: Guid;
     public BusStop: BusStop;
-    public LineId: Guid;
+    public LineId: string;
     public Line: Line;
 }

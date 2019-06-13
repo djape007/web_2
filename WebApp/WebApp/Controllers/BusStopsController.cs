@@ -6,6 +6,9 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Cryptography;
+using System.Text;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using WebApp.Models;
@@ -38,6 +41,11 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
+            string rawValue = busStop.Id + busStop.Name + busStop.X + busStop.Y + busStop.BusStopsOnLines.Count();
+            string eTag = ComputeEtag(rawValue);
+            HttpContext.Current.Response.AddHeader("Access-Control-Expose-Headers", "etag");
+            HttpContext.Current.Response.Headers.Add("etag", eTag);
+
             return Ok(busStop);
         }
 
@@ -58,7 +66,22 @@ namespace WebApp.Controllers
 
             try
             {
-                unitOfWork.BusStops.Update(busStop);
+                string eTag = HttpContext.Current.Request.Headers.Get("etag");
+
+                BusStop db_busStop = unitOfWork.BusStops.Get(id);
+                string rawValue = db_busStop.Id + db_busStop.Name + db_busStop.X + db_busStop.Y + db_busStop.BusStopsOnLines.Count();
+                string db_eTag = ComputeEtag(rawValue);
+
+                if (eTag != db_eTag)
+                {
+                    return StatusCode(HttpStatusCode.PreconditionFailed);
+                }
+
+                db_busStop.Name = busStop.Name;
+                db_busStop.X = busStop.X;
+                db_busStop.Y = busStop.Y;
+
+                unitOfWork.BusStops.Update(db_busStop);
                 unitOfWork.Complete();
             }
             catch (DbUpdateConcurrencyException)
@@ -135,6 +158,24 @@ namespace WebApp.Controllers
         private bool BusStopExists(Guid id)
         {
             return unitOfWork.BusStops.Find(e => e.Id == id).Count() > 0;
+        }
+
+        private string ComputeEtag(string rawData)
+        {
+            // Create a SHA256   
+            using (SHA256 sha256Hash = SHA256.Create())
+            {
+                // ComputeHash - returns byte array  
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+
+                // Convert byte array to a string   
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
+            }
         }
     }
 }

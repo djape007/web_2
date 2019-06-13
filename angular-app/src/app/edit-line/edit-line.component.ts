@@ -55,6 +55,7 @@ export class EditLineComponent implements OnInit {
   get pointf() { return this.pointForm.controls; }
 
   addNewLineBtnClick(){
+    this.selectedRowIndex = null;
     this.line = null;
     this.newLine = new Line();
     this.newLine.Id = '';
@@ -212,7 +213,7 @@ export class EditLineComponent implements OnInit {
             )
           },
           err => {
-
+            console.log(err);
           }
         )
     }else if(this.newLine){
@@ -278,6 +279,7 @@ export class EditLineComponent implements OnInit {
       var index = this.newLine.PointLinePaths.findIndex(x => x.Id == point.Id);
       this.newLine.PointLinePaths.splice(index, 1);
       this.dataSource = new MatTableDataSource(this.createDataSource(this.newLine.PointLinePaths));
+      this.selectedRowIndex = null;
     }
   }
 
@@ -294,7 +296,8 @@ export class EditLineComponent implements OnInit {
     this._lineService.deleteLine(lineId)
       .subscribe(
         data => {
-
+          this.line = null;
+          this.selectedRowIndex = null;
         },
         err => {
           console.log(err);

@@ -43,6 +43,7 @@ namespace WebApp.Controllers
 
         // PUT: api/BusStopsOnLines/5
         [ResponseType(typeof(void))]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult PutBusStopsOnLine(Guid id, BusStopsOnLine busStopsOnLine)
         {
             if (!ModelState.IsValid || busStopsOnLine == null)
@@ -77,6 +78,7 @@ namespace WebApp.Controllers
 
         // POST: api/BusStopsOnLines
         [ResponseType(typeof(BusStopsOnLine))]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult PostBusStopsOnLine(BusStopsOnLine busStopsOnLine)
         {
             if (!ModelState.IsValid || busStopsOnLine == null)
@@ -106,6 +108,7 @@ namespace WebApp.Controllers
 
         // DELETE: api/BusStopsOnLines/5
         [ResponseType(typeof(BusStopsOnLine))]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult DeleteBusStopsOnLine(Guid id)
         {
             BusStopsOnLine busStopsOnLine = unitOfWork.BusStopsOnLines.Get(id);
