@@ -1,7 +1,7 @@
 <div *ngIf="dataSource">
     <h1>Redovi voznje</h1>
     <button mat-flat-button color="primary" class='matButtonStyle btn-left-w-33' style="margin-left: 10%;" (click)="addNewBtnClick()">Kreiraj</button>
-    <button *ngIf="!newTimetable && selectedRowIndex" mat-flat-button color="primary" class='matButtonStyle' style="float: right; margin-right: 10%;" (click)="deleteBtnClick()">Obrisi</button>
+    <button *ngIf="!newTimetable && selectedRowIndex" mat-flat-button color="primary" class='matButtonStyle btn-right-w-33' (click)="deleteBtnClick()">Obrisi</button>
     <mat-form-field class='ticketsFilter'>
         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
     </mat-form-field>
@@ -66,6 +66,7 @@
               <mat-error *ngIf="lineForm.controls['lineId'].errors && lineForm.controls['lineId'].errors['required']">Obavezno polje</mat-error>
             </mat-form-field>
           </div>
+          <label *ngIf="message!=''" style="color: red;">{{message}}</label>
           <button *ngIf="!newTimetable" mat-flat-button color="primary" type="submit" style="margin-top: 10px;" name="saveBtn" class='matButtonStyle' (click)="editTimetable()">Sacuvaj promene</button>
           <button *ngIf="newTimetable" mat-flat-button color="primary" type="submit" style="margin-top: 10px;" name="saveBtn" class='matButtonStyle' (click)="addTimetable()">Sacuvaj promene</button>
         </form>

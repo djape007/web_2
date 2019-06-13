@@ -28,6 +28,8 @@ export class EditLineComponent implements OnInit {
 
   eTag: string = '';
 
+  message: string = '';
+
   constructor(@Inject(forwardRef(() => HomeComponent)) private _parent: HomeComponent, private _lineService: LineService,
   private formBuilder: FormBuilder, private _pointService: PointService) { }
 
@@ -65,11 +67,15 @@ export class EditLineComponent implements OnInit {
 
     this.linef.lineId.setValue(this.newLine.Id);
     this.linef.direction.setValue(this.newLine.Direction);
+
+    this.message = '';
   }
 
   editLineBtnClick(){
     if(this.getLineForm.invalid)
       return;
+
+    this.message = '';
 
     this.newLine = null;
 
@@ -121,6 +127,10 @@ export class EditLineComponent implements OnInit {
         },
         err => {
           console.log(err);
+          if(err.status == 412)
+          {
+            this.message = "Neko je vec izvrsio izmene. Osvezite resurs."
+          }
         }
       )
   } 
@@ -150,7 +160,7 @@ export class EditLineComponent implements OnInit {
           this.newLine = null;
         },
         err => {
-
+          console.log(err);
         }
       )
   }
@@ -214,6 +224,10 @@ export class EditLineComponent implements OnInit {
           },
           err => {
             console.log(err);
+            if(err.status == 412)
+            {
+              this.message = "Neko je vec izvrsio izmene. Osvezite resurs."
+            }
           }
         )
     }else if(this.newLine){
@@ -267,7 +281,10 @@ export class EditLineComponent implements OnInit {
               )
           },
           err => {
-
+            if(err.status == 412)
+            {
+              this.message = "Neko je vec izvrsio izmene. Osvezite resurs."
+            }
           }
         )
     }else if(this.newLine){
@@ -290,6 +307,8 @@ export class EditLineComponent implements OnInit {
   deleteLine(){
     if(this.getLineForm.invalid)
       return;
+
+    this.message = '';
 
     var lineId = this.getLinef.lineId.value;
 

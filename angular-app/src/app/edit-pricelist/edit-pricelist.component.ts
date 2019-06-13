@@ -34,6 +34,8 @@ export class EditPricelistComponent implements OnInit {
 
   productTypes: Array<ProductType>;
 
+  message: string = '';
+
   constructor(@Inject(forwardRef(() => HomeComponent)) private _parent: HomeComponent, private formBuilder: FormBuilder,
     private _pricelistService: PricelistService, private _pricehistoryService: PricehistoryService,
     private _productTypeService: ProductTypeService) { }
@@ -134,6 +136,8 @@ export class EditPricelistComponent implements OnInit {
           console.log(err);
         }
       )
+
+    this.message = '';
   }
 
   setFormData(){
@@ -151,6 +155,8 @@ export class EditPricelistComponent implements OnInit {
     this.pricehistories = null;
     this.priceForm.reset();
     this.selectedRowIndex = null;
+
+    this.message = '';
   }
 
   editPricelist(){
@@ -170,10 +176,16 @@ export class EditPricelistComponent implements OnInit {
     this._pricelistService.editPricelit(this.pricelist.Id, fromString, toString, this.pricelist['etag'])
     .subscribe(
       data => {
+        //var index = this.pricehistories.length;
+        //var counter = 0;
         this.pricehistories.forEach(element => {
           this._pricehistoryService.editPricehistory(element)
             .subscribe(
-              data => {},
+              data => {
+                // counter++;
+                // if(counter == index)
+                //   this.getAllPricelists();
+              },
               err => {
                 console.log(err);
               }
@@ -185,6 +197,10 @@ export class EditPricelistComponent implements OnInit {
       },
       err => {
         console.log(err);
+        if(err.status == 412)
+        {
+          this.message = "Neko je vec izvrsio izmene. Osvezite resurs."
+        }
       }
     )
 
@@ -246,6 +262,8 @@ export class EditPricelistComponent implements OnInit {
           console.log(err);
         }
       )
+    
+    this.message = '';
   }
 
   vremenskaIsNotNumber(){

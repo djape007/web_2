@@ -68,6 +68,7 @@
         <mat-error *ngIf="lineForm.controls['direction'].errors && lineForm.controls['direction'].errors['required']">Obavezno polje</mat-error>
       </mat-form-field>
     </div>
+    <label *ngIf="message!=''" style="color: red;">{{message}}</label>
     <button *ngIf="line" mat-flat-button color="primary" type="submit" name="editbtn" class='matButtonStyle' (click)='editLine()'>Sacuvaj linuju</button>
     <button *ngIf="newLine" mat-flat-button color="primary" type="submit" name="addbtn" class='matButtonStyle' (click)='addLine()'>Sacuvaj linuju</button>
   </form>

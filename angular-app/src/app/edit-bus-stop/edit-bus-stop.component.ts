@@ -29,6 +29,8 @@ export class EditBusStopComponent implements OnInit {
 
   eTag: string;
 
+  message: string = '';
+
   constructor(@Inject(forwardRef(() => HomeComponent)) private _parent: HomeComponent, private formBuilder: FormBuilder,
     private _busStopService: BusStopService, private _busStopsOnLineService: BusStopsOnLineService) { }
 
@@ -63,12 +65,14 @@ export class EditBusStopComponent implements OnInit {
     this.dataSource = new MatTableDataSource(this.createDataSource(this.newBusStop.BusStopsOnLines));
 
     this.busStopForm.reset();
+    this.message = '';
   }
 
   editBtnClick(){
     if(this.getBusStopForm.invalid)
     return;
 
+    this.message = '';
     this.newBusStop = null;
 
     var busStopId = this.getBusStopf.busStopId.value;
@@ -163,6 +167,10 @@ export class EditBusStopComponent implements OnInit {
           },
           err => {
             console.log(err);
+            if(err.status == 412)
+            {
+              this.message = "Neko je vec izvrsio izmene. Osvezite resurs."
+            }
           }
         )
     }
@@ -206,6 +214,10 @@ export class EditBusStopComponent implements OnInit {
           },
           err => {
             console.log(err);
+            if(err.status == 412)
+            {
+              this.message = "Neko je vec izvrsio izmene. Osvezite resurs."
+            }
           }
         )
     }else if(this.newBusStop){
@@ -235,6 +247,10 @@ export class EditBusStopComponent implements OnInit {
         },
         err => {
           console.log(err);
+          if(err.status == 412)
+          {
+            this.message = "Neko je vec izvrsio izmene. Osvezite resurs."
+          }
         }
       )
   }
@@ -276,6 +292,8 @@ export class EditBusStopComponent implements OnInit {
   deleteBtnClick(){
     if(this.getBusStopForm.invalid)
       return;
+
+    this.message = '';
 
     var busStopId = this.getBusStopf.busStopId.value;
 

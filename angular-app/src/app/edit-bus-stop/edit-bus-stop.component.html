@@ -55,6 +55,7 @@
         <mat-error *ngIf="busStopForm.controls['name'].errors && busStopForm.controls['name'].errors['required']">Obavezno polje</mat-error>
       </mat-form-field>
     </div>
+    <label *ngIf="message!=''" style="color: red;">{{message}}</label>
     <button *ngIf="busStop" mat-flat-button color="primary" type="submit" name="editbtn" class='matButtonStyle' (click)='editBusStop()'>Sacuvaj stanicu</button>
     <button *ngIf="newBusStop" mat-flat-button color="primary" type="submit" name="addbtn" class='matButtonStyle' (click)='addBusStop()'>Sacuvaj stanicu</button>
   </form>

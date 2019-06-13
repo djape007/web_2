@@ -62,7 +62,8 @@
         <mat-error *ngIf="priceForm.controls['godisnja'].errors && priceForm.controls['godisnja'].errors['required']">Obavezno polje</mat-error>
         <mat-error *ngIf="priceForm.controls['godisnja'].errors && priceForm.controls['godisnja'].errors['notnumber']">Mora biti broj</mat-error>
       </mat-form-field>
-    </div>   
+    </div> 
+    <label *ngIf="message!=''" style="color: red;">{{message}}</label>  
     <button *ngIf="pricelist" mat-flat-button color="primary" type="submit" class='matButtonStyle' (click)='editPricelist()'>Sacuvaj cenovnik</button>
     <button *ngIf="newPricelist" mat-flat-button color="primary" type="submit" class='matButtonStyle' (click)='addPricelist()'>Dodaj cenovnik</button>
   </form>

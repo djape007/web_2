@@ -28,6 +28,8 @@ export class EditTimetableComponent implements OnInit {
   newTimetable: Timetable;
   oldTimes: string;
 
+  message: string = '';
+
   constructor(@Inject(forwardRef(() => HomeComponent)) private _parent: HomeComponent,
      private _timetablesevice: TimetableService, private _lineService: LineService, private formBuilder: FormBuilder) { }
 
@@ -93,6 +95,8 @@ export class EditTimetableComponent implements OnInit {
     this.timetableJson = null;
     this.selectedDay = null;
     this.newTimetable = null;
+
+    this.message = '';
   }
 
   getTimesJson(timetableId: Guid, pickedDay: string){
@@ -103,7 +107,6 @@ export class EditTimetableComponent implements OnInit {
       else
         timetable = this.newTimetable;
     }
-
 
     let timesJson = JSON.parse(timetable.Times);
     let selectedDayTimesJson = new Array<string>();
@@ -225,6 +228,10 @@ export class EditTimetableComponent implements OnInit {
       },
       err => {
         console.log(err);
+        if(err.status == 412)
+        {
+          this.message = "Neko je vec izvrsio izmene. Osvezite resurs."
+        }
       });
   }
 
@@ -234,6 +241,7 @@ export class EditTimetableComponent implements OnInit {
     this.newTimetable = new Timetable();
     this.newTimetable.Id = this.selectedRowIndex;
     this.newTimetable.Times = JSON.stringify({"Radni_dan": [], "Subota": [], "Nedelja": []});
+    this.message = '';
   }
 
   minuteIsNotNumber(){
@@ -283,5 +291,6 @@ export class EditTimetableComponent implements OnInit {
         console.log(err);
       });
     
+    this.message = '';
   }
 }
