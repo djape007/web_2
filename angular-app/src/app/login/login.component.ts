@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
   }
 
   login(){
-    this.message = '';
+    this.clearMessage();
     if (this.loginForm.invalid) {
         return;
     }
@@ -43,9 +43,11 @@ export class LoginComponent implements OnInit {
       user.Email = this.f.email.value;
       user.Password = this.f.password.value;
       this._service.login(user)
-        .subscribe(data => {
-          //if(data){
-          //  this._router.navigate(['/home/profile']); //redirect to page if loggedIn
+        .subscribe(
+          data => {
+        },
+        err => {
+          this.message = "Lozinka i Email nisu validni"
         })
     }   
   }

@@ -1,4 +1,4 @@
-<h1>PRIJAVA</h1>
+<h1>Prijava</h1>
 <div>
   <form [formGroup]="loginForm" novalidate (ngSubmit)="login()" style='text-align: center;'>     
     <div class="form-group">
@@ -12,7 +12,7 @@
         <mat-error *ngIf="loginForm.controls['password'].errors && loginForm.controls['password'].errors['required']">Obavezno polje</mat-error>
       </mat-form-field>
     </div>
-    <label class="text-red">{{message}}</label><br>
+    <label *ngIf="message!=''" class="text-red">{{message}}</label><br>
     <button mat-flat-button color="primary" class='matButtonStyle' type="submit">Prijavi se</button>
   </form>
 </div>

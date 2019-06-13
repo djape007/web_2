@@ -1,4 +1,4 @@
-<h1>REGISTRACIJA</h1>
+<h1>Registracija</h1>
 <div>
   <form [formGroup]="registerForm" novalidate (ngSubmit)="register()" style='text-align: center;'>     
     <div class="form-group">
@@ -48,11 +48,14 @@
         <mat-error *ngIf="registerForm.controls['type'].errors && registerForm.controls['type'].errors['required']">Obavezno polje</mat-error>
       </mat-form-field>
       <div *ngIf="selectedValue == 'Student' || selectedValue=='Penzioner'" class="upload-file">
-        <input (change)="onFileChanged($event)" type="file" accept="image/png,image/jpeg,image/jpg,image/bmp">
-        <img [src]="imgURL" style="margin-left: 10%; margin-top: 5px" width="320" height="auto" *ngIf="imgURL">
+          <label class="custom-file-upload">
+              <input type="file" (change)="onFileChanged($event)" accept="image/png,image/jpeg,image/jpg,image/bmp"/> Uploaduj sliku
+          </label>
+        <!-- <input (change)="onFileChanged($event)" type="file" accept="image/png,image/jpeg,image/jpg,image/bmp"> -->
+        <img [src]="imgURL" style="margin-left: 10%; margin-top: 10px" width="320" height="auto" *ngIf="imgURL">
       </div>
     </div>
     <br>
-    <button mat-flat-button color="primary" class='matButtonStyle' type="submit">Potvrdi</button>
+    <button mat-flat-button color="primary" class='matButtonStyle btn-left-w-33' type="submit">Potvrdi</button>
   </form>
 </div>

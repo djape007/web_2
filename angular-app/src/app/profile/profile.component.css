@@ -8,3 +8,9 @@
     text-align: right;
     margin-bottom: 10px;
 }
+
+.btn-right-w-33{
+    width: 33%;
+    margin-right: 10px;
+    margin-top: 10px;
+  }

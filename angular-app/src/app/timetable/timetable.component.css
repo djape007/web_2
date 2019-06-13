@@ -1,12 +1,6 @@
-h1{
-  color:white;
-  text-align: left;
-  margin-left: 35px;
-}
-
 .bus-lines{
-  height: 296px;
-  overflow-y: scroll;
+  max-height: 296px;
+  overflow-y: auto;
 }
 
 .ticketsFilter {

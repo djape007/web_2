@@ -25,6 +25,7 @@
     float: left; 
     width: 80%;
     margin-left: 10%;
+    margin-top: 10px;
   }
 
   .div-horizontal{
@@ -33,4 +34,31 @@
     overflow-y: hidden;
     margin-left: 10%;
     width: 80%;
+}
+
+.btn-right-w-33{
+  width: 33%;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+
+.btn-left-w-33{
+  width: 33%;
+  margin-left: 10%;
+  float: left;
+}
+
+input[type="file"] {
+  display: none;
+} 
+
+.custom-file-upload {
+  border-radius: 3px;
+  display: inline-block;
+  padding: 3px 20px;
+  cursor: pointer;
+  background-color:  #f7c859;;
+  color: black;
+  font-weight: bold;
+  margin-right: 10px;
 }

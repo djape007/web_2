@@ -23,8 +23,7 @@ export class AuthService {
         localStorage.setItem('token', jwt);
         this._router.navigate(['/home/profile']);
       }),
-
-      catchError(this.handleError<any>('login'))
+      //catchError(this.handleError<any>('login'))
     );
   }
 

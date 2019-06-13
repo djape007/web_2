@@ -24,8 +24,8 @@
         <mat-error *ngIf="myForm.controls['birthday'].errors && myForm.controls['birthday'].errors['required']">Obavezno polje</mat-error>
       </mat-form-field>
     </div>
-    <label>{{message}}</label><br>
-    <button mat-flat-button color="primary" class='matButtonStyle' type="submit">Izmeni</button>
+    <label *ngIf="message!=''">{{message}}</label><br>
+    <button mat-flat-button color="primary" class='matButtonStyle btn-left-w-33' type="submit">Izmeni</button>
   </form>
 </div>
 <br>
@@ -56,16 +56,18 @@
           <mat-error *ngIf="passwordForm.controls['repeat_password'].errors && passwordForm.controls['repeat_password'].errors['notsame']">Lozinke nisu iste</mat-error>
         </mat-form-field>
     </div>
-    <label>{{message_password}}</label><br>
-    <button mat-flat-button color="primary" class='matButtonStyle' type="submit">Izmeni lozinku</button>
+    <label *ngIf="message_password!=''">{{message_password}}</label><br>
+    <button mat-flat-button color="primary" class='matButtonStyle btn-left-w-33' type="submit">Izmeni lozinku</button>
   </form>
 </div>
-<div *ngIf="user">
+<div *ngIf="user && _auth.getRole() == 'AppUser'">
   <div class="margin-10" style="padding: 10px 0">
-    <input (change)="onFileChanged($event)" type="file" accept="image/png,image/jpeg,image/jpg,image/bmp">
-    <img [src]="imgURL" style="margin-top: 5px" width="320" height="auto" *ngIf="imgURL">
-    <br>
-    <button mat-flat-button color="primary" class='matButtonStyle' (click)='dodajSliku()'>Dodaj sliku</button>
+    <label class="custom-file-upload">
+        <input type="file" (change)="onFileChanged($event)" accept="image/png,image/jpeg,image/jpg,image/bmp"/> Uploaduj sliku
+    </label>
+    <!-- <input (change)="onFileChanged($event)" type="file" accept="image/png,image/jpeg,image/jpg,image/bmp"> -->
+    <img [src]="imgURL" style="margin-top: 10px;" width="320" height="auto" *ngIf="imgURL">
+    <button mat-flat-button color="primary" class='matButtonStyle' style="width: 130px; margin-top: 10px;" (click)='dodajSliku()'>Dodaj sliku</button>
   </div>
 </div>
 <br>

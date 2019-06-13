@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { User } from 'src/models/user';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ProfileService } from '../services/profile.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-edit-user',
@@ -20,7 +21,7 @@ export class EditUserComponent implements OnInit {
   selectedFile: File;
   imgURL: any;
 
-  constructor(private _service: ProfileService, private formBuilder: FormBuilder) { }
+  constructor(private _service: ProfileService,private _auth: AuthService, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
     if(this.id != '')
