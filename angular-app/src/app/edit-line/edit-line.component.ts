@@ -185,14 +185,26 @@ export class EditLineComponent implements OnInit {
       point.SequenceNumber = 1;
 
     if(this.line){
+      if(this.lineForm.invalid)
+        return;
+
       point.LineId = this.line.Id;
-      this._pointService.addPoint(point)
+      this._lineService.editLine(this.line,this.eTag)
         .subscribe(
           data => {
-            this._lineService.getLine(this.line.Id)
-              .subscribe(data => {
-                this.line = data;
-                this.dataSource = new MatTableDataSource(this.createDataSource(this.line.PointLinePaths));
+            this._pointService.addPoint(point)
+            .subscribe(
+              data => {
+                this._lineService.getLine(this.line.Id)
+                  .subscribe(data => {
+                    this.eTag = data.headers.get('etag');
+                    this.line = data.body;
+                    this.dataSource = new MatTableDataSource(this.createDataSource(this.line.PointLinePaths));
+                  },
+                  err => {
+                    console.log(err);
+                  }
+                )
               },
               err => {
                 console.log(err);
@@ -200,7 +212,7 @@ export class EditLineComponent implements OnInit {
             )
           },
           err => {
-            console.log(err);
+
           }
         )
     }else if(this.newLine){
@@ -227,22 +239,34 @@ export class EditLineComponent implements OnInit {
 
   deletePoint(){
     if(this.line){
+      if(this.lineForm.invalid)
+        return;
+
       var point = this.line.PointLinePaths.find(x => x.SequenceNumber == this.selectedRowIndex);
-      this._pointService.deletePoint(point)
+      this._lineService.editLine(this.line, this.eTag)
         .subscribe(
           data => {
-            this._lineService.getLine(this.line.Id)
-              .subscribe(data => {
-                this.line = data;
-                this.dataSource = new MatTableDataSource(this.createDataSource(this.line.PointLinePaths));
-              },
-              err => {
-                console.log(err);
-              }
-            )
+            this._pointService.deletePoint(point)
+              .subscribe(
+                data => {
+                  this._lineService.getLine(this.line.Id)
+                    .subscribe(data => {
+                      this.eTag = data.headers.get('etag');
+                      this.line = data.body;
+                      this.dataSource = new MatTableDataSource(this.createDataSource(this.line.PointLinePaths));
+                    },
+                    err => {
+                      console.log(err);
+                    }
+                  )
+                },
+                err => {
+                  console.log(err);
+                }
+              )
           },
           err => {
-            console.log(err);
+
           }
         )
     }else if(this.newLine){
