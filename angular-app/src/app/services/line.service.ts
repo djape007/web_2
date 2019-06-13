@@ -13,11 +13,11 @@ export class LineService {
   constructor(private http: HttpClient) { }
 
   public getLine(id: string): Observable<any>{
-    return this.http.get(`${this.api_route}/${id}`);
+    return this.http.get(`${this.api_route}/${id}`, {observe: 'response'});
   }
 
-  public editLine(line: Line): Observable<any>{
-    return this.http.put(`${this.api_route}/${line.Id}`, `Id=${line.Id}&Direction=${line.Direction}`,  { "headers" : {'Content-type' : 'application/x-www-form-urlencoded'}} );
+  public editLine(line: Line, eTag: string): Observable<any>{
+    return this.http.put(`${this.api_route}/${line.Id}`, `Id=${line.Id}&Direction=${line.Direction}`,  { "headers" : {'etag': `${eTag}` , 'Content-type' : 'application/x-www-form-urlencoded'} } );
   }
 
   public addLine(line: Line): Observable<any>{

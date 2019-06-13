@@ -26,6 +26,8 @@ export class EditLineComponent implements OnInit {
 
   selectedRowIndex: Number;
 
+  eTag: string = '';
+
   constructor(@Inject(forwardRef(() => HomeComponent)) private _parent: HomeComponent, private _lineService: LineService,
   private formBuilder: FormBuilder, private _pointService: PointService) { }
 
@@ -74,7 +76,8 @@ export class EditLineComponent implements OnInit {
     this._lineService.getLine(lineId)
       .subscribe(
         data => {
-          this.line = data;
+          this.eTag = data.headers.get('etag');
+          this.line = data.body;
           this.dataSource = new MatTableDataSource(this.createDataSource(this.line.PointLinePaths));
           this.linef.lineId.setValue(this.line.Id);
           this.linef.direction.setValue(this.line.Direction);
@@ -110,7 +113,7 @@ export class EditLineComponent implements OnInit {
     this.line.Id = this.linef.lineId.value;
     this.line.Direction = this.linef.direction.value;
 
-    this._lineService.editLine(this.line)
+    this._lineService.editLine(this.line, this.eTag)
       .subscribe(
         data => {
           this.line = null;
