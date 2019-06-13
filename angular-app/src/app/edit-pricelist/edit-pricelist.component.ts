@@ -10,6 +10,7 @@ import { PriceHistory } from 'src/models/price-history';
 import { forEach } from '@angular/router/src/utils/collection';
 import { ProductType } from 'src/models/product-type';
 import { ProductTypeService } from '../services/product-type.service';
+import { sha256 } from 'js-sha256';
 
 @Component({
   selector: 'app-edit-pricelist',
@@ -70,6 +71,20 @@ export class EditPricelistComponent implements OnInit {
         data => {
           this.pricelists = data;
           this.dataSource = new MatTableDataSource(this.createDataSource(data));
+          this.pricelists.forEach(element => {
+            var prices: string = '';
+            element.PriceHistories.forEach(element => {
+              prices = prices.concat(element.Price.toString());
+            });
+
+            var from = new Date(element.From).toLocaleDateString().split('/');
+            var fromString = `${from[2]}-${from[0]}-${from[1]}`;
+            var to = new Date(element.To).toLocaleDateString().split('/');
+            var toString = `${to[2]}-${to[0]}-${to[1]}`;
+
+            var rawValue = `${element.Id}${fromString}${toString}${prices}`;
+            element['etag'] = sha256(rawValue);
+          });
         },
         err =>{
           console.log(err);
@@ -152,7 +167,7 @@ export class EditPricelistComponent implements OnInit {
       element.Price = this.priceForm.controls[strName].value;
     });
 
-    this._pricelistService.editPricelit(this.pricelist.Id, fromString, toString)
+    this._pricelistService.editPricelit(this.pricelist.Id, fromString, toString, this.pricelist['etag'])
     .subscribe(
       data => {
         this.pricehistories.forEach(element => {

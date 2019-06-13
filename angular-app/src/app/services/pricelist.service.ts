@@ -21,8 +21,8 @@ export class PricelistService {
     return this.http.post(`${this.api_route}`,`Id=${id}&From=${from}&To=${to}`, { "headers" : {'Content-type' : 'application/x-www-form-urlencoded'}})
   } 
 
-  public editPricelit(id: Guid, from: string, to: string): Observable<any>{
-    return this.http.put(`${this.api_route}/${id}`,`Id=${id}&From=${from}&To=${to}`, { "headers" : {'Content-type' : 'application/x-www-form-urlencoded'}})
+  public editPricelit(id: Guid, from: string, to: string, etag: string): Observable<any>{
+    return this.http.put(`${this.api_route}/${id}`,`Id=${id}&From=${from}&To=${to}`, { "headers" : {'etag': `${etag}`,'Content-type' : 'application/x-www-form-urlencoded'}})
   } 
 
   public deletePricelist(id: Guid): Observable<any>{
