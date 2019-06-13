@@ -7,6 +7,7 @@ import { AuthService } from '../services/auth.service';
 import { LineService } from '../services/line.service';
 import { Bus } from 'src/models/bus';
 import { BusService } from '../services/bus.service';
+import { _MatChipListMixinBase } from '@angular/material';
 
 @Component({
   selector: 'app-home',
@@ -179,8 +180,8 @@ private subscribeForBusPositions () {
 
     this._lineService.getLine(lineId).subscribe(
       (data) => {
-        console.log(data);
-        this.DrawLineOnMap(data);
+        console.log(data.body);
+        this.DrawLineOnMap(data.body);
       }, 
       (error) => {
         console.log(error);
@@ -273,10 +274,13 @@ private subscribeForBusPositions () {
       }
 
       let prikaziLinijeHTML = "";
-      let content =
-        `<div><b>${busStop.Name}</b></div>
-        <div>${busStop.Address}</div>
-        ${prikaziLinijeHTML}`;
+      let content = "";
+
+      content += `<div><b>${busStop.Name}</b></div>`;
+      if(this._auth.getRole() == "Admin")
+        content += `<div>${busStop.Id}</div>`;
+      content += `<div>${busStop.Address}</div>
+      ${prikaziLinijeHTML}`;
       infoWindow.setContent(`${content}${timeString}`);
       infoWindow.open(this.map, marker);
     });
@@ -390,15 +394,20 @@ private subscribeForBusPositions () {
     var linija = this.prikazaneLinije[lineId];
     linija.PointLinePaths.forEach(element => {
       const pointLocation = new google.maps.LatLng(element.X, element.Y);
-      const busLocatioon = new google.maps.LatLng(busStop.X, busStop.Y);
-      const dist = google.maps.geometry.spherical.computeDistanceBetween(pointLocation, busLocatioon);
+      const busStopLocatioon = new google.maps.LatLng(busStop.X, busStop.Y);
+      const dist = google.maps.geometry.spherical.computeDistanceBetween(pointLocation, busStopLocatioon);
       distanceStationArr.push({'dist' : dist, 'point' : element});
     });
     var sortedStationDist = distanceStationArr.sort((x,y)=> (Number)(x.dist) - (Number)(y.dist));
     var closestStationPoint = sortedStationDist[0];
     
+    if(linija.Buses==null || linija.Buses.length == 0)
+      return timesInSec;
+
     linija.Buses.forEach(element => {
-      var bus = this.prikazaniAutobusi[element.Id]
+      var bus = this.prikazaniAutobusi[element.Id];
+      if(bus == null)
+        return timesInSec;
       var distanceBusArr = new Array<any>();
       linija.PointLinePaths.forEach(element => {
         const pointLocation = new google.maps.LatLng(element.X, element.Y);

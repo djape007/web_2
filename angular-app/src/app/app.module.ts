@@ -29,6 +29,7 @@ import { BoughtTicketsComponent } from './bought-tickets/bought-tickets.componen
 import { EditLineComponent } from './edit-line/edit-line.component';
 import { EditTimetableComponent } from './edit-timetable/edit-timetable.component';
 import { EditPricelistComponent } from './edit-pricelist/edit-pricelist.component';
+import { EditBusStopComponent } from './edit-bus-stop/edit-bus-stop.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { EditPricelistComponent } from './edit-pricelist/edit-pricelist.componen
     BoughtTicketsComponent,
     EditLineComponent,
     EditTimetableComponent,
-    EditPricelistComponent
+    EditPricelistComponent,
+    EditBusStopComponent
   ],
   imports: [
     BrowserModule,
