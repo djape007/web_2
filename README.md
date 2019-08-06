@@ -1,24 +1,39 @@
 # Sajt autoprevoznika "VINKO KLOCNA PREVOZ"
 
+### Predrag Babić (PR55-2015)
+### Stevan Vulić (PR135-2015)
+
 ## Skrinšotovi sajta
 
-#### Pocetna strana
-![pocetna](https://github.com/djape007/web_2/blob/master/sajt_pocetna.png)
+#### Početna strana
+![a](https://github.com/djape007/web_2/blob/master/sajt_pocetna.png)
 
 #### Odabir linije 
-![pocetna](https://github.com/djape007/web_2/blob/master/sajt_red_voznje.png)
+![a](https://github.com/djape007/web_2/blob/master/sajt_red_voznje.png)
+
+#### Pretraga linija
+![a](https://github.com/djape007/web_2/blob/master/pretraga_linija.gif)
 
 #### Prikaz polazaka za izabranu liniju
-![pocetna](https://github.com/djape007/web_2/blob/master/sajt_red_voznje_prikaz.png)
+![a](https://github.com/djape007/web_2/blob/master/sajt_red_voznje_prikaz.png)
 
-#### Kupovina karata (kao registrovani korisnik koji je ustvari penzioner)
-![pocetna](https://github.com/djape007/web_2/blob/master/sajt_karte_penzos.png)
+#### Kupovina karata (kao registrovani korisnik)
+![a](https://github.com/djape007/web_2/blob/master/sajt_karte_penzos.png)
+
+#### Prikaz kupljenih karata
+![a](https://github.com/djape007/web_2/blob/master/sajt_kupljene_karte.png)
 
 #### Forma registracije
-![pocetna](https://github.com/djape007/web_2/blob/master/sajt_registracija.png)
+![a](https://github.com/djape007/web_2/blob/master/sajt_registracija.png)
 
-#### Pocetna strana sa izabranim linijama (1 i 22) WIP
-![pocetna](https://github.com/djape007/web_2/blob/master/sajt_prikaz_linija.png)
+#### Početna strana sa izabranim linijama
+![a](https://github.com/djape007/web_2/blob/master/sajt_prikaz_linija.png)
 
-### Predrag Babic (PR55-2015)
-### Stevan Vulic (PR135-2015)
+#### Podaci autobusa
+![a](https://github.com/djape007/web_2/blob/master/sajt_podaci_autobusa.png)
+
+#### Podaci stanice (i procena vremena za koliko minuta će stići sledeći autobus)
+![a](https://github.com/djape007/web_2/blob/master/sajt_podaci_stanice.png)
+
+#### Kretanje autobusa (sa zaustavljanjem na stanici)
+![a](https://github.com/djape007/web_2/blob/master/kretanje_autobusa.gif)
