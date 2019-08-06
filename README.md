@@ -36,4 +36,7 @@
 ![a](https://github.com/djape007/web_2/blob/master/sajt_podaci_stanice.png)
 
 #### Kretanje autobusa (sa zaustavljanjem na stanici)
-![a](https://github.com/djape007/web_2/blob/master/kretanje_autobusa.gif)
+[YouTube](https://www.youtube.com/watch?v=2eNHVcXv4Ks)
+
+#### Promena linije kada autobus dođe do kraja trenutne linije
+[YouTube](https://www.youtube.com/watch?v=LWcNfvoaM9k)
