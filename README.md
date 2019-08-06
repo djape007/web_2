@@ -3,6 +3,8 @@
 ### Predrag Babić (PR55-2015)
 ### Stevan Vulić (PR135-2015)
 
+[Video demo](https://www.youtube.com/watch?v=3CMs4uwEJk8)
+
 ## Skrinšotovi sajta
 
 #### Početna strana
@@ -36,7 +38,7 @@
 ![a](https://github.com/djape007/web_2/blob/master/sajt_podaci_stanice.png)
 
 #### Kretanje autobusa (sa zaustavljanjem na stanici)
-[YouTube](https://www.youtube.com/watch?v=2eNHVcXv4Ks)
+[YouTube Video](https://www.youtube.com/watch?v=2eNHVcXv4Ks)
 
 #### Promena linije kada autobus dođe do kraja trenutne linije
-[YouTube](https://www.youtube.com/watch?v=LWcNfvoaM9k)
+[YouTube Video](https://www.youtube.com/watch?v=LWcNfvoaM9k)
